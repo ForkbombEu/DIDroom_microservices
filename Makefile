@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := up
 .PHONY: help
 
 # detect the operating system
@@ -18,10 +18,12 @@ help: ## 🛟  Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-7s\033[0m %s\n", $$1, $$2}'
 
 setup: ## 📦 Install and setup the server
-	@wget https://github.com/forkbombeu/ncr/releases/latest/download/ncr
+ifeq (,$(wildcard ncr))
+	@wget -q --show-progress https://github.com/forkbombeu/ncr/releases/latest/download/ncr
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
+endif
 
-run: ## ⚙️ Run the project in development mode
+up:setup ## 🚀 Up & run the project
 	./ncr
 
