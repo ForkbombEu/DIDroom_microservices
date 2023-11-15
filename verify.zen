@@ -1,0 +1,3 @@
+Given I send verifier url 'verifier_url' and send issued vc 'presentation' and send nonce 'nonce' and send issuer 'issuer_jwk' and verify vc sd jwt and output into 'verification'
+Given I have a 'string dictionary' named 'verification'
+Then print data
