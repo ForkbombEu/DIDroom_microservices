@@ -22,7 +22,7 @@ ifndef WGET
 endif
     
 
-help: ## 🛟  Show this help message
+help: ## 🛟 Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-7s\033[0m %s\n", $$1, $$2}'
 
 setup: ## 📦 Install and setup the server
@@ -33,5 +33,5 @@ ifeq (,$(wildcard ncr))
 endif
 
 up:setup ## 🚀 Up & run the project
-	./ncr
+	./ncr -p 3000
 
