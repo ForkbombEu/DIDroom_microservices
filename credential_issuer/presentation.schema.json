@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "disclosed": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "verifier_url": {
+      "type": "string"
+    },
+    "holder_jwk": {
+      "type": "object"
+    },
+    "issued_vc": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "disclosed",
+    "verifier_url",
+    "holder_jwk",
+    "issued_vc"
+  ]
+}
