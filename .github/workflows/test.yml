@@ -5,12 +5,9 @@ jobs:
     name: 🧪 VCI API Tests
     steps:
       - run: hostname
-      - name: Show GitHub context   
-        env: 
-          GITHUB_CONTEXT: ${{ toJson(github) }}   
-        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v3
       - run: make &
       - uses: stepci/stepci@main
         with:
           workflow: "tests/credential_issuer.yml"
+          envs: host=${{ $(hostname) }}:3000 
