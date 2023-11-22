@@ -1,0 +1,10 @@
+on: [push, pull_request]
+jobs:
+  api_test:
+    runs-on: ubuntu-latest
+    name: 🧪 VCI API Tests
+    steps:
+      - uses: actions/checkout@v3
+      - uses: stepci/stepci@main
+        with:
+          workflow: "tests/credential_issuer.yml"

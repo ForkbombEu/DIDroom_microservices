@@ -35,3 +35,8 @@ endif
 up:setup ## 🚀 Up & run the project
 	./ncr -p 3000
 
+test:
+	@./ncr -p 22779 & echo $$! > .test.ncr.pid
+	@npx stepci run ./tests/workflow.yml || { echo "❌ Oops! tests failed 😱" }
+	@kill `cat .test.ncr.pid`
+
