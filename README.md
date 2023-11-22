@@ -7,10 +7,10 @@
 </div>
 
 <p align="center">
-   <img src="https://github.com/ForkbombEu/DIDroom/raw/main/images/DIDroom_logo.png" width="170">
+   <img src="https://github.com/ForkbombEu/DIDroom/raw/main/images/DIDroom_logo.png" width="370">
 </p>
 
-DIDroom is a comprehensive open-source implementation of the OpenID4VC
+DIDroom microservices is a comprehensive open-source implementation of the OpenID4VC
 "OpenID for Verifiable Credential" protocols, designed to easily deploy
 the entire credential issuance process.This project is built using the
 Zenroom ecosystem, incorporating Zencode natural language smart contracts
