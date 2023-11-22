@@ -4,11 +4,7 @@ jobs:
     runs-on: ubuntu-latest
     name: 🧪 VCI API Tests
     steps:
-      - run: |
-          echo "HOST=$(hostname)" >> $GITHUB_ENV
+      - run: echo "HOST=$(hostname)" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - run: make &
-      - uses: stepci/stepci@main
-        with:
-          workflow: "tests/credential_issuer.yml"
-          envs: host="${{ env.HOST }}:3000" 
+      - run: npx stepci run "tests/credential_issuer.yml" host="${{ env.HOST }}:3000"
