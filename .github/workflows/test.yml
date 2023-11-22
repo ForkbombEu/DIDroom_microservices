@@ -5,6 +5,7 @@ jobs:
     name: 🧪 VCI API Tests
     steps:
       - uses: actions/checkout@v3
+      - run: make
       - uses: stepci/stepci@main
         with:
           workflow: "tests/credential_issuer.yml"
