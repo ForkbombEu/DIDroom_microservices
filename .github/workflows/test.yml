@@ -4,6 +4,11 @@ jobs:
     runs-on: ubuntu-latest
     name: 🧪 VCI API Tests
     steps:
+      - run: hostname
+      - name: Show GitHub context   
+        env: 
+          GITHUB_CONTEXT: ${{ toJson(github) }}   
+        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v3
       - run: make &
       - uses: stepci/stepci@main
