@@ -33,7 +33,7 @@ ifeq (,$(wildcard ncr))
 endif
 
 up:setup ## 🚀 Up & run the project
-	./ncr -p 3000
+	./ncr -p 3000 --public-directory public
 
 test: ## 🧪 Run e2e tests on the APIs
 	@./ncr -p 3000 & echo $$! > .test.ncr.pid
