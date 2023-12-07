@@ -35,3 +35,8 @@ endif
 up:setup ## 🚀 Up & run the project
 	./ncr -p 3000
 
+test: ## 🧪 Run e2e tests on the APIs
+	@./ncr -p 3000 & echo $$! > .test.ncr.pid
+	npx stepci run tests/credential_issuer.yml
+	@kill `cat .test.ncr.pid` && rm .test.ncr.pid
+
