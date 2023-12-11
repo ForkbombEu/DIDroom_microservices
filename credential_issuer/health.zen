@@ -1,0 +1,6 @@
+Rule unknown ignore
+Given I connect to 'timestamp_srv' and do get and output into 'timestamp_request'
+
+Given I have a 'float' named 'result' in 'timestamp request'
+Given I rename 'result' to 'result timestamp'
+Then print data
