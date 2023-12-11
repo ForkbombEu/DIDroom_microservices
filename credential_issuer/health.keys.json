@@ -1,3 +1,3 @@
 {
-    "timestamp_srv": "http://apiroom.net:3312"
+    "metadata": "http://localhost:3000/.well-known/openid-credential-issuer"
 }

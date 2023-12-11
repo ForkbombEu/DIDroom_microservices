@@ -1,6 +1,6 @@
 Rule unknown ignore
-Given I connect to 'timestamp_srv' and do get and output into 'timestamp_request'
+Given I connect to 'metadata' and do get and output into 'metadata_res'
 
-Given I have a 'float' named 'result' in 'timestamp request'
-Given I rename 'result' to 'result timestamp'
+Given I have a 'string dictionary' named 'result' in 'metadata res'
+Given I rename 'result' to 'result metadata'
 Then print data
