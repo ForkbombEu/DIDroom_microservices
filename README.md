@@ -123,15 +123,6 @@ make
 Then point your browser to the [http://localhost:3000/docs](http://localhost:3000/docs) to see all the exposed endpoints
 
 
-## 🐋 Docker
-You can start it using docker, just have to mount you static file directory
-```
-docker pull ghcr.io/forkbombeu/didroom_microservices:latest
-docker run -p 3000:3000 -v public:/app/public ghcr.io/forkbombeu/didroom_microservices:latest
-```
-
-**[🔝 back to top](#toc)**
-
 ***
 ## 🚑 Community & support
 
@@ -151,6 +142,12 @@ docker run -p 3000:3000 -v public:/app/public ghcr.io/forkbombeu/didroom_microse
 
 ***
 ## 🐋 Docker
+
+You can start it using docker, just have to mount you static file directory
+```
+docker pull ghcr.io/forkbombeu/didroom_microservices:latest
+docker run -p 3000:3000 -v public:/app/public ghcr.io/forkbombeu/didroom_microservices:latest
+```
 
 Please refer to [DOCKER PACKAGES](../../packages)
 
