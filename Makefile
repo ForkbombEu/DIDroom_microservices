@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := up
 .PHONY: help
 
+hn=$(shell hostname)
 
 # detect the operating system
 OSFLAG 				:=
@@ -33,7 +34,7 @@ ifeq (,$(wildcard ncr))
 endif
 
 up:setup ## 🚀 Up & run the project
-	./ncr -p 3000 --public-directory public
+	./ncr -p 3000 --hostname $(hn) --public-directory public
 
 test: ## 🧪 Run e2e tests on the APIs
 	@./ncr -p 3000 & echo $$! > .test.ncr.pid
