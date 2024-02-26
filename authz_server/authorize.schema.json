@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "2.1.keys": {
+      "type": "string"
+    },
+    "2.2.keys": {
+      "type": "string"
+    },
+    "2.2.zen": {
+      "type": "string"
+    },
+    "2.1.zen": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "2.1.keys",
+    "2.2.keys",
+    "2.2.zen",
+    "2.1.zen"
+  ]
+}

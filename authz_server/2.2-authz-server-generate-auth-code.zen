@@ -1,0 +1,25 @@
+
+
+
+
+Given I have a 'string' named 'x'
+Given I have a 'string' named 'y'
+Given I have a 'string' named 'd'
+Given I have a 'string dictionary' named 'jwk'
+Given I have a 'string dictionary' named 'server'
+
+
+# Verify PoP
+
+When I move 'x' in 'jwk'
+When I move 'y' in 'jwk'
+When I move 'd' in 'jwk'
+
+When I move 'jwk' in 'server'
+
+
+# Then print the 'x' as 'url64'
+# Then print the 'y' as 'url64'
+Then print the 'server' 
+
+
