@@ -11,6 +11,13 @@ Given I send path '2.1.zen' and read verbatim file content and output into 'zen_
 Given I send path '2.2.zen' and read verbatim file content and output into 'zen_2.2'
 
 
+# Given I send path '2.2-test-create.keys' and read file content and output into '2.2-create-request'
+# Given I send path '2.2-test-request.keys' and read file content and output into '2.2-test-request'
+
+
+
+
+
 
 
 
@@ -18,10 +25,16 @@ Given I send keys 'keys_2.1' and send script 'zen_2.1' and send data 'empty' and
 Given I send keys 'keys_2.2' and send script 'zen_2.2' and send data 'zen_2.1_output' and execute zencode and output into 'zen_2.2_output'
 
 
-Given I have a 'string dictionary' named 'zen_2.2_output'
+# Given I have a 'string dictionary' named 'request' inside '2.2-test-request'
+# Given I have a 'string dictionary' named 'client' inside '2.2-test-client'
+
+Given I have a 'string dictionary' named 'request'
+Given I have a 'string dictionary' named 'client'
 
 
-
+Given I have a 'string dictionary' named 'server' inside 'zen_2.2_output'
 
 
 Then print data
+
+Then I send request 'request' and send client 'client' and send server_data 'server' and generate authorization code and output into 'authCode_jwt'
