@@ -7,6 +7,9 @@
     "2.2.keys": {
       "type": "string"
     },
+    "empty.data": {
+      "type": "string"
+    },
     "2.2.zen": {
       "type": "string"
     },
@@ -17,6 +20,7 @@
   "required": [
     "2.1.keys",
     "2.2.keys",
+    "empty.data",
     "2.2.zen",
     "2.1.zen"
   ]

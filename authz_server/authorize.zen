@@ -5,16 +5,22 @@ Rule unknown ignore
 Given I send path '2.1.keys' and read file content and output into 'keys_2.1'
 Given I send path '2.2.keys' and read file content and output into 'keys_2.2'
 
+Given I send path 'empty.data' and read file content and output into 'empty'
+
 Given I send path '2.1.zen' and read verbatim file content and output into 'zen_2.1'
 Given I send path '2.2.zen' and read verbatim file content and output into 'zen_2.2'
 
 
-Given I send data 'keys_2.1' and send script 'zen_2.1' and execute zencode and output into 'zen_2.1_output'
 
 
 
+Given I send keys 'keys_2.1' and send script 'zen_2.1' and send data 'empty' and execute zencode and output into 'zen_2.1_output'
+Given I send keys 'keys_2.2' and send script 'zen_2.2' and send data 'zen_2.1_output' and execute zencode and output into 'zen_2.2_output'
 
-Given I have a 'string dictionary' named 'zen_2.1_output'
+
+Given I have a 'string dictionary' named 'zen_2.2_output'
+
+
 
 
 
