@@ -1,0 +1,25 @@
+# OpenID4VCI Authz server, /token
+
+Rule unknown ignore
+
+Given I send path '2.1.keys' and read file content and output into 'keys_2.1'
+Given I send path '2.2.keys' and read file content and output into 'keys_2.2'
+
+Given I send path 'empty.data' and read file content and output into 'empty'
+
+Given I send path '2.1.zen' and read verbatim file content and output into 'zen_2.1'
+Given I send path '2.2.zen' and read verbatim file content and output into 'zen_2.2'
+
+Given I send keys 'keys_2.1' and send script 'zen_2.1' and send data 'empty' and execute zencode and output into 'zen_2.1_output'
+Given I send keys 'keys_2.2' and send script 'zen_2.2' and send data 'zen_2.1_output' and execute zencode and output into 'zen_2.2_output'
+
+Given I have a 'string dictionary' named 'zen_2.2_output'
+Given I have a 'string dictionary' named 'server' inside 'zen_2.2_output'
+
+Given I have a 'string dictionary' named 'authCode_jwt'
+Given I have a 'string dictionary' named 'request'
+
+
+Then print data
+
+Then I send request 'request' and send code 'authCode_jwt' and send server_data 'server' and generate access token and output into 'accessToken_jwt'

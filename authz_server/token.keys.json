@@ -1,0 +1,7 @@
+{
+	"2.1.keys": "./authz_server/2.1-authz-server-generate-auth-code.keys",
+	"2.2.keys": "./authz_server/2.2-authz-server-generate-auth-code.keys",
+	"empty.data": "./authz_server/empty.data",
+	"2.2.zen": "./authz_server/2.2-authz-server-generate-auth-code.zen",
+	"2.1.zen": "./authz_server/2.1-authz-server-generate-auth-code.zen"
+}
