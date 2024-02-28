@@ -37,4 +37,5 @@ Given I have a 'string dictionary' named 'server' inside 'zen_2.2_output'
 
 Then print data
 
+
 Then I send request 'request' and send client 'client' and send server_data 'server' and generate authorization code and output into 'authCode_jwt'
