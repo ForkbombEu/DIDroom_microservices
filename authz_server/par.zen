@@ -1,0 +1,50 @@
+# OpenID4VCI Authz server, /authorize
+
+Rule unknown ignore
+
+# Loading scenarios
+
+Scenario 'es256': Create the public key
+
+
+# Loading the private keys
+Given my name is in a 'string' named 'controller'
+Given I have my 'keyring'
+Given I have a 'string dictionary' named 'server'
+Given I have a 'string' named 'verificationMethod'
+Given I have a 'string dictionary' named 'jwk'
+
+Given I have a 'string dictionary' named 'request'
+Given I have a 'string dictionary' named 'client'
+
+Given I have a 'string' named 'request_uri'
+Given I have a 'number' named 'expires_in'
+
+
+# Verify PoP
+
+When I create the es256 public key
+
+When I write the string '' in 'x'
+When I write the string '' in 'y'
+When I write the string '' in 'd'
+
+When I split the leftmost '32' bytes of 'es256_public_key'
+When I pickup from path 'keyring.es256'
+
+When I append the 'url64' of 'leftmost' to 'x'
+When I append the 'url64' of 'es256_public_key' to 'y'
+When I append the 'url64' of 'es256' to 'd'
+
+When I move 'x' in 'jwk'
+When I move 'y' in 'jwk'
+When I move 'd' in 'jwk'
+When I move 'jwk' in 'server'
+
+# Then print the 'server'
+# Then print the 'request'
+# Then print the 'client'
+
+then print 'request_uri'
+then print 'expires_in'
+
