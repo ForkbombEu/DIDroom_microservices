@@ -1,0 +1,7 @@
+Rule unknown ignore
+
+Given I send request 'request' and send client 'client' and send server_data 'server' and generate authorization code and output into 'authCode_jwt'
+
+Given I have a 'string dictionary' named 'authCode_jwt'
+
+Then print data
