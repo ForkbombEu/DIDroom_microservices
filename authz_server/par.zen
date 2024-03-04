@@ -14,4 +14,5 @@ Then print 'request_uri'
 Then print 'parresult'
 Then print 'rand_uri'
 Then print 'filename'
+Then print 'expires_in'
 Then I send content 'parresult' and send path 'filename' and store in file
