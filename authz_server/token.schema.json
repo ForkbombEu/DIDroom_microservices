@@ -1,119 +1,31 @@
 {
   "type": "object",
   "properties": {
-    "controller": {
+    "grant_type": {
       "type": "string"
     },
-    "genericissuer_for_slangroom_test": {
-      "type": "object",
-      "properties": {
-        "keyring": {
-          "type": "object",
-          "properties": {
-            "bbs": {
-              "type": "string"
-            },
-            "bitcoin": {
-              "type": "string"
-            },
-            "dilithium": {
-              "type": "string"
-            },
-            "ecdh": {
-              "type": "string"
-            },
-            "eddsa": {
-              "type": "string"
-            },
-            "es256": {
-              "type": "string"
-            },
-            "ethereum": {
-              "type": "string"
-            },
-            "issuer": {
-              "type": "object",
-              "properties": {
-                "x": {
-                  "type": "string"
-                },
-                "y": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "x",
-                "y"
-              ]
-            },
-            "reflow": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "bbs",
-            "bitcoin",
-            "dilithium",
-            "ecdh",
-            "eddsa",
-            "es256",
-            "ethereum",
-            "issuer",
-            "reflow"
-          ]
-        }
-      },
-      "required": [
-        "keyring"
-      ]
-    },
-    "verificationMethod": {
+    "client_id": {
       "type": "string"
     },
-    "DID": {
+    "code_verifier": {
       "type": "string"
     },
-    "server": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string"
-        },
-        "authentication_url": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "url",
-        "authentication_url"
-      ]
+    "redirect_uri": {
+      "type": "string"
     },
-    "jwk": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string"
-        },
-        "kty": {
-          "type": "string"
-        },
-        "crv": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "alg",
-        "kty",
-        "crv"
-      ]
+    "code": {
+      "type": "string"
+    },
+    "DPoP": {
+      "type": "string"
     }
   },
   "required": [
-    "controller",
-    "genericissuer_for_slangroom_test",
-    "verificationMethod",
-    "DID",
-    "server",
-    "jwk"
+    "grant_type",
+    "client_id",
+    "code_verifier",
+    "redirect_uri",
+    "code",
+    "DPoP"
   ]
 }
