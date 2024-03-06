@@ -1,17 +1,40 @@
+#-create data for form.zen
+Given I send object 'empty_data' and send path 'response_type_path' and send value 'response_type' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'client_id_path' and send value 'client_id' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'state_path' and send value 'state' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'code_challenge_path' and send value 'code_challenge' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'code_challenge_method_path' and send value 'code_challenge_method' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'redirect_uri_path' and send value 'redirect_uri' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'clientSecret_path' and send value 'clientSecret' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'scope_path' and send value 'scope' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'resource_path' and send value 'resource' and manipulate and set and output into 'data'
+
+#-execute form.zen
+Given I send path 'keys_form' and read file content and output into 'keys'
+Given I send path 'zen_form' and read verbatim file content and output into 'zen'
+Given I send keys 'keys' and send data 'data' and send script 'zen' and execute zencode and output into 'output_form'
+
+#-get object from form.zen output
+Given I send object 'output_form' and send path 'request_path' and manipulate and get and output into 'request'
+Given I send object 'output_form' and send path 'client_path' and manipulate and get and output into 'client'
+Given I send object 'output_form' and send path 'server_path' and manipulate and get and output into 'server'
+
+#-execute Slangroom create request_uri
 Given I send request 'request' and send client 'client' and send server_data 'server' and generate request uri and output into 'parresult'
 Given I fetch the local timestamp in seconds and output into 'filename'
-Given I have a 'string dictionary' named 'parresult'
-Given I have a 'string' named 'filename'
 
-When I pickup from path 'parresult.expires_in'
-When I pickup from path 'parresult.base_uri'
-When I pickup from path 'parresult.rand_uri'
-When I append 'rand_uri' to 'base_uri'
-When I rename 'base_uri' to 'request_uri'
-When I append 'rand_uri' to 'filename'
+#-execute par2.zen
+Given I send object 'empty_data2' and send path 'filename_path' and send value 'filename' and manipulate and set and output into 'data_1'
+Given I send object 'empty_keys' and send path 'parresult_path' and send value 'parresult' and manipulate and set and output into 'keys_1'
+Given I send path 'zen_par2' and read verbatim file content and output into 'zen_1'
+Given I send keys 'keys_1' and send data 'data_1' and send script 'zen_1' and execute zencode and output into 'par2_output'
 
-Then print 'request_uri'
-Then print 'parresult'
-Then print 'rand_uri'
-Then print 'filename'
+Given I have a 'string' named 'filename' in 'par2_output'
+Given I have a 'string' named 'request_uri' in 'par2_output'
+Given I have a 'string dictionary' named 'parresult' in 'par2_output'
+
+Then print the 'parresult'
+Then print the 'filename'
+Then print the 'request_uri'
+
 Then I send content 'parresult' and send path 'filename' and store in file

@@ -1,43 +1,43 @@
 {
   "type": "object",
   "properties": {
-    "client": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "clientSecret": {
-          "type": "string"
-        },
-        "grants": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string"
-            }
-          ]
-        },
-        "redirectUris": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "required": [
-        "id",
-        "clientSecret",
-        "grants",
-        "redirectUris"
-      ]
+    "response_type": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "code_challenge": {
+      "type": "string"
+    },
+    "code_challenge_method": {
+      "type": "string"
+    },
+    "redirect_uri": {
+      "type": "string"
+    },
+    "clientSecret": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "resource": {
+      "type": "string"
     }
   },
   "required": [
-    "client"
+    "response_type",
+    "client_id",
+    "state",
+    "code_challenge",
+    "code_challenge_method",
+    "redirect_uri",
+    "clientSecret",
+    "scope",
+    "resource"
   ]
 }
-
-

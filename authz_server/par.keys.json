@@ -1,21 +1,22 @@
 {
-  "omits": ["authorizationCode"],
-  "server": {
-    "jwk": {
-      "kty": "EC",
-      "crv": "P-256",
-      "alg": "ES256",
-      "x": "SVqB4JcUD6lsfvqMr-OKUNUphdNn64Eay60978ZlL74",
-      "y": "lf0u0pMj4lGAzZix5u4Cm5CMQIgMNpkwy163wtKYVKI",
-      "d": "0g5vAEKzugrXaRbgKG0Tj2qJ5lMP4Bezds1_sTybkfk"
-    },
-    "url": "https://valid.issuer.url",
-    "authentication_url": "https://did.dyne.org/dids/"
-  },
-  "request": {
-    "body": "response_type=code&client_id=did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5&state=xyz&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&code_challenge_method=S256&redirect_uri=https%3A%2F%2FWallet.example.org%2Fcb",
-    "headers": {
-      "Authorization": ""
-    }
-  }
+  "empty_data": {},
+  "empty_data2": {},
+  "empty_keys": {},
+  "response_type_path": "response_type",
+  "client_id_path": "client_id",
+  "state_path": "state",
+  "code_challenge_path": "code_challenge",
+  "code_challenge_method_path": "code_challenge_method",
+  "redirect_uri_path": "redirect_uri",
+  "clientSecret_path": "clientSecret",
+  "resource_path": "resource",
+  "scope_path": "scope",
+  "keys_form": "authz_server/form.keys.json",
+  "zen_form": "authz_server/form.zencode",
+  "zen_par2": "authz_server/par2.zen",
+  "request_path": "request",
+  "client_path": "client",
+  "server_path": "server",
+  "filename_path": "filename",
+  "parresult_path": "parresult"
 }

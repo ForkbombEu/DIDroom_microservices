@@ -1,0 +1,15 @@
+Given I have a 'string dictionary' named 'parresult'
+Given I have a 'string' named 'filename'
+
+When I pickup from path 'parresult.expires_in'
+When I pickup from path 'parresult.base_uri'
+When I pickup from path 'parresult.rand_uri'
+When I append 'rand_uri' to 'base_uri'
+When I rename 'base_uri' to 'request_uri'
+When I append 'rand_uri' to 'filename'
+
+Then print 'request_uri'
+Then print 'parresult'
+Then print 'rand_uri'
+Then print 'filename'
+Then print 'expires_in'

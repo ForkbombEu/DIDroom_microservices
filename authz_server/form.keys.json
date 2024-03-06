@@ -1,5 +1,13 @@
 {
-	"controller": "genericissuer_for_slangroom_test",
+    "client":{
+        "grants": ["authorization_code"]
+    },
+    "request": {
+        "headers": {
+          "Authorization": ""
+        }
+    },
+    "controller": "genericissuer_for_slangroom_test",
 	"genericissuer_for_slangroom_test": {
 		"keyring": {
 			"bbs": "UoSII4ZEb49/hUUYn53gwprPfh9JyNIXciqS5xBNoUQ=",
@@ -15,16 +23,8 @@
 			},
 			"reflow": "TK+F3jOZzrA+8P3qkvvXIa9F4I7RMGbMqmjJ3ODfolo="
 		}
-	},
-	"verificationMethod": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256",
-	"server": {
+	},"server": {
 		"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
 		"authentication_url": "https://did.dyne.org/dids/"
-	},
-	"request": {
-        "headers": {
-            "content-length": 42,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    }
+	}
 }

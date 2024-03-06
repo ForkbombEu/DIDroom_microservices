@@ -2,48 +2,48 @@
 
 Rule unknown ignore
 
-Scenario 'es256': Create the public key
+Scenario 'http'
+Scenario 'w3c': Create the JWK
 
 
 # Loading the private keys
 Given my name is in a 'string' named 'controller'
 Given I have my 'keyring'
 Given I have a 'string dictionary' named 'server'
-Given I have a 'string' named 'verificationMethod'
-Given I have a 'string dictionary' named 'jwk'
 
 Given I have a 'string dictionary' named 'request'
-Given I have a 'string dictionary' named 'authCode_jwt'
+#data from request.body
+Given I have a 'string' named 'grant_type'
+Given I have a 'string' named 'client_id'
+Given I have a 'string' named 'code_verifier'
+Given I have a 'string' named 'code'
+Given I have a 'string' named 'redirect_uri'
+#data from request.headers
+Given I have a 'string' named 'DPoP'
 
-
-
-
-# Verify PoP
-
-When I create the es256 public key
-
-When I write the string '' in 'x'
-When I write the string '' in 'y'
-When I write the string '' in 'd'
-
-When I split the leftmost '32' bytes of 'es256_public_key'
-When I pickup from path 'keyring.es256'
-
-When I append the 'url64' of 'leftmost' to 'x'
-When I append the 'url64' of 'es256_public_key' to 'y'
-When I append the 'url64' of 'es256' to 'd'
-
-When I move 'x' in 'jwk'
-When I move 'y' in 'jwk'
-When I move 'd' in 'jwk'
+When I create jwk of es256 public key with private key
 When I move 'jwk' in 'server'
 
+# - request.body
+When I set 'base-url' to 'http://' as 'string'
+When I create the url from 'base-url'
+When I append 'grant_type' as http request to 'url'
+When I append 'client_id' as http request to 'url'
+When I append 'code_verifier' as http request to 'url'
+When I append 'code' as http request to 'url'
+
+When I append the percent encoding of 'redirect_uri' as http request to 'url'
+When I split the leftmost '8' bytes of 'url'
+When I rename the 'url' to 'body'
+When I move 'body' in 'request'
+
+# request.headers
+When I pickup from path 'request.headers'
+When I remove the 'headers' from 'request'
+When I move 'DPoP' in 'headers'
+When I move 'headers' in 'request'
+
 Then print the 'server'
-Then print the 'authCode_jwt'
 Then print the 'request'
 
-
-
-Then print data
-
-Then I send request 'request' and send code 'authCode_jwt' and send server_data 'server' and generate access token and output into 'accessToken_jwt'
+Then I send request 'request' and send server_data 'server' and generate access token and output into 'accessToken_jwt'
