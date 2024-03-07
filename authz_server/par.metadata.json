@@ -1,4 +1,22 @@
 {
   "success_code": "201",
-  "tags": ["🚦 Authorization Server"]
+  "error_code": "400",
+  "tags": ["🚦 Authorization Server"],
+  "disable_get": true,
+  "examples": {
+    "example_one": {
+      "summary": "Sample valid values",
+      "value": {
+        "response_type": "code",
+        "client_id": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5",
+        "state": "xyz",
+        "scope": "Auth1",
+        "resource": "http://oracle1.zenswarm.forkbomb.eu:3100",
+        "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+        "code_challenge_method": "S256",
+        "redirect_uri": "didroom://openwallet-credential",
+        "client_secret": "eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJwaXBwbyJ9.hiVPL2JTdmcZY7Vcso95KUBEzcTGvmvQ7wlwkCo0G74Unpzny2drvLsu-HzHWyckKbRjwWox-V5gqqKeka8kEQ"
+      }
+    }
+  }
 }
