@@ -30,3 +30,7 @@ Then print the 'server'
 Then print the 'request'
 
 Then I send request 'request' and send server_data 'server' and generate authorization code and output into 'authCode_jwt'
+Then I manipulate and delete and output into 'request'
+Then I manipulate and delete and output into 'server' 
+Then I send object 'authCode_jwt' and send path 'code_path' and manipulate and get and output into 'code'
+Then I manipulate and delete and output into 'authCode_jwt' 

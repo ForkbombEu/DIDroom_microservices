@@ -26,5 +26,12 @@
             "content-length": 42,
             "Content-Type": "application/x-www-form-urlencoded"
         }
-    }
+    },
+	"token_type": "bearer",
+	"accessToken_path": "accessToken", 
+	"c_nonce_path": "c_nonce", 
+	"c_nonce_exp_path": "c_nonce_expires_in",
+	"exp_in_path": "accessTokenExpiresAt", 
+	"resource_path": "resource", 
+	"scope_path": "scope" 
 }
