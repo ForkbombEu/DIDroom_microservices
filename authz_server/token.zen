@@ -10,6 +10,7 @@ Scenario 'w3c': Create the JWK
 Given my name is in a 'string' named 'controller'
 Given I have my 'keyring'
 Given I have a 'string dictionary' named 'server'
+Given I have a 'string' named 'token_type'
 
 Given I have a 'string dictionary' named 'request'
 #data from request.body
@@ -45,5 +46,15 @@ When I move 'headers' in 'request'
 
 Then print the 'server'
 Then print the 'request'
+Then print the 'token_type'
 
 Then I send request 'request' and send server_data 'server' and generate access token and output into 'accessToken_jwt'
+Then I manipulate and delete and output into 'request'
+Then I manipulate and delete and output into 'server'
+Then I send object 'accessToken_jwt' and send path 'accessToken_path' and manipulate and get and output into 'access_token'
+Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'
+Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipulate and get and output into 'c_nonce_expires_in'
+Then I send object 'accessToken_jwt' and send path 'exp_in_path' and manipulate and get and output into 'expires_in'
+Then I send object 'accessToken_jwt' and send path 'resource_path' and manipulate and get and output into 'resource'
+Then I send object 'accessToken_jwt' and send path 'scope_path' and manipulate and get and output into 'scope'
+Then I manipulate and delete and output into 'accessToken_jwt'
