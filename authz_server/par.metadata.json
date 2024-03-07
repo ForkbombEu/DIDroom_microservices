@@ -1,3 +1,4 @@
 {
-  "successCode": "201"
+  "success_code": "201",
+  "tags": ["🚦 Authorization Server"]
 }

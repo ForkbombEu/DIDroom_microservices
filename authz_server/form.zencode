@@ -16,7 +16,7 @@ Given I have a 'string' named 'state'
 Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
-Given I have a 'string' named 'clientSecret'
+Given I have a 'string' named 'client_secret'
 Given I have a 'string' named 'scope'
 Given I have a 'string' named 'resource'
 
@@ -38,6 +38,7 @@ When I move 'body' in 'request'
 
 # - client
 When I move the 'client_id' to 'id' in 'client'
+When I rename the 'client_secret' to 'clientSecret'
 When I move 'clientSecret' in 'client'
 When I move the 'redirect_uri' to 'redirectUris' in 'client'
 When I move 'scope' in 'client'

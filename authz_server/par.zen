@@ -5,7 +5,7 @@ Given I send object 'data' and send path 'state_path' and send value 'state' and
 Given I send object 'data' and send path 'code_challenge_path' and send value 'code_challenge' and manipulate and set and output into 'data'
 Given I send object 'data' and send path 'code_challenge_method_path' and send value 'code_challenge_method' and manipulate and set and output into 'data'
 Given I send object 'data' and send path 'redirect_uri_path' and send value 'redirect_uri' and manipulate and set and output into 'data'
-Given I send object 'data' and send path 'clientSecret_path' and send value 'clientSecret' and manipulate and set and output into 'data'
+Given I send object 'data' and send path 'client_secret_path' and send value 'client_secret' and manipulate and set and output into 'data'
 Given I send object 'data' and send path 'scope_path' and send value 'scope' and manipulate and set and output into 'data'
 Given I send object 'data' and send path 'resource_path' and send value 'resource' and manipulate and set and output into 'data'
 
@@ -31,10 +31,14 @@ Given I send keys 'keys_1' and send data 'data_1' and send script 'zen_1' and ex
 
 Given I have a 'string' named 'filename' in 'par2_output'
 Given I have a 'string' named 'request_uri' in 'par2_output'
+Given I have a 'string' named 'expires_in' in 'par2_output'
 Given I have a 'string dictionary' named 'parresult' in 'par2_output'
 
 Then print the 'parresult'
 Then print the 'filename'
 Then print the 'request_uri'
+Then print the 'expires_in'
 
 Then I send content 'parresult' and send path 'filename' and store in file
+Then I manipulate and delete and output into 'filename'
+Then I manipulate and delete and output into 'parresult'

@@ -8,7 +8,7 @@
   "code_challenge_path": "code_challenge",
   "code_challenge_method_path": "code_challenge_method",
   "redirect_uri_path": "redirect_uri",
-  "clientSecret_path": "clientSecret",
+  "client_secret_path": "client_secret",
   "resource_path": "resource",
   "scope_path": "scope",
   "keys_form": "authz_server/form.keys.json",

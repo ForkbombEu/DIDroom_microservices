@@ -17,7 +17,7 @@ tests:
     name: PAR endpoint
     steps:
       - http:
-          url: /authz_server/form
+          url: /authz_server/par
           method: POST
           json:
             response_type: code

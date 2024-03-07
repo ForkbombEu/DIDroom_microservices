@@ -1,6 +1,9 @@
 .DEFAULT_GOAL := up
 .PHONY: help
 
+FILES_DIR := .
+export FILES_DIR
+
 hn=$(shell hostname)
 
 # detect the operating system
@@ -41,3 +44,7 @@ test: ## 🧪 Run e2e tests on the APIs
 	npx stepci run tests/authz_server.yml
 	@kill `cat .test.ncr.pid` && rm .test.ncr.pid
 
+testgen:
+	wget http://localhost:3000/oas.json
+	npx stepci generate ./oas.json ./tests/oapi.yml
+	rm oas.json
