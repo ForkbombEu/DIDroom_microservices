@@ -16,15 +16,11 @@
 			"reflow": "TK+F3jOZzrA+8P3qkvvXIa9F4I7RMGbMqmjJ3ODfolo="
 		}
 	},
-	"verificationMethod": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256",
-	"DID": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5",
 	"server": {
 		"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
 		"authentication_url": "https://did.dyne.org/dids/"
 	},
-	"jwk": {
-		"alg": "ES256",
-		"kty": "EC",
-		"crv": "P-256"
+	"request":{
+		"headers":{}
 	}
 }
