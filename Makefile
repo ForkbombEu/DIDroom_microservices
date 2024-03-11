@@ -29,20 +29,22 @@ endif
 help: ## 🛟 Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-7s\033[0m %s\n", $$1, $$2}'
 
-setup: ## 📦 Install and setup the server
-ifeq (,$(wildcard ncr))
+ncr: ## 📦 Install and setup the server
 	@wget -q --show-progress https://github.com/forkbombeu/ncr/releases/latest/download/ncr
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
-endif
 
-up:setup ## 🚀 Up & run the project
+up: ncr ## 🚀 Up & run the project
 	./ncr -p 3000 --hostname $(hn) --public-directory public
 
-test: ## 🧪 Run e2e tests on the APIs
+tests/mobile_zencode:
+	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+
+test: ncr tests/mobile_zencode ## 🧪 Run e2e tests on the APIs
 	@./ncr -p 3000 & echo $$! > .test.ncr.pid
-	npx stepci run tests/authz_server.yml
+	npx stepci run tests/e2e.yml
 	@kill `cat .test.ncr.pid` && rm .test.ncr.pid
+	rm -fr tests/mobile_zencode
 
 testgen:
 	wget http://localhost:3000/oas.json

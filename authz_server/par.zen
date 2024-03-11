@@ -17,9 +17,11 @@ Given I have a 'string' named 'state'
 Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
-Given I have a 'string' named 'clientSecret'
+Given I have a 'string' named 'client_secret'
 Given I have a 'string' named 'scope'
 Given I have a 'string' named 'resource'
+
+When I rename 'client_secret' to 'clientSecret'
 
 # - request.body
 When I set 'base-url' to 'http://' as 'string'
