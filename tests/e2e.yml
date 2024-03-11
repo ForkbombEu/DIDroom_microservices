@@ -1,19 +1,35 @@
-version: "1.0"
-name: DIDroom microservices tests
+# - par
+# - authorize
+# - token
+# - 
+version: "1.1"
+name: test all the microservices
 config:
   http:
     baseURL: http://localhost:3000
 tests:
-  example:
-    steps:
-      - name: GET request
-        http:
-          url: /
-          method: GET
-          check:
-            status: /^20/
-  
   creation:
+    name: PAR endpoint
+    steps:
+      - http:
+          url: /authz_server/par
+          method: POST
+          json:
+            response_type: code
+            client_id: did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5
+            state: xyz
+            scope: Auth1
+            resource: https://issuer1.zenswarm.forkbomb.eu/credential_issuer/
+            code_challenge: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+            code_challenge_method: S256
+            redirect_uri: didroom://openwallet-credential
+            client_secret: eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJwaXBwbyJ9.hiVPL2JTdmcZY7Vcso95KUBEzcTGvmvQ7wlwkCo0G74Unpzny2drvLsu-HzHWyckKbRjwWox-V5gqqKeka8kEQ
+          check:
+            co2:
+              - lte: 0.01 # in grams
+            status: 201
+
+  credential:
     name: Creation endpoints
     steps:
       - http:
