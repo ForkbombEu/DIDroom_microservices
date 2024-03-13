@@ -1,84 +1,52 @@
 {
-    "authorization_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authorize",
-    "authorization_response_iss_parameter_supported": true,
-    "authorization_servers": [
-        "https://authz-server1.zenswarm.forkbomb.eu/"
-    ],
-    "batch_credential_endpoint": "https://issuer1.zenswarm.forkbomb.eu/batch_credential",
-    "claim_types_supported": [
-        "normal"
-    ],
-    "claims_parameter_supported": false,
-    "code_challenge_methods_supported": [
-        "S256"
-    ],
-    "credential_endpoint": "https://issuer1.zenswarm.forkbomb.eu/credential",
-    "credential_issuer": "https://issuer1.zenswarm.forkbomb.eu/",
-    "credentials_supported": {
-        "Auth1": {
-            "format": "vc+sd-jwt",
-            "cryptographic_binding_methods_supported": [
-                "did:dyne:sandbox.signroom"
-            ],
-            "cryptographic_suites_supported": [
-                "ES256"
-            ],
-            "proof_types_supported": [
-                "jwt"
-            ],
-            "credential_definition": {
-                "type": [
-                    "Auth1"
-                ],
-                "credentialSubject": [
-                    {
-                        "DID": {
-                            "mandatory": false
-                        },
-                        "RegionOfTree": {
-                            "mandatory": false
-                        },
-                        "Coordinates": {
-                            "mandatory": false
-                        },
-                        "Tree Family": {
-                            "mandatory": false
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    "deferred_credential_endpoint": "https://issuer1.zenswarm.forkbomb.eu/deferred_credential",
-    "grant_types_supported": [
-        "authorization_code"
-    ],
-    "id_token_signing_alg_values_supported": [
-        "ES256"
-    ],
-    "pushed_authorization_request_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/par",
-    "request_object_signing_alg_values_supported": [
-        "ES256"
-    ],
-    "request_parameter_supported": true,
-    "request_uri_parameter_supported": true,
-    "response_modes_supported": [
-        "query"
-    ],
-    "response_types_supported": [
-        "code"
-    ],
-    "scopes_supported": [
-        "openid"
-    ],
-    "token_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/token",
-    "token_endpoint_auth_methods_supported": [
-        "none"
-    ],
-    "display": [
-        {
-            "name": "DIDroom_Issuer1",
-            "locale": "en-US"
-        }
-    ]
+	"authorization_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/authorization",
+	"pushed_authorization_request_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/par",
+	"token_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/token",
+	"issuer": "https://issuer1.zenswarm.forkbomb.eu/credential_issuer/",
+	"jwks": {
+		"keys": [
+			{
+				"kid": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256_public_key",
+				"crv": "P-256",
+				"alg": "ES256",
+				"kty": "EC"
+			}
+		]
+	},
+	"scopes_supported": [
+		"Identity",
+		"Auth1"
+	],
+	"dpop_signing_alg_values_supported": [
+		"ES256"
+	],
+	"client_registration_types_supported": [
+		"automatic"
+	],
+	"code_challenge_methods_supported": [
+		"S256"
+	],
+	"authorization_details_types_supported": [
+		"openid_credential"
+	],
+	"grant_types_supported": [
+		"authorization_code"
+	],
+	"request_parameter_supported": true,
+	"request_uri_parameter_supported": false,
+	"response_types_supported": [
+		"code"
+	],
+	"subject_types_supported": [
+		"pairwise"
+	],
+	"token_endpoint_auth_methods_supported": [
+		"attest_jwt_client_auth"
+	],
+	"token_endpoint_auth_signing_alg_values_supported": [
+		"ES256"
+	],
+	"request_object_signing_alg_values_supported": [
+		"ES256"
+	]
 }
