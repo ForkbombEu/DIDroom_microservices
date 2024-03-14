@@ -1,0 +1,89 @@
+Rule output encoding base58
+Scenario ecdh
+Scenario eddsa
+Scenario ethereum
+Scenario reflow
+Scenario es256
+Scenario credential
+Scenario bbs
+Scenario qp
+
+Given I my name is in a 'string' named 'controller'
+and I have a 'string' named 'controller'
+and I rename 'controller' to 'keyring_path'
+
+When I create the ecdh key
+and I create the eddsa key
+and I create the ethereum key
+and I create the bitcoin key
+and I create the reflow key
+and I create the es256 key
+and I create the issuer key
+and I create the bbs key
+and I create the dilithium key
+
+When I create the ecdh public key
+and I create the eddsa public key
+and I create the ethereum address
+and I create the bitcoin public key
+and I create the reflow public key
+and I create the es256 public key
+and I create the issuer public key
+and I create the bbs public key
+and I create the dilithium public key
+
+Then I print the 'ecdh public key'
+and I print the 'eddsa public key'
+and I print the 'ethereum address'
+and I print the 'bitcoin public key'
+and I print the 'reflow public key'
+and I print the 'es256 public key'
+and I print the 'issuer public key' as 'compressed issuer public key'
+and I print the 'bbs public key'
+and I print the 'dilithium public key'
+and I print my name in 'identity'
+
+# string controller.keyring
+When I append the string '.keyring' to 'keyring_path'
+
+# keyring and explicit owner identity
+Then print the 'keyring'
+and print the 'keyring_path'
+and print my name in 'controller'
+
+## store keyring
+Then I send object 'secrets' and send path 'keyring_path' and send value 'keyring' and manipulate and set and output into 'secrets'
+Then I send object 'secrets' and send path 'controller_path' and send value 'controller' and manipulate and set and output into 'secrets'
+Then I send path 'secrets_path' and send content 'secrets' and store in file
+
+## create did
+# data
+Then I send object 'did_data' and send path 'ecdh_path' and send value 'ecdh_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'eddsa_path' and send value 'eddsa_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'ethereum_path' and send value 'ethereum_address' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'bitcoin_path' and send value 'bitcoin_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'reflow_path' and send value 'reflow_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'es256_path' and send value 'es256_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'issuer_path' and send value 'issuer_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'bbs_path' and send value 'bbs_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'dilithium_path' and send value 'dilithium_public_key' and manipulate and set and output into 'did_data'
+Then I send object 'did_data' and send path 'controller_path' and send value 'controller' and manipulate and set and output into 'did_data'
+
+# execute zen
+Then I send path 'did_zen_path' and read verbatim file content and output into 'did_zen'
+Then I send keys 'did_keys' and send data 'did_data' and send script 'did_zen' and execute zencode and output into 'post_body'
+
+# admin post
+Then I connect to 'did_admin_endpoint' and send object 'post_body' and do post and output into 'post_response'
+
+# did.dyne.org post
+Then I send object 'post_response' and send path 'result_path' and manipulate and get and output into 'result'
+Then I connect to 'did_server_endpoint' and send object 'result' and do post and output into 'did_response'
+
+# .well-known
+Then I send path 'well-known_path' and read file content and output into 'well-known'
+Then I send path 'kid_zen_path' and read verbatim file content and output into 'kid_zen'
+Then I send keys 'empty_keys' and send data 'did_response' and send script 'kid_zen' and execute zencode and output into 'kid'
+Then I send object 'kid' and send path 'kid_path' and manipulate and get and output into 'kid_value'
+Then I send object 'well-known' and send path 'kid_well-known_path' and send value 'kid_value' and manipulate and set and output into 'well-known'
+Then I send path 'well-known_path' and send content 'well-known' and store in file
