@@ -4,3 +4,6 @@ ncr
 terraform.tfstate
 terraform.tfstate.backup
 *~
+
+.env
+atuhz_server/secret.keys
