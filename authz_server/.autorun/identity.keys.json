@@ -1,8 +1,6 @@
 {
-    "controller": "authorization_server",
     "did_admin_endpoint": "https://apiroom.net/api/genericissuer/generate_sandbox_generic_issuer",
     "did_server_endpoint": "https://did.dyne.org/api/v1/sandbox/pubkeys-accept.chain",
-    "secrets": {},
     "did_data": {},
     "did_keys": {
 	"@context": [
@@ -21,7 +19,11 @@
 	],
 	"did_spec": "sandbox.genericissuer"
     },
+    "key_data": {
+        "controller": "authorization_server"
+    },
     "empty_keys": {},
+    "key_zen_path": "authz_server/.autorun/generate_key.zen",
     "did_zen_path": "authz_server/.autorun/generate_did.zen",
     "kid_zen_path": "authz_server/.autorun/generate_kid.zen",
     "secrets_path": "authz_server/secrets.keys",

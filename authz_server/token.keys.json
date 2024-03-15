@@ -1,37 +1,21 @@
 {
-	"controller": "genericissuer_for_slangroom_test",
-	"genericissuer_for_slangroom_test": {
-		"keyring": {
-			"bbs": "UoSII4ZEb49/hUUYn53gwprPfh9JyNIXciqS5xBNoUQ=",
-			"bitcoin": "KzvL6ZPKgpUu5J3K556aqjd6pAxonj2sjyTtbmhrnPDRaJuvmNow",
-			"dilithium": "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",
-			"ecdh": "3eaQn/6OafXEeTcoEfPjw2rcbZ0hAFZxEDDsn/q1L80=",
-			"eddsa": "HKAJEPXeWH3aYTVF6T2JGn3HLia8HDurTQKBcW8hFADU",
-			"es256": "IXwHzEAHcvNNMVDGLQlODOpRO+YSecKI9/ahRaxXRdE=",
-			"ethereum": "a900c94c01dcb9c5bd79210b4cc9098cdd12c29410b1f53d76f23917ffd5fbbf",
-			"issuer": {
-				"x": "M3+kkzLuy2LNlV/eR8zEnElYMMlXJzXqfMRhQgaTzbs=",
-				"y": "X91Pnpr45HHVYoLh4/GoSGVd1wr7QQOzEpVMG0zXgXU="
-			},
-			"reflow": "TK+F3jOZzrA+8P3qkvvXIa9F4I7RMGbMqmjJ3ODfolo="
-		}
-	},
-	"verificationMethod": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256",
-	"server": {
-		"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
-		"authentication_url": "https://did.dyne.org/dids/"
-	},
-	"request": {
+    "server": {
+	"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
+	"authentication_url": "https://did.dyne.org/dids/"
+    },
+    "request": {
         "headers": {
             "content-length": 42,
             "Content-Type": "application/x-www-form-urlencoded"
         }
     },
-	"token_type": "bearer",
-	"accessToken_path": "accessToken", 
-	"c_nonce_path": "c_nonce", 
-	"c_nonce_exp_path": "c_nonce_expires_in",
-	"exp_in_path": "accessTokenExpiresAt", 
-	"resource_path": "resource", 
-	"scope_path": "scope" 
+    "token_type": "bearer",
+    "accessToken_path": "accessToken",
+    "c_nonce_path": "c_nonce",
+    "c_nonce_exp_path": "c_nonce_expires_in",
+    "exp_in_path": "accessTokenExpiresAt",
+    "resource_path": "resource",
+    "scope_path": "scope",
+    "secrets_path": "authz_server/secrets.keys",
+    "controller_path": "controller"
 }

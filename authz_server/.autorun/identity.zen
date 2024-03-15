@@ -8,19 +8,17 @@ Scenario credential
 Scenario bbs
 Scenario qp
 
-Given I my name is in a 'string' named 'controller'
-and I have a 'string' named 'controller'
-and I rename 'controller' to 'keyring_path'
+## create and store keyring
+Given I send path 'key_zen_path' and read verbatim file content and output into 'key_zen'
+Given I send keys 'empty_keys' and send data 'key_data' and send script 'key_zen' and execute zencode and output into 'secrets'
+Given I send path 'secrets_path' and send content 'secrets' and store in file
 
-When I create the ecdh key
-and I create the eddsa key
-and I create the ethereum key
-and I create the bitcoin key
-and I create the reflow key
-and I create the es256 key
-and I create the issuer key
-and I create the bbs key
-and I create the dilithium key
+## extract data for later
+Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
+
+Given I my name is in a 'string' named 'controller'
+and I have a 'keyring' in 'personal_keyring'
 
 When I create the ecdh public key
 and I create the eddsa public key
@@ -41,20 +39,7 @@ and I print the 'es256 public key'
 and I print the 'issuer public key' as 'compressed issuer public key'
 and I print the 'bbs public key'
 and I print the 'dilithium public key'
-and I print my name in 'identity'
-
-# string controller.keyring
-When I append the string '.keyring' to 'keyring_path'
-
-# keyring and explicit owner identity
-Then print the 'keyring'
-and print the 'keyring_path'
-and print my name in 'controller'
-
-## store keyring
-Then I send object 'secrets' and send path 'keyring_path' and send value 'keyring' and manipulate and set and output into 'secrets'
-Then I send object 'secrets' and send path 'controller_path' and send value 'controller' and manipulate and set and output into 'secrets'
-Then I send path 'secrets_path' and send content 'secrets' and store in file
+and I print my name in 'controller'
 
 ## create did
 # data
@@ -72,13 +57,18 @@ Then I send object 'did_data' and send path 'controller_path' and send value 'co
 # execute zen
 Then I send path 'did_zen_path' and read verbatim file content and output into 'did_zen'
 Then I send keys 'did_keys' and send data 'did_data' and send script 'did_zen' and execute zencode and output into 'post_body'
+Then I manipulate and delete and output into 'did_data'
+Then I manipulate and delete and output into 'did_zen'
 
 # admin post
 Then I connect to 'did_admin_endpoint' and send object 'post_body' and do post and output into 'post_response'
+Then I manipulate and delete and output into 'post_body'
 
 # did.dyne.org post
 Then I send object 'post_response' and send path 'result_path' and manipulate and get and output into 'result'
 Then I connect to 'did_server_endpoint' and send object 'result' and do post and output into 'did_response'
+Then I manipulate and delete and output into 'post_response'
+Then I manipulate and delete and output into 'result'
 
 # .well-known
 Then I send path 'well-known_path' and read file content and output into 'well-known'
@@ -87,3 +77,8 @@ Then I send keys 'empty_keys' and send data 'did_response' and send script 'kid_
 Then I send object 'kid' and send path 'kid_path' and manipulate and get and output into 'kid_value'
 Then I send object 'well-known' and send path 'kid_well-known_path' and send value 'kid_value' and manipulate and set and output into 'well-known'
 Then I send path 'well-known_path' and send content 'well-known' and store in file
+Then I manipulate and delete and output into 'well-known'
+Then I manipulate and delete and output into 'did_response'
+Then I manipulate and delete and output into 'kid'
+Then I manipulate and delete and output into 'kid_data'
+Then I manipulate and delete and output into 'kid_zen'
