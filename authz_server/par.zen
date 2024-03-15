@@ -18,8 +18,7 @@ Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
 Given I have a 'string' named 'client_secret'
-Given I have a 'string' named 'scope'
-Given I have a 'string' named 'resource'
+Given I have a 'string dictionary' named 'authorization_details'
 
 When I rename 'client_secret' to 'clientSecret'
 
@@ -31,10 +30,9 @@ When I append 'client_id' as http request to 'url'
 When I append 'state' as http request to 'url'
 When I append 'code_challenge' as http request to 'url'
 When I append 'code_challenge_method' as http request to 'url'
-When I append 'scope' as http request to 'url'
 
 When I append the percent encoding of 'redirect_uri' as http request to 'url'
-When I append the percent encoding of 'resource' as http request to 'url'
+When I append the percent encoding of 'authorization_details' as http request to 'url'
 When I split the leftmost '8' bytes of 'url'
 When I rename the 'url' to 'body'
 When I move 'body' in 'request'
@@ -43,8 +41,8 @@ When I move 'body' in 'request'
 When I move the 'client_id' to 'id' in 'client'
 When I move 'clientSecret' in 'client'
 When I move the 'redirect_uri' to 'redirectUris' in 'client'
-When I move 'scope' in 'client'
-When I move 'resource' in 'client'
+#When I move 'scope' in 'client'
+#When I move 'resource' in 'client'
 
 # - server
 When I create jwk of es256 public key with private key

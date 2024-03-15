@@ -22,12 +22,31 @@
     "client_secret": {
       "type": "string"
     },
-    "scope": {
-      "type": "string"
-    },
-    "resource": {
-      "type": "string"
+    "authorization_details": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "locations": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "credential_configuration_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "locations",
+        "credential_configuration_id"
+      ]
     }
+   
   },
   "required": [
     "response_type",
@@ -37,7 +56,6 @@
     "code_challenge_method",
     "redirect_uri",
     "client_secret",
-    "scope",
-    "resource"
+    "authorization_details"
   ]
 }
