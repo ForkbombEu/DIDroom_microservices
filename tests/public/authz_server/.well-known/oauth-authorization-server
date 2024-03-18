@@ -1,0 +1,52 @@
+{
+	"authorization_endpoint": "http://localhost:3000/authorization",
+	"pushed_authorization_request_endpoint": "http://localhost:3000/par",
+	"token_endpoint": "http://localhost:3000/token",
+	"issuer": "http://localhost:3001",
+	"jwks": {
+		"keys": [
+			{
+				"kid": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256_public_key",
+				"crv": "P-256",
+				"alg": "ES256",
+				"kty": "EC"
+			}
+		]
+	},
+	"scopes_supported": [
+		"Identity",
+		"Auth1"
+	],
+	"dpop_signing_alg_values_supported": [
+		"ES256"
+	],
+	"client_registration_types_supported": [
+		"automatic"
+	],
+	"code_challenge_methods_supported": [
+		"S256"
+	],
+	"authorization_details_types_supported": [
+		"openid_credential"
+	],
+	"grant_types_supported": [
+		"authorization_code"
+	],
+	"request_parameter_supported": true,
+	"request_uri_parameter_supported": false,
+	"response_types_supported": [
+		"code"
+	],
+	"subject_types_supported": [
+		"pairwise"
+	],
+	"token_endpoint_auth_methods_supported": [
+		"attest_jwt_client_auth"
+	],
+	"token_endpoint_auth_signing_alg_values_supported": [
+		"ES256"
+	],
+	"request_object_signing_alg_values_supported": [
+		"ES256"
+	]
+}
