@@ -1,10 +1,9 @@
 # OpenID4VCI Authz server, /token
-
-Rule unknown ignore
-
 Scenario 'http'
 Scenario 'w3c': Create the JWK
 
+Given I send path 'well-knwon_path' and read the content and output into 'well-known'
+Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
 Given my name is in a 'string' named 'controller'
@@ -22,6 +21,9 @@ Given I have a 'string' named 'redirect_uri'
 #data from request.headers
 Given I have a 'string' named 'DPoP'
 
+# - server
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
 When I create jwk of es256 public key with private key
 When I move 'jwk' in 'server'
 
