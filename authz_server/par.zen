@@ -18,7 +18,7 @@ Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
 Given I have a 'string' named 'client_secret'
-Given I have a 'string dictionary' named 'authorization_details'
+Given I have a 'string array' named 'authorization_details'
 
 When I rename 'client_secret' to 'clientSecret'
 
@@ -32,6 +32,9 @@ When I append 'code_challenge' as http request to 'url'
 When I append 'code_challenge_method' as http request to 'url'
 
 When I append the percent encoding of 'redirect_uri' as http request to 'url'
+When I create the json escaped string of 'authorization_details'
+When I rename the 'authorization_details' to 'authorization_details_dict'
+When I rename the 'json escaped string' to 'authorization_details'
 When I append the percent encoding of 'authorization_details' as http request to 'url'
 When I split the leftmost '8' bytes of 'url'
 When I rename the 'url' to 'body'
