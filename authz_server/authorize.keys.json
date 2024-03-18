@@ -17,11 +17,11 @@
 		}
 	},
 	"server": {
-		"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
 		"authentication_url": "https://did.dyne.org/dids/"
 	},
 	"request":{
 		"headers":{}
 	},
-	"code_path": "code"
+	"code_path": "code",
+	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

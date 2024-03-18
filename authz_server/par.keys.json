@@ -26,10 +26,10 @@
 		}
 	},
 	"server": {
-		"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
 		"authentication_url": "https://did.dyne.org/dids/"
 	},
 	"expires_in": 600,
 	"request_path": "request_uri",
-	"expires_path": "expires_in"
+	"expires_path": "expires_in",
+	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

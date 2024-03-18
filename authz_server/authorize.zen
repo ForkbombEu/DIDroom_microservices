@@ -1,8 +1,9 @@
 # OpenID4VCI Authz server, /authorize
-
-Rule unknown ignore
 Scenario 'http'
 Scenario 'w3c': create jwk
+
+Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
 Given my name is in a 'string' named 'controller'
@@ -14,6 +15,8 @@ Given I have a 'string' named 'request_uri'
 Given I have a 'string' named 'client_id'
 
 #-server data
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
 When I create jwk of es256 public key with private key
 When I move 'jwk' in 'server'
 
