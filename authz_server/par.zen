@@ -19,6 +19,7 @@ Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
 Given I have a 'string' named 'client_secret'
 Given I have a 'string array' named 'authorization_details'
+Given I have a 'string array' named 'locations' inside 'authorization_details'
 
 When I rename 'client_secret' to 'clientSecret'
 
@@ -44,8 +45,10 @@ When I move 'body' in 'request'
 When I move the 'client_id' to 'id' in 'client'
 When I move 'clientSecret' in 'client'
 When I move the 'redirect_uri' to 'redirectUris' in 'client'
-#When I move 'scope' in 'client'
-#When I move 'resource' in 'client'
+
+When I create copy of element '1' from array 'locations'
+When I rename the 'copy' to 'resource'
+When I move 'resource' in 'client'
 
 # - server
 When I create jwk of es256 public key with private key
