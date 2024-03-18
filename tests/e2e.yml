@@ -4,9 +4,11 @@
 # - 
 version: "1.1"
 name: test all the microservices
-config:
-  http:
-    baseURL: http://localhost:3000
+env:
+  mz_host: localhost:3002
+  path_to_wallet: /mobile_zencode
+  ci_host: localhost:3001
+  as_host: localhost:3000
 tests:
   whole_flow:
     name: Check the whole from from /par to /credential
@@ -17,7 +19,7 @@ tests:
     name: PAR endpoint
     steps:
       - http:
-          url: /authz_server/par
+          url: http://${{env.as_host}}/par
           method: POST
           json:
             response_type: code
@@ -37,7 +39,7 @@ tests:
     name: Creation endpoints
     steps:
       - http:
-          url: /credential_issuer/create
+          url: http://${{env.ci_host}}/create
           method: POST
           headers:
             Content-Type: application/json
