@@ -2,7 +2,7 @@
 Scenario 'http'
 Scenario 'w3c': create jwk
 
-Given I send path 'well-knwon_path' and read the content and output into 'well-known'
+Given I send path 'well-knwon_path' and read file content and output into 'well-known'
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
