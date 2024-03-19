@@ -1,9 +1,6 @@
 .DEFAULT_GOAL := up
 .PHONY: help
 
-FILES_DIR := .
-export FILES_DIR
-
 hn=$(shell hostname)
 
 # detect the operating system
@@ -38,13 +35,14 @@ up: ncr ## 🚀 Up & run the project
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+	cp .env.test .env
 
 authz_server_up: ncr
-	./ncr -p 3000 -z ./authz_server --public-directory public & echo $$! > .test.authz_server.pid
+	./ncr -p 3000 -z ./authz_server --public-directory tests/public/authz_server & echo $$! > .test.authz_server.pid
 	sleep 5
 
 credential_issuer_up: ncr
-	./ncr -p 3001 -z ./credential_issuer --public-directory public & echo $$! > .test.credential_issuer.pid
+	./ncr -p 3001 -z ./credential_issuer --public-directory tests/public/credential_issuer & echo $$! > .test.credential_issuer.pid
 	sleep 5
 
 mobile_zencode_up: ncr
@@ -62,3 +60,8 @@ testgen:
 	wget http://localhost:3000/oas.json
 	npx stepci generate ./oas.json ./tests/oapi.yml
 	rm oas.json
+
+clean:
+	rm -rf tests/mobile_zencode
+	rm -f ncr
+	rm -f .env
