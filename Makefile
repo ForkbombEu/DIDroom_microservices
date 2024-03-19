@@ -70,6 +70,7 @@ test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up
 	git restore authz_server/token.keys.json
 	git restore authz_server/authorize.keys.json
 	git restore credential_issuer/credential.keys.json
+	git restore credential_issuer/.autorun/identity.keys.json
 
 testgen:
 	wget http://localhost:3000/oas.json
