@@ -6,7 +6,7 @@ Given I send path 'secrets_path' and read file content and output into 'secrets'
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
 Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
 
-Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I send path 'well-known_path' and read file content and output into 'well-known'
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
@@ -62,8 +62,6 @@ Then I send object 'accessToken_jwt' and send path 'accessToken_path' and manipu
 Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'
 Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipulate and get and output into 'c_nonce_expires_in'
 Then I send object 'accessToken_jwt' and send path 'exp_in_path' and manipulate and get and output into 'expires_in'
-Then I send object 'accessToken_jwt' and send path 'resource_path' and manipulate and get and output into 'resource'
-Then I send object 'accessToken_jwt' and send path 'scope_path' and manipulate and get and output into 'scope'
 Then I send object 'accessToken_jwt' and send path 'authorization_details_path' and manipulate and get and output into 'authorization_details'
 Then I manipulate and delete and output into 'accessToken_jwt'
 
