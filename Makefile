@@ -33,6 +33,15 @@ ncr: ## 📦 Install and setup the server
 up: ncr ## 🚀 Up & run the project
 	./ncr -p 3000 --hostname $(hn) --public-directory public
 
+tests-well-known: tmp := $(shell mktemp)
+tests-well-known:
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/.autorun/identity.keys.json > ${tmp} && mv ${tmp} authz_server/.autorun/identity.keys.json
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/par.keys.json > ${tmp} && mv ${tmp} authz_server/par.keys.json
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/token.keys.json > ${tmp} && mv ${tmp} authz_server/token.keys.json
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/authorize.keys.json > ${tmp} && mv ${tmp} authz_server/authorize.keys.json
+	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/credential.keys.json > ${tmp} && mv ${tmp} credential_issuer/credential.keys.json
+	@rm -f ${tmp}
+
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
 	cp .env.test .env
@@ -49,12 +58,17 @@ mobile_zencode_up: ncr
 	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 	sleep 5
 
-test: tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up ## 🧪 Run e2e tests on the APIs
+test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up ## 🧪 Run e2e tests on the APIs
 	npx stepci run tests/e2e.yml
 	@kill `cat .test.credential_issuer.pid` && rm .test.credential_issuer.pid
 	@kill `cat .test.authz_server.pid` && rm .test.authz_server.pid
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
 	rm -fr tests/mobile_zencode
+	git restore authz_server/.autorun/identity.keys.json
+	git restore authz_server/par.keys.json
+	git restore authz_server/token.keys.json
+	git restore authz_server/authorize.keys.json
+	git restore credential_issuer/credential.keys.json
 
 testgen:
 	wget http://localhost:3000/oas.json
