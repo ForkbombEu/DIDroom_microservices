@@ -1,12 +1,12 @@
 {
     "server": {
-	"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
-	"authentication_url": "https://did.dyne.org/dids/"
+		"authentication_url": "https://did.dyne.org/dids/"
     },
     "request":{
-	"headers":{}
+		"headers":{}
     },
     "code_path": "code",
     "secrets_path": "authz_server/secrets.keys",
-    "controller_path": "controller"
+    "controller_path": "controller",
+	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

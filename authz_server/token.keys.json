@@ -1,9 +1,9 @@
 {
-    "server": {
-	"url": "https://authz-server1.zenswarm.forkbomb.eu:3100",
-	"authentication_url": "https://did.dyne.org/dids/"
-    },
-    "request": {
+	"verificationMethod": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256",
+	"server": {
+		"authentication_url": "https://did.dyne.org/dids/"
+	},
+	"request": {
         "headers": {
             "content-length": 42,
             "Content-Type": "application/x-www-form-urlencoded"
@@ -14,8 +14,8 @@
     "c_nonce_path": "c_nonce",
     "c_nonce_exp_path": "c_nonce_expires_in",
     "exp_in_path": "accessTokenExpiresAt",
-    "resource_path": "resource",
-    "scope_path": "scope",
     "secrets_path": "authz_server/secrets.keys",
-    "controller_path": "controller"
+    "controller_path": "controller",
+	"authorization_details_path": "authorization_details",
+	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

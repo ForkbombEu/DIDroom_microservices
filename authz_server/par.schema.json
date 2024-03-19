@@ -10,6 +10,35 @@
     "state": {
       "type": "string"
     },
+    "authorization_details": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "locations": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "credential_configuration_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "locations",
+            "credential_configuration_id"
+          ]
+        }
+      ]
+    },
     "code_challenge": {
       "type": "string"
     },
@@ -21,23 +50,16 @@
     },
     "client_secret": {
       "type": "string"
-    },
-    "scope": {
-      "type": "string"
-    },
-    "resource": {
-      "type": "string"
     }
   },
   "required": [
     "response_type",
     "client_id",
     "state",
+    "authorization_details",
     "code_challenge",
     "code_challenge_method",
     "redirect_uri",
-    "client_secret",
-    "scope",
-    "resource"
+    "client_secret"
   ]
 }

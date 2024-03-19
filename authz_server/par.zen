@@ -5,6 +5,9 @@ Given I send path 'secrets_path' and read file content and output into 'secrets'
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
 Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
 
+Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I have a 'string dictionary' named 'well-known'
+
 # Loading the private keys
 Given my name is in a 'string' named 'controller'
 Given I have the 'keyring' in 'personal_keyring'
@@ -22,8 +25,8 @@ Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
 Given I have a 'string' named 'client_secret'
-Given I have a 'string' named 'scope'
-Given I have a 'string' named 'resource'
+Given I have a 'string array' named 'authorization_details'
+Given I have a 'string array' named 'locations' inside 'authorization_details'
 
 When I rename 'client_secret' to 'clientSecret'
 
@@ -35,10 +38,12 @@ When I append 'client_id' as http request to 'url'
 When I append 'state' as http request to 'url'
 When I append 'code_challenge' as http request to 'url'
 When I append 'code_challenge_method' as http request to 'url'
-When I append 'scope' as http request to 'url'
 
 When I append the percent encoding of 'redirect_uri' as http request to 'url'
-When I append the percent encoding of 'resource' as http request to 'url'
+When I create the json escaped string of 'authorization_details'
+When I rename the 'authorization_details' to 'authorization_details_dict'
+When I rename the 'json escaped string' to 'authorization_details'
+When I append the percent encoding of 'authorization_details' as http request to 'url'
 When I split the leftmost '8' bytes of 'url'
 When I rename the 'url' to 'body'
 When I move 'body' in 'request'
@@ -47,10 +52,14 @@ When I move 'body' in 'request'
 When I move the 'client_id' to 'id' in 'client'
 When I move 'clientSecret' in 'client'
 When I move the 'redirect_uri' to 'redirectUris' in 'client'
-When I move 'scope' in 'client'
+
+When I create copy of element '1' from array 'locations'
+When I rename the 'copy' to 'resource'
 When I move 'resource' in 'client'
 
 # - server
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
 When I create jwk of es256 public key with private key
 When I move 'jwk' in 'server'
 

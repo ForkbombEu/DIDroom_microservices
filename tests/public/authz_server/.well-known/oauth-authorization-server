@@ -1,8 +1,8 @@
 {
-	"authorization_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/authorization",
-	"pushed_authorization_request_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/par",
-	"token_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/token",
-	"issuer": "https://authz-server1.zenswarm.forkbomb.eu/authz_server",
+	"authorization_endpoint": "http://localhost:3000/authorization",
+	"pushed_authorization_request_endpoint": "http://localhost:3000/par",
+	"token_endpoint": "http://localhost:3000/token",
+	"issuer": "http://localhost:3000",
 	"jwks": {
 		"keys": [
 			{
