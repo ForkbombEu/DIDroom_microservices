@@ -1,0 +1,37 @@
+Scenario 'w3c': verify jws
+
+Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I have a 'string dictionary' named 'well-known'
+
+Given I have a 'string' named 'token'
+Given I rename 'token' to 'bearer_authorization_string'
+Given I have a 'json web token' named 'token'
+
+When I verify the jws signature in 'bearer_authorization_string'
+
+When I pickup from path 'token.payload'
+When I pickup from path 'payload.exp'
+
+# Here we fetch the timestamp of the OS (using os.time) and we cast 
+# both the timestamps to integer in order to compare then straight after
+When I create integer 'exp_int' cast of timestamp 'exp'
+When I create the timestamp
+When I create integer 'timestamp_int' cast of timestamp 'timestamp'
+
+If I verify number 'exp_int' is less than 'timestamp_int'
+When I exit with error message 'Given access token is expired'
+Endif
+
+When I create the 'string dictionary' named 'server'
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
+
+Then print the 'bearer_authorization_string'
+Then print the 'server'
+
+Then I send token 'bearer_authorization_string' and send server_data 'server' and get claims from token and output into 'output_claims'
+Then I send object 'output_claims' and send path 'holder_claims_path' and manipulate and get and output into 'holder_claims'
+
+Then I manipulate and delete and output into 'server'
+Then I manipulate and delete and output into 'bearer_authorization_string'
+Then I manipulate and delete and output into 'output_claims'
