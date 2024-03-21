@@ -5,7 +5,7 @@ Given I have a 'string dictionary' named 'well-known'
 
 Given I have a 'string' named 'token'
 Given I rename 'token' to 'bearer_authorization_string'
-Given I have a 'bearer json web token' named 'token'
+Given I have a 'json web token' named 'token'
 
 When I verify the jws signature in 'bearer_authorization_string'
 
