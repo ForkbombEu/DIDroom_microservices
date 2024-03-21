@@ -2,6 +2,7 @@
 	"authorization_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/authorize",
 	"pushed_authorization_request_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/par",
 	"token_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/token",
+	"introspection_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/introspection",
 	"issuer": "https://authz-server1.zenswarm.forkbomb.eu/authz_server",
 	"jwks": {
 		"keys": [

@@ -2,6 +2,7 @@
 	"authorization_endpoint": "http://localhost:3000/authorize",
 	"pushed_authorization_request_endpoint": "http://localhost:3000/par",
 	"token_endpoint": "http://localhost:3000/token",
+	"introspection_endpoint": "http://localhost:3000/introspection",
 	"issuer": "http://localhost:3000",
 	"jwks": {
 		"keys": [
