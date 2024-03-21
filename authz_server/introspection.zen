@@ -1,0 +1,36 @@
+Scenario 'w3c': verify jws
+
+Given I have a 'string' named 'authorization'
+Given I rename 'authorization' to 'bearer_authorization_string'
+Given I have a 'bearer json web token' named 'authorization'
+Given I have a 'string dictionary' named 'server'
+
+When I verify the jws signature in 'bearer_authorization_string'
+
+When I pickup from path 'authorization.payload'
+When I pickup from path 'payload.exp'
+
+# Here we fetch the timestamp of the OS (using os.time) and we cast 
+# both the timestamps to integer in order to compare then straight after
+When I create integer 'exp_int' cast of timestamp 'exp'
+When I create the timestamp
+When I create integer 'timestamp_int' cast of timestamp 'timestamp'
+
+If I verify number 'exp_int' is less than 'timestamp_int'
+When I exit with error message 'Given access token is expired'
+Endif
+
+Then print the 'bearer_authorization_string'
+Then print the 'server'
+
+Then I send token 'bearer_authorization_string' and send server_data 'server' and get claims from token and output into 'holder_claims_arr'
+
+Then I send object '' and send path '' and manipulate and get and output into 'holder_claims'
+
+Then I manipulate and delete and output into 'server'
+Then I manipulate and delete and output into 'bearer_authorization_string'
+
+Given I have a 'string array' named 'holder_claims_arr'
+When I create the copy of element '1' from array 'holder_claims_arr'
+When I rename the 'copy' to 'holder_claims'
+Then print the 'holder_claims'
