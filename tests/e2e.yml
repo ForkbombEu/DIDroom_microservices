@@ -12,8 +12,7 @@ env:
 tests:
   whole_flow:
     name: Check the whole from from /par to /credential
-    steps:
-      - $ref: tests/mobile_zencode/test/step_test.yml
+    $ref: tests/mobile_zencode/test/step_test.yml
 
   creation:
     name: PAR endpoint

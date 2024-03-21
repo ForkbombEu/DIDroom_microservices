@@ -12,8 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: make test
-  publish_docker_image:
-    needs: api_test
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    uses: interfacerproject/workflows/.github/workflows/publish-ghcr.yml@main
-    secrets: inherit
+
+#  publish_docker_image:
+#    needs: api_test
+#    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+#    uses: interfacerproject/workflows/.github/workflows/publish-ghcr.yml@main
+#    secrets: inherit
