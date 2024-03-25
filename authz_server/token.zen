@@ -2,12 +2,17 @@
 Scenario 'http'
 Scenario 'w3c': Create the JWK
 
-Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I send path 'secrets_path' and read file content and output into 'secrets'
+Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
+
+Given I send path 'well-known_path' and read file content and output into 'well-known'
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
 Given my name is in a 'string' named 'controller'
-Given I have my 'keyring'
+Given I have the 'keyring' in 'personal_keyring'
+
 Given I have a 'string dictionary' named 'server'
 Given I have a 'string' named 'token_type'
 
@@ -59,3 +64,4 @@ Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipu
 Then I send object 'accessToken_jwt' and send path 'exp_in_path' and manipulate and get and output into 'expires_in'
 Then I send object 'accessToken_jwt' and send path 'authorization_details_path' and manipulate and get and output into 'authorization_details'
 Then I manipulate and delete and output into 'accessToken_jwt'
+

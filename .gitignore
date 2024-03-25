@@ -6,3 +6,5 @@ terraform.tfstate.backup
 *~
 
 .env
+credential_issuer/secrets.keys
+authz_server/secrets.keys

@@ -1,0 +1,6 @@
+Given I have a 'string' in path 'result.result.didDocument.id'
+
+When I append the string '#es256_public_key' to 'id'
+and I rename 'id' to 'kid'
+
+Then print the 'kid'
