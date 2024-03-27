@@ -1,0 +1,90 @@
+Scenario 'sd_jwt'
+
+Given I connect to 'presentation_definition_uri' and do get and output into 'presentation_definition_out'
+Given I connect to 'client_metadata_uri' and do get and output into 'client_metadata_out'
+
+Given I have a 'string dictionary' named 'presentation_definition' inside 'presentation_definition_out'
+Given I have a 'string dictionary' named 'client_metadata' inside 'client_metadata_out'
+
+#data from the request
+Given I have a 'string' named 'nonce'
+Given I have a 'string' named 'state'
+Given I have a 'string' named 'response_type'
+Given I have a 'string' named 'client_id'
+Given I have a 'string' named 'client_id_scheme'
+Given I have a 'string' named 'client_metadata_uri'
+Given I have a 'string' named 'response_mode'
+Given I have a 'string' named 'response_uri'
+
+#data from wallet_metadata
+Given I have a 'string array' named 'response_types_supported'
+Given I have a 'string array' named 'client_id_schemes_supported'
+
+#data in presentation_definition
+Given I have a 'string' named 'id' inside 'presentation_definition'
+Given I have a 'string array' named 'input_descriptors' inside 'presentation_definition'
+
+#data from keys
+Given I have a 'string' named 'response_mode_supported'
+Given I have a 'integer' named 'counter'
+Given I have a 'string dictionary' named 'wallet_credentials'
+
+If I verify 'response_type' is not found in 'response_types_supported'
+When I exit with error message 'Invalid request: given response_type is not supported'
+Endif
+
+If I verify 'client_id_scheme' is not found in 'client_id_schemes_supported'
+When I exit with error message 'Invalid request: given client_id_scheme is not supported'
+Endif
+
+If I verify 'response_mode' is not equal to 'response_mode_supported'
+When I exit with error message 'Invalid request: response_mode should be direct_post'
+Endif
+
+##################### TODO: proccess and validate presentation_definition #########################
+##################### for reference see section 8: https://identity.foundation/presentation-exchange/spec/v2.0.0/#input-evaluation
+##################### move find_credential_from_presentation.zen here #############################
+######if a credential as described is found => return vp_token = credential, requested_disclosures = array of claims to be disclosed
+
+When I use signed selective disclosure 'vp_token' only with disclosures 'requested_disclosures'
+
+# construct presentation_submission
+When I create the 'string dictionary' named 'presentation_submission'
+
+When I move the 'id' to 'definition_id' in 'presentation_submission'
+When I create the 'string array' named 'descriptor_map'
+Foreach 'descriptor' in 'input_descriptors'
+    When I create the 'string dictionary' named 'mapped'
+    When I pickup from path 'descriptor.id'
+    When I move the 'id' in 'mapped'
+#When I pickup from path 'descriptor.format'
+    When I write string 'vc+sd-jwt' in 'format'
+    When I move the 'format' in 'mapped'
+
+# for path see https://openid.github.io/OpenID4VP/openid-4-verifiable-presentations-wg-draft.html#section-6.1
+    
+    When I write string '$[' in 'path'
+    When I append 'counter' to 'path'
+    When I append the string ']' to 'path'
+    When I move the 'path' in 'mapped'
+
+    When I move the 'mapped' in 'descriptor_map'
+
+    When I create the result of 'counter + 1'
+    When I remove the 'counter'
+    When I rename the 'result' to 'counter'
+EndForeach
+When I move the 'descriptor_map' in 'presentation_submission'
+
+#authorization response parameters
+When I create the 'string dictionary' named 'authorization_response'
+When I move the 'vp_token' in 'authorization_response'
+When I move the 'presentation_submission' in 'authorization_response'
+
+Then print the 'authorization_response'
+
+################## before post there should be a holder(wallet) authentication/consent ##################
+
+#then post response to response_uri
+#Then I connect to 'response_uri' and send object 'authorization_response' and do post and output into 'wallet_authorization_response'
+

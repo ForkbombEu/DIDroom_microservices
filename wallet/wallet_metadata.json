@@ -1,0 +1,38 @@
+{
+	"authorization_endpoint": "https://wallet.example.com/authorize",
+	"issuer": "https://wallet.example.com",
+	"jwks": {
+		"keys": [
+			{
+				"kid": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256_public_key",
+				"crv": "P-256",
+				"alg": "ES256",
+				"kty": "EC"
+			}
+		]
+	},
+	"dpop_signing_alg_values_supported": [
+		"ES256"
+	],
+	"client_registration_types_supported": [
+		"automatic"
+	],
+	"request_parameter_supported": true,
+	"request_uri_parameter_supported": true,
+	"response_types_supported": [
+		"vp_token"
+	],
+	"request_object_signing_alg_values_supported": [
+		"ES256"
+	],
+    "presentation_definition_uri_supported": true,
+    "vp_formats_supported": {
+        "vc+sd-jwt": {
+            "alg_values_supported": [
+              "ES256"
+            ]
+        }
+    },
+    "client_id_schemes_supported": ["redirect_uri"],
+    "TO_BE_REMOVED_reference_for_wallet_metadata": "see https://openid.github.io/OpenID4VP/openid-4-verifiable-presentations-wg-draft.html#section-8.1"
+}

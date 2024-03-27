@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "properties": {
+      "response_type": {
+        "type": "string"
+      },
+      "client_id": {
+        "type": "string"
+      },
+      "client_id_scheme": {
+        "type": "string"
+      },
+      "client_metadata_uri": {
+        "type": "string"
+      },
+      "presentation_definition_uri": {
+        "type": "string"
+      },
+      "nonce": {
+        "type": "string"
+      },
+      "response_mode": {
+        "type": "string"
+      },
+      "response_uri": {
+        "type": "string"
+      },
+      "state": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "response_type",
+      "client_id",
+      "client_id_scheme",
+      "client_metadata_uri",
+      "presentation_definition_uri",
+      "nonce",
+      "response_mode",
+      "response_uri",
+      "state"
+    ]
+  }
