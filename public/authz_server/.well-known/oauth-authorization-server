@@ -16,7 +16,8 @@
 	},
 	"scopes_supported": [
 		"Identity",
-		"Auth1"
+		"Auth1",
+		"above16"
 	],
 	"dpop_signing_alg_values_supported": [
 		"ES256"
