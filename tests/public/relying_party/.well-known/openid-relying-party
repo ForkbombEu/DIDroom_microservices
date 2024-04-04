@@ -1,10 +1,11 @@
 
 {
-  "relying_party": "https://relying-party1.zenswarm.forkbomb.eu",
-  "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/verify",
+  "relying_party": "http://localhost:3003",
+  "verification_endpoint": "http://localhost:3003/verify",
   "trusted_credential_issuers": [
     "https://issuer1.zenswarm.forkbomb.eu",
-    "https://generic.issuer1.com"
+    "https://generic.issuer1.com",
+    "http://localhost:3001"
   ],
   "display": [
     {
