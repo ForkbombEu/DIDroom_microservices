@@ -1,0 +1,23 @@
+{
+    "type": "object",
+    "properties": {
+      "registrationToken": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      },
+      "vp": {
+        "type": "string"
+      },
+      "m": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "registrationToken",
+      "id",
+      "vp",
+      "m"
+    ]
+}

@@ -15,5 +15,17 @@
       },
       "reflow": "EkjMQs8SB5rfGGhUBMEHjOVNsDHoLs8EdZSlvtHCpoY="
     }
-  }
+  },
+  "relying_party_well-known_path": "public/relying_party/.well-known/openid-relying-party",
+  "exp": 1743692087,
+  "well-known_path": "/.well-known/openid-credential-issuer",
+  "did": "https://did.dyne.org/dids/",
+  "keys_2": {},
+  "data_2": {},
+  "r_credential_issuer_did_path": "result.credential_issuer_did",
+  "credential_issuer_path": "zen_2_output.credential_issuer",
+  "body_path": "body",
+	"f": "f",
+	"a": "a",
+	"firebase_url": "http://localhost:3366/verify-credential"
 }

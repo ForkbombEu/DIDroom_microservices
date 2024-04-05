@@ -1,0 +1,11 @@
+Scenario 'w3c': get public key from did document
+
+Given I have a 'string dictionary' named 'credential_issuer_did'
+When I pickup from path 'credential_issuer_did.didDocument'
+
+When I create 'es256' public key from did document 'didDocument'
+
+When I create the 'string dictionary' named 'credential_issuer'
+When I move the 'es256 public key' in 'credential_issuer'
+
+Then print the 'credential_issuer' as 'base64'

@@ -1,2 +1,94 @@
-Given nothing
-Then print the string 'yes'
+Scenario 'sd_jwt': verify presentation
+Scenario 'w3c': create jws proof
+
+#read relying_party well-known
+Given I send path 'relying_party_well-known_path' and read file content and output into 'relying_party_well-known'
+
+#data from the previous slangroom
+Given I have a 'string dictionary' named 'relying_party_well-known'
+
+#data from verify.keys.json
+Given my name is in a 'string' named 'controller'
+Given I have my 'keyring'
+Given I have a 'string' named 'well-known_path'
+Given I have a 'string' named 'did'
+Given I have a 'string' named 'f'
+Given I have a 'string' named 'a'
+Given I have a 'string' named 'firebase_url'
+
+Given I have a 'time' named 'exp'
+
+#data from the verifier
+Given I have a 'string' named 'm'
+Given I have a 'string' named 'registrationToken'
+Given I have a 'string' named 'id'
+Given I have a 'string' named 'vp'
+Given I rename the 'vp' to 'vp_string'
+Given I have a 'signed selective disclosure' named 'vp'
+
+#get path to credential_issuer well-known
+When I pickup from path 'vp.jwt.payload.iss'
+When I append 'well-known_path' to 'iss'
+
+#data for script_1
+When I pickup from path 'vp.jwt.header.alg'
+When I create the 'string dictionary' named 'data_1'
+When I move 'alg' to 'given_alg' in 'data_1'
+When I move 'did' in 'data_1'
+
+When I create the 'string dictionary' named 'body'
+If I verify 'm' is equal to 'f'
+    When I rename the 'firebase_url' to 'url'
+    When I move the 'registrationToken' to 'body'
+EndIf
+
+If I verify 'm' is equal to 'a'
+    When I exit with error message 'Apple server not yet implemented'
+EndIf
+
+#construct data for script_3
+When I create the 'string dictionary' named 'data_3'
+When I move the 'relying_party_well-known' in 'data_3'
+When I move the 'body' in 'data_3'
+When I move the 'id' in 'data_3'
+When I move the 'vp_string' to 'vp' in 'data_3'
+When I move the 'exp' in 'data_3'
+
+#contruct keys for script_3
+When I create the 'string dictionary' named 'keys_3'
+When I move the 'keyring' in 'keys_3'
+
+Then print the 'iss'
+Then print the 'data_1'
+Then print the 'data_3'
+Then print the 'keys_3' as 'keyring'
+Then print the 'url'
+
+Then I connect to 'iss' and do get and output into 'credential_issuer_well-known'
+Then I send keys 'credential_issuer_well-known' and send data 'data_1' and send script 'zen_1' and execute zencode and output into 'zen_1_output'
+
+Then I send object 'zen_1_output' and send path 'did_path' and manipulate and get and output into 'did_url'
+Then I connect to 'did_url' and do get and output into 'credential_issuer_did'
+
+Then I send object 'keys_2' and send path 'r_credential_issuer_did_path' and send value 'credential_issuer_did' and manipulate and set and output into 'keys_2'
+Then I send keys 'keys_2' and send data 'data_2' and send script 'zen_2' and execute zencode and output into 'zen_2_output'
+
+Then I send object 'data_3' and send path 'credential_issuer_path' and send value 'zen_2_output' and manipulate and set and output into 'data_3'
+
+
+Then I send keys 'keys_3' and send data 'data_3' and send script 'zen_3' and execute zencode and output into 'zen_3_output'
+Then I send object 'zen_3_output' and send path 'body_path' and manipulate and get and output into 'body'
+
+Then I manipulate and delete and output into 'zen_3_output'
+Then I manipulate and delete and output into 'zen_2_output'
+Then I manipulate and delete and output into 'zen_1_output'
+Then I manipulate and delete and output into 'keys_1'
+Then I manipulate and delete and output into 'keys_2'
+Then I manipulate and delete and output into 'keys_3'
+Then I manipulate and delete and output into 'data_1'
+Then I manipulate and delete and output into 'data_2'
+Then I manipulate and delete and output into 'data_3'
+Then I manipulate and delete and output into 'credential_issuer_did'
+Then I manipulate and delete and output into 'credential_issuer_well-known'
+
+Then I connect to 'url' and send object 'body' and do post and output into 'server_response'
