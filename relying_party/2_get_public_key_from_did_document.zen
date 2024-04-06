@@ -1,7 +1,6 @@
 Scenario 'w3c': get public key from did document
 
-Given I have a 'string dictionary' named 'credential_issuer_did'
-When I pickup from path 'credential_issuer_did.didDocument'
+Given I have a 'string dictionary' in path 'result.didDocument'
 
 When I create 'es256' public key from did document 'didDocument'
 

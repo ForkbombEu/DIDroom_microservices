@@ -59,6 +59,6 @@ When I rename the 'jws signature' to 'message'
 
 ## end 3.
 
-When I move the 'message' to 'body'
+When I move the 'message' in 'body'
 
 Then print the 'body'

@@ -39,7 +39,7 @@ When I move 'did' in 'data_1'
 When I create the 'string dictionary' named 'body'
 If I verify 'm' is equal to 'f'
     When I rename the 'firebase_url' to 'url'
-    When I move the 'registrationToken' to 'body'
+    When I move the 'registrationToken' in 'body'
 EndIf
 
 If I verify 'm' is equal to 'a'
@@ -58,7 +58,7 @@ When I move the 'exp' in 'data_3'
 When I create the 'string dictionary' named 'keys_3'
 When I move the 'keyring' in 'keys_3'
 
-Then print the 'iss'
+Then print the 'iss' as 'string'
 Then print the 'data_1'
 Then print the 'data_3'
 Then print the 'keys_3' as 'keyring'
@@ -70,11 +70,10 @@ Then I send keys 'credential_issuer_well-known' and send data 'data_1' and send 
 Then I send object 'zen_1_output' and send path 'did_path' and manipulate and get and output into 'did_url'
 Then I connect to 'did_url' and do get and output into 'credential_issuer_did'
 
-Then I send object 'keys_2' and send path 'r_credential_issuer_did_path' and send value 'credential_issuer_did' and manipulate and set and output into 'keys_2'
-Then I send keys 'keys_2' and send data 'data_2' and send script 'zen_2' and execute zencode and output into 'zen_2_output'
+Then I send keys 'credential_issuer_did' and send data 'data_2' and send script 'zen_2' and execute zencode and output into 'zen_2_output'
 
-Then I send object 'data_3' and send path 'credential_issuer_path' and send value 'zen_2_output' and manipulate and set and output into 'data_3'
-
+Then I send object 'zen_2_output' and send path 'credential_issuer_path' and manipulate and get and output into 'ci'
+Then I send object 'data_3' and send path 'credential_issuer_path' and send value 'ci' and manipulate and set
 
 Then I send keys 'keys_3' and send data 'data_3' and send script 'zen_3' and execute zencode and output into 'zen_3_output'
 Then I send object 'zen_3_output' and send path 'body_path' and manipulate and get and output into 'body'
