@@ -1,0 +1,64 @@
+Scenario 'sd_jwt': verify presentation
+Scenario 'w3c': create jws proof
+Scenario 'es256' : verify SD-JWT signature
+
+Given I have a 'keyring'
+Given I have a 'time' named 'exp'
+
+Given I have a 'string dictionary' named 'body'
+Given I have a 'string' named 'id'
+Given I have a 'signed selective disclosure' named 'vp'
+
+Given I have a 'es256 public key' from 'credential_issuer'
+
+Given I have a 'string dictionary' named 'relying_party_well-known'
+Given I have a 'string' named 'relying_party' in 'relying_party_well-known'
+
+#verify the verifiable presentation and create 'result' the array of disclosed claims
+When I create the 'string array' named 'result'
+
+If I verify signed selective disclosure 'vp' issued by 'credential_issuer' is valid
+    When I pickup from path 'vp.disclosures'
+    Foreach 'dis_array' in 'disclosures'
+        When I create the copy of element '2' from array 'dis_array'
+        When I move the 'copy' in 'result'
+    EndForeach
+EndIf
+
+## 1. Create response
+
+When I create the 'string dictionary' named 'response'
+When I move the 'result' in 'response'
+When I move the 'id' in 'response'
+When I create the timestamp
+When I move 'timestamp' to 'iat' in 'response'
+When I move 'exp' in 'response'
+When I move 'relying_party' to 'iss' in 'response'
+
+## end 1.
+
+## 2. create proof-header
+
+When I create the 'string dictionary' named 'proof-header'
+When I set 'alg' to 'ES256' as 'string'
+When I set 'typ' to 'open4vci-proof+jwt' as 'string'
+
+When I pickup from path 'relying_party_well-known.jwks.keys'
+When I create the copy of element '1' from array 'keys'
+When I move 'copy' to 'jwk' in 'proof-header'
+
+When I move 'alg' in 'proof-header'
+When I move 'typ' in 'proof-header'
+
+## end 2,
+
+# 3. create jws from proof-header and response
+
+When I create the jws signature of header 'proof-header' and payload 'response'
+When I rename the 'jws signature' to 'message'
+
+## end 3.
+
+When I move the 'message' in 'body'
+
+Then print the 'body'
