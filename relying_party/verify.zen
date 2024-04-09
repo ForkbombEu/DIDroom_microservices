@@ -19,8 +19,7 @@ Given I have a 'string' named 'did'
 Given I have a 'string' named 'f'
 Given I have a 'string' named 'a'
 Given I have a 'string' named 'firebase_url'
-
-Given I have a 'time' named 'exp'
+Given I have a 'time' named 'expires_in'
 
 #data from the verifier
 Given I have a 'string' named 'm'
@@ -60,7 +59,7 @@ When I move the 'relying_party_well-known' in 'data_3'
 When I move the 'body' in 'data_3'
 When I move the 'id' in 'data_3'
 When I move the 'vp_string' to 'vp' in 'data_3'
-When I move the 'exp' in 'data_3'
+When I move the 'expires_in' in 'data_3'
 
 #contruct keys for script_3
 When I create the 'string dictionary' named 'keys_3'

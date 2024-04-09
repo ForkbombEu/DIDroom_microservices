@@ -3,7 +3,7 @@ Scenario 'w3c': create jws proof
 Scenario 'es256' : verify SD-JWT signature
 
 Given I have a 'keyring'
-Given I have a 'time' named 'exp'
+Given I have a 'time' named 'expires_in'
 
 Given I have a 'string dictionary' named 'body'
 Given I have a 'string' named 'id'
@@ -31,8 +31,9 @@ When I create the 'string dictionary' named 'response'
 When I move the 'result' in 'response'
 When I move the 'id' in 'response'
 When I create the timestamp
+When I create result of 'timestamp' + 'expires_in'
 When I move 'timestamp' to 'iat' in 'response'
-When I move 'exp' in 'response'
+When I move 'result' to 'exp' in 'response'
 When I move 'relying_party' to 'iss' in 'response'
 
 ## end 1.
