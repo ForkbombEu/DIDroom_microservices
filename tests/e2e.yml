@@ -9,6 +9,7 @@ env:
   path_to_wallet: /mobile_zencode
   ci_host: localhost:3001
   as_host: localhost:3000
+  verifier_host: localhost:3004
 tests:
   whole_flow:
     name: Check the whole from from /par to /credential
