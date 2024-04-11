@@ -59,11 +59,20 @@ mobile_zencode_up: ncr
 	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 	sleep 5
 
-test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up ## 🧪 Run e2e tests on the APIs
+relying_party_up: ncr
+	./ncr -p 3003 -z ./relying_party --public-directory tests/public/relying_party & echo $$! > .test.relying_party.pid
+	sleep 5
+
+push_server_up: ncr
+	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
+	sleep 5
+test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up push_server_up ## 🧪 Run e2e tests on the APIs
 	npx stepci run tests/e2e.yml
 	@kill `cat .test.credential_issuer.pid` && rm .test.credential_issuer.pid
 	@kill `cat .test.authz_server.pid` && rm .test.authz_server.pid
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
+	@kill `cat .test.relying_party.pid` && rm .test.relying_party.pid
+	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
 	rm -fr tests/mobile_zencode
 	git restore authz_server/.autorun/identity.keys.json
 	git restore authz_server/par.keys.json
