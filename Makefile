@@ -76,7 +76,7 @@ push_server_up: ncr
 	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
 	sleep 5
 
-test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up push_server_up ## 🧪 Run e2e tests on the APIs
+test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
 	npx stepci run tests/e2e.yml
 	@kill `cat .test.credential_issuer.pid` && rm .test.credential_issuer.pid
 	@kill `cat .test.authz_server.pid` && rm .test.authz_server.pid
