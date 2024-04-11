@@ -16,5 +16,5 @@
     "expires_path": "expires_in",
     "secrets_path": "authz_server/secrets.keys",
     "controller_path": "controller",
-	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
+	"well-known_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

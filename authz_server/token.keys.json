@@ -17,5 +17,5 @@
     "secrets_path": "authz_server/secrets.keys",
     "controller_path": "controller",
 	"authorization_details_path": "authorization_details",
-	"well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server"
+	"well-known_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

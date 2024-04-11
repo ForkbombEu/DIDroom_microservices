@@ -1,6 +1,6 @@
 Scenario 'w3c': verify jws
 
-Given I send path 'well-knwon_path' and read file content and output into 'well-known'
+Given I send path 'well-known_path' and read file content and output into 'well-known'
 Given I have a 'string dictionary' named 'well-known'
 
 Given I have a 'string' named 'token'
