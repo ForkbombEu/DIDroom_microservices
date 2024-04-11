@@ -45,7 +45,7 @@ tests-well-known:
 	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/.autorun/identity.keys.json > ${tmp} && mv ${tmp} credential_issuer/.autorun/identity.keys.json
 # rp
 	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying-party"' relying_party/verify.keys.json > ${tmp} && mv ${tmp} relying_party/verify.keys.json
-	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying_party"' relying_party/.autorun/identity.keys.json > ${tmp} && mv ${tmp} relying_party/.autorun/identity.keys.json
+	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying-party"' relying_party/.autorun/identity.keys.json > ${tmp} && mv ${tmp} relying_party/.autorun/identity.keys.json
 	@rm -f ${tmp}
 
 tests/mobile_zencode:
