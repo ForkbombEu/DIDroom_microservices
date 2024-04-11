@@ -35,12 +35,17 @@ up: ncr ## 🚀 Up & run the project
 
 tests-well-known: tmp := $(shell mktemp)
 tests-well-known:
+# as
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/.autorun/identity.keys.json > ${tmp} && mv ${tmp} authz_server/.autorun/identity.keys.json
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/par.keys.json > ${tmp} && mv ${tmp} authz_server/par.keys.json
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/token.keys.json > ${tmp} && mv ${tmp} authz_server/token.keys.json
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/authorize.keys.json > ${tmp} && mv ${tmp} authz_server/authorize.keys.json
+# ci
 	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/credential.keys.json > ${tmp} && mv ${tmp} credential_issuer/credential.keys.json
 	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/.autorun/identity.keys.json > ${tmp} && mv ${tmp} credential_issuer/.autorun/identity.keys.json
+# rp
+	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying-party"' relying_party/verify.keys.json > ${tmp} && mv ${tmp} relying_party/verify.keys.json
+	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' relying_party/.autorun/identity.keys.json > ${tmp} && mv ${tmp} relying_party/.autorun/identity.keys.json
 	@rm -f ${tmp}
 
 tests/mobile_zencode:
@@ -80,6 +85,8 @@ test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up
 	git restore authz_server/authorize.keys.json
 	git restore credential_issuer/credential.keys.json
 	git restore credential_issuer/.autorun/identity.keys.json
+	git restore relying_party/verify.keys.json
+	git restore relying_party/.autorun/identity.keys.json
 
 testgen:
 	wget http://localhost:3000/oas.json
