@@ -31,7 +31,7 @@ ncr: ## 📦 Install and setup the server
 	@echo "📦 Setup is done!"
 
 announce: SERVICE ?= all
-announce: ncr
+announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 ifeq ("${SERVICE}", "all")
 	./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid
 	./ncr -p 8001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid
