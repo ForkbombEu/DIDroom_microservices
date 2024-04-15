@@ -1,4 +1,4 @@
 {
-    "well-knwon_path": "public/authz_server/.well-known/oauth-authorization-server",
+    "well-known_path": "public/authz_server/.well-known/oauth-authorization-server",
     "holder_claims_path": "0"
 }
