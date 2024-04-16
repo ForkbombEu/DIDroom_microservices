@@ -37,14 +37,28 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
 			./ncr -p 8001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid; \
 			./ncr -p 8002 -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid; \
-			sleep 10; \
+			for port in 8000 8001 8002; do \
+				timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
+					echo "Port $$port is not yet reachable, waiting..."; \
+					sleep 1; \
+					done' _ "$$port" || { \
+						echo "Timeout while waiting for port $$port to be reachable"; \
+						exit 1; \
+					}; \
+			done; \
 			kill `cat .announce.as.pid` && rm .announce.as.pid; \
 			kill `cat .announce.ci.pid` && rm .announce.ci.pid; \
 			kill `cat .announce.rp.pid` && rm .announce.rp.pid; \
 			;; \
 		authz_server|credential_issuer|relying_party) \
 			./ncr -p 8000 -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid; \
-			sleep 10; \
+			timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
+				echo "Port $$port is not yet reachable, waiting..."; \
+				sleep 1; \
+				done' _ "8000" || { \
+					echo "Timeout while waiting for port $$port to be reachable"; \
+					exit 1; \
+				}; \
 			kill `cat .announce.pid` && rm .announce.pid; \
 			;; \
 		*) \
@@ -77,29 +91,32 @@ tests/mobile_zencode:
 
 authz_server_up: ncr
 	./ncr -p 3000 -z ./authz_server --public-directory tests/public/authz_server & echo $$! > .test.authz_server.pid
-	sleep 5
 
 credential_issuer_up: ncr
 	./ncr -p 3001 -z ./credential_issuer --public-directory tests/public/credential_issuer & echo $$! > .test.credential_issuer.pid
-	sleep 5
 
 mobile_zencode_up: ncr
 	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
-	sleep 5
 
 relying_party_up: ncr
 	./ncr -p 3003 -z ./relying_party --public-directory tests/public/relying_party & echo $$! > .test.relying_party.pid
-	sleep 5
 
 verifier_up: ncr
 	./ncr -p 3004 -z ./tests/mobile_zencode/verifier & echo $$! > .test.verifier.pid
-	sleep 5
 
 push_server_up: ncr
 	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
-	sleep 5
 
 test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
+	@for port in 3000 3001 3002 3003 3004 3366; do \
+		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
+			echo "Port $$port is not yet reachable, waiting..."; \
+			sleep 1; \
+			done' _ "$$port" || { \
+				echo "Timeout while waiting for port $$port to be reachable"; \
+				exit 1; \
+			}; \
+	done
 	npx stepci run tests/e2e.yml
 	@kill `cat .test.credential_issuer.pid` && rm .test.credential_issuer.pid
 	@kill `cat .test.authz_server.pid` && rm .test.authz_server.pid
