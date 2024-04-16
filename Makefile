@@ -30,7 +30,7 @@ ncr: ## 📦 Install and setup the server
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
 
-announce: SERVICE ?= all
+SERVICE ?= all
 announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 ifeq ("${SERVICE}", "all")
 	./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid
