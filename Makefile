@@ -30,23 +30,28 @@ ncr: ## 📦 Install and setup the server
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
 
-SERVICE ?= all
+announce: SERVICE?=all
 announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
-ifeq ("${SERVICE}", "all")
-	./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid
-	./ncr -p 8001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid
-	./ncr -p 8002 -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid
-	sleep 10
-	kill `cat .announce.as.pid` && rm .announce.as.pid
-	kill `cat .announce.ci.pid` && rm .announce.ci.pid
-	kill `cat .announce.rp.pid` && rm .announce.rp.pid
-else ifneq (,$(filter ${SERVICE}, authz_server credential_issuer relying_party))
-	./ncr -p 8000 -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid
-	sleep 10
-	kill `cat .announce.pid` && rm .announce.pid
-else
-	$(error "Unknown service: ${SERVICE}. Known service are: authz_server, credential_issuer, relying_party or all")
-endif
+	@case ${SERVICE} in \
+		all) \
+			./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
+			./ncr -p 8001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid; \
+			./ncr -p 8002 -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid; \
+			sleep 10; \
+			kill `cat .announce.as.pid` && rm .announce.as.pid; \
+			kill `cat .announce.ci.pid` && rm .announce.ci.pid; \
+			kill `cat .announce.rp.pid` && rm .announce.rp.pid; \
+			;; \
+		authz_server|credential_issuer|relying_party) \
+			./ncr -p 8000 -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid; \
+			sleep 10; \
+			kill `cat .announce.pid` && rm .announce.pid; \
+			;; \
+		*) \
+			echo "Unknown service: ${SERVICE}. Known service are: authz_server, credential_issuer, relying_party or all"; \
+			exit 1; \
+			;; \
+	esac
 
 up: ncr announce ## 🚀 Up & run the project
 	./ncr -p 3000 --hostname $(hn) --public-directory public
