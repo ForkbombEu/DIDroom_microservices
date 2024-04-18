@@ -32,6 +32,7 @@ ncr: ## 📦 Install and setup the server
 
 announce: SERVICE?=all
 announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
+	@cp .env.example .env
 	@case ${SERVICE} in \
 		all) \
 			./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
