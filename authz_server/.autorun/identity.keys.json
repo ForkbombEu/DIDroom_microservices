@@ -40,5 +40,6 @@
     "es256_path": "es256_public_key",
     "issuer_path": "issuer_public_key",
     "bbs_path": "bbs_public_key",
-    "dilithium_path": "dilithium_public_key"
+    "dilithium_path": "dilithium_public_key",
+    "description_path": "description"
 }
