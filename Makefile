@@ -1,5 +1,6 @@
 .DEFAULT_GOAL := up
 .PHONY: help
+TEST_DEPS := git jq npx
 
 hn=$(shell hostname)
 
@@ -71,6 +72,9 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 up: ncr announce ## 🚀 Up & run the project
 	./ncr -p 3000 --hostname $(hn) --public-directory public
 
+tests-deps: ## 🧪 Check test dependencies
+	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
+
 tests-well-known: tmp := $(shell mktemp)
 tests-well-known:
 # as
@@ -108,7 +112,12 @@ verifier_up: ncr
 push_server_up: ncr
 	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
 
-test: tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
+test: tests-deps tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
+# modify wallet contract to not use capacitor
+	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start pb capacitor client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
+	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
+	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
+# start tests
 	@for port in 3000 3001 3002 3003 3004 3366; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
 			echo "Port $$port is not yet reachable, waiting..."; \
