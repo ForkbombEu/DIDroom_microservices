@@ -76,8 +76,9 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 	esac
 
 up: UP_PORT?=3000
+up: UP_HOSTNAME?=${hn}
 up: ncr announce ## 🚀 Up & run the project
-	./ncr -p ${UP_PORT} --hostname $(hn) --public-directory public
+	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
 
 tests-well-known: tmp := $(shell mktemp)
 tests-well-known:
