@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: 🧪 VCI API Tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: make test
 
 #  publish_docker_image:
