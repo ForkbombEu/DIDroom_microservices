@@ -21,11 +21,12 @@ Given I send object 'secrets' and send path 'controller' and manipulate and get 
 Given I send path 'well-known_path' and read file content and output into 'well-known'
 
 Given I my name is in a 'string' named 'controller'
+and I have a 'string' named 'controller'
 and I have a 'keyring' in 'personal_keyring'
 and I have a 'string dictionary' named 'well-known'
 
 If I verify 'display' is found in 'well-known'
-When I pickup from path 'well-known.display.0.name'
+When I pickup from path 'well-known.display.1.name'
 and I rename 'name' to 'description'
 EndIf
 If I verify 'display' is not found in 'well-known'
