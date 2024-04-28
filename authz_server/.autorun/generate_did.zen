@@ -11,8 +11,7 @@ Scenario 'es256': Move pk in did doc
 Scenario 'qp': Move pk in did doc
 
 # data
-Given I have a 'string' named 'controller'
-and I rename 'controller' to 'description'
+Given I have a 'string' named 'description'
 Given I have a 'eddsa_public_key'
 and I rename 'eddsa_public_key' to 'identity pk'
 Given I have a 'ethereum_address'
