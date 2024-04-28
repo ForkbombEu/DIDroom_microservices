@@ -1,3 +1,7 @@
+# env variables
+$(if $(wildcard ".env"),,$(shell cp .env.example .env))
+include .env
+
 .DEFAULT_GOAL := up
 .PHONY: help
 TEST_DEPS := git jq npx
@@ -31,15 +35,18 @@ ncr: ## 📦 Install and setup the server
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
 
+announce: ANN_PORT?=8000
+announce: ANN_AS_PORT?=8000
+announce: ANN_CI_PORT?=8001
+announce: ANN_RP_PORT?=8002
 announce: SERVICE?=all
 announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
-	@cp .env.example .env
 	@case ${SERVICE} in \
 		all) \
-			./ncr -p 8000 -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
-			./ncr -p 8001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid; \
-			./ncr -p 8002 -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid; \
-			for port in 8000 8001 8002; do \
+			./ncr -p ${ANN_AS_PORT} -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
+			./ncr -p ${ANN_CI_PORT} -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid; \
+			./ncr -p ${ANN_RP_PORT} -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid; \
+			for port in ${ANN_AS_PORT} ${ANN_CI_PORT} ${ANN_RP_PORT}; do \
 				timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
 					echo "Port $$port is not yet reachable, waiting..."; \
 					sleep 1; \
@@ -53,11 +60,11 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			kill `cat .announce.rp.pid` && rm .announce.rp.pid; \
 			;; \
 		authz_server|credential_issuer|relying_party) \
-			./ncr -p 8000 -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid; \
+			./ncr -p ${ANN_PORT} -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid; \
 			timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
 				echo "Port $$port is not yet reachable, waiting..."; \
 				sleep 1; \
-				done' _ "8000" || { \
+				done' _ "${ANN_PORT}" || { \
 					echo "Timeout while waiting for port $$port to be reachable"; \
 					exit 1; \
 				}; \
@@ -69,8 +76,10 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			;; \
 	esac
 
+up: UP_PORT?=3000
+up: UP_HOSTNAME?=${hn}
 up: ncr announce ## 🚀 Up & run the project
-	./ncr -p 3000 --hostname $(hn) --public-directory public
+	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
 
 tests-deps: ## 🧪 Check test dependencies
 	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
@@ -92,7 +101,6 @@ tests-well-known:
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
-	cp .env.test .env
 
 authz_server_up: ncr
 	./ncr -p 3000 -z ./authz_server --public-directory tests/public/authz_server & echo $$! > .test.authz_server.pid
