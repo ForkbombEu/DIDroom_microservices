@@ -1,7 +1,7 @@
 
 {
-  "relying_party": "https://relying-party1.zenswarm.forkbomb.eu",
-  "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/verify",
+  "relying_party": "https://relying-party1.zenswarm.forkbomb.eu/relying_party",
+  "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify",
   "trusted_credential_issuers": [
     "https://issuer1.zenswarm.forkbomb.eu",
     "https://generic.issuer1.com"
