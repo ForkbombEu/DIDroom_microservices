@@ -3,7 +3,7 @@
   "relying_party": "https://relying-party1.zenswarm.forkbomb.eu/relying_party",
   "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify",
   "trusted_credential_issuers": [
-    "https://issuer1.zenswarm.forkbomb.eu",
+    "https://issuer1.zenswarm.forkbomb.eu/credential_issuer",
     "https://generic.issuer1.com"
   ],
   "display": [
