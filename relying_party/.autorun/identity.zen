@@ -53,7 +53,6 @@ and I print the 'issuer public key' as 'compressed issuer public key'
 and I print the 'bbs public key'
 and I print the 'dilithium public key'
 and I print my name in 'controller'
-and I print the 'well-known'
 and I print the 'description'
 
 ## create did
@@ -87,6 +86,7 @@ Then I manipulate and delete and output into 'post_response'
 Then I manipulate and delete and output into 'result'
 
 # .well-known
+Then I send path 'well-known_path' and read file content and output into 'well-known'
 Then I send path 'kid_zen_path' and read verbatim file content and output into 'kid_zen'
 Then I send keys 'empty_keys' and send data 'did_response' and send script 'kid_zen' and execute zencode and output into 'kid'
 Then I send object 'kid' and send path 'kid_path' and manipulate and get and output into 'kid_value'
