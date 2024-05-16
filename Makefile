@@ -125,6 +125,8 @@ test: tests-deps tests-well-known tests/mobile_zencode authz_server_up credentia
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
+	@cp relying_party/verify.keys.json relying_party/temp-verify.keys.json
+	@jq '."firebase_url" = "http://localhost:3366/verify-credential"' relying_party/temp-verify.keys.json > relying_party/verify.keys.json
 # start tests
 	@for port in 3000 3001 3002 3003 3004 3366; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
@@ -143,6 +145,7 @@ test: tests-deps tests-well-known tests/mobile_zencode authz_server_up credentia
 	@kill `cat .test.verifier.pid` && rm .test.verifier.pid
 	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
 	rm -fr tests/mobile_zencode
+	@mv relying_party/temp-verify.keys.json relying_party/verify.keys.json
 	git restore authz_server/.autorun/identity.keys.json
 	git restore authz_server/par.keys.json
 	git restore authz_server/token.keys.json
