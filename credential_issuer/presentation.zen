@@ -1,3 +1,0 @@
-Given I send verifier url 'verifier_url' and send issued vc 'issued_vc' and send disclosed 'disclosed' and send nonce 'nonce' and send holder 'holder_jwk' and present vc sd jwt and output into 'presentation'
-Given I have a 'string' named 'presentation'
-Then print data

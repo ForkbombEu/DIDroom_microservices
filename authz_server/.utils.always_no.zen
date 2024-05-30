@@ -1,5 +1,0 @@
-Given nothing
-
-When I write the string 'no' in 'result'
-
-Then print 'result'

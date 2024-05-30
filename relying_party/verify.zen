@@ -5,18 +5,13 @@ Given I send path 'secrets_path' and read file content and output into 'secrets'
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
 Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
 
-
-Given I send keys 'keys_0' and send data 'data_0' and send script 'zen_0' and execute zencode and output into 'zen_0_output'
-
 #read relying_party well-known
 Given I send path 'well-known_path' and read file content and output into 'relying_party_well-known'
 
 #data from the previous slangroom
 Given I have a 'string dictionary' named 'relying_party_well-known'
-Given I have a 'string' in path 'zen_0_output.output.1'
 
 #data from verify.keys.json
-Given I have a 'string' named 'yes_response'
 Given my name is in a 'string' named 'controller'
 Given I have the 'keyring' in 'personal_keyring'
 Given I have a 'string' named 'credential_issuer_well-known_api'
@@ -33,10 +28,6 @@ Given I have a 'string' named 'id'
 Given I have a 'string' named 'vp'
 Given I rename the 'vp' to 'vp_string'
 Given I have a 'signed selective disclosure' named 'vp'
-
-If I verify '1' is not equal to 'yes_response'
-When I exit with error message 'Error in verify: busisness logic checks failed'
-EndIf
 
 #get path to credential_issuer well-known
 When I pickup from path 'vp.jwt.payload.iss'
