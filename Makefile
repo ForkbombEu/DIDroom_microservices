@@ -76,10 +76,33 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			;; \
 	esac
 
+authorize: tmp := $(shell mktemp)
+authorize: tmp_zen := $(shell mktemp)
+authorize: tmp_schema := $(shell mktemp)
+auhtorize: ## 📦 Setup the authorize page
+authorize:
+	@echo "{}" > ${tmp_schema}
+	@echo "{}" > ${tmp_zen}
+	@for f in authz_server/custom_code/*; do \
+		name=$$(echo $$f | rev | cut -d'/' -f1 | rev | cut -d'.' -f1); \
+		ext=$$(echo $$f | cut -d'.' -f2-); \
+		if [ -f $$f ] && [ "$$ext" = "schema.json" ]; then \
+		jq --arg name $$name '.[$$name] = input ' ${tmp_schema} $$f > ${tmp} && mv ${tmp} ${tmp_schema}; \
+		elif [ -f $$f ] && [ "$$ext" = "zen" ]; then \
+		jq --arg name $$name --arg contract "$$(sed -z 's/\n/\\n/g' $$f)" '.[$$name] = $$contract ' ${tmp_zen} > ${tmp} && mv ${tmp} ${tmp_zen}; \
+		fi; \
+	done; \
+	sed -i "s/\(const contracts = JSON\.parse\).*/\1$$(jq -r tostring ${tmp_zen})/" public/authz_server/authorize; \
+	sed -i "s/\(const schemas = JSON\.parse\).*/\1$$(jq -r tostring ${tmp_schema})/" public/authz_server/authorize;
+	@rm ${tmp_schema} ${tmp_zen}
+
 up: UP_PORT?=3000
 up: UP_HOSTNAME?=${hn}
-up: ncr announce ## 🚀 Up & run the project
+up: ncr announce auhtorize ## 🚀 Up & run the project
 	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
+
+
+# -- tests --
 
 tests-deps: ## 🧪 Check test dependencies
 	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
