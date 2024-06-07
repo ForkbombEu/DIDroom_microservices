@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "request_uri": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "request_uri"
+    ]
+}
