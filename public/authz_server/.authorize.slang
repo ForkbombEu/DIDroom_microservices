@@ -1,6 +1,39 @@
-Given I have a 'string' named 'params'
+Scenario 'http'
+Scenario 'w3c': create jwk
+Rule unknown ignore
 
-When I set 'check' to 'hello' as 'string'
-and I verify 'check' is equal to 'params'
+Given I send path 'secrets_path' and read file content and output into 'secrets'
+Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
 
-Then print the data
+Given I send path 'well-known_path' and read file content and output into 'well-known'
+Given I have a 'string dictionary' named 'well-known'
+
+# Loading the private keys
+Given my name is in a 'string' named 'controller'
+Given I have the 'keyring' in 'personal_keyring'
+
+Given I have a 'string dictionary' named 'server'
+Given I have a 'string dictionary' named 'request'
+Given I have a 'string' named 'request_uri'
+Given I have a 'string' named 'client_id'
+
+#-server data
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
+When I create jwk of es256 public key with private key
+When I move 'jwk' in 'server'
+
+# - request.body
+When I set 'base-url' to 'http://' as 'string'
+When I create the url from 'base-url'
+When I append 'client_id' as http request to 'url'
+When I append the percent encoding of 'request_uri' as http request to 'url'
+When I split the leftmost '8' bytes of 'url'
+When I rename the 'url' to 'body'
+When I move 'body' in 'request'
+
+Then print the 'server'
+Then print the 'request'
+
+Then I send request 'request' and send server_data 'server' and verify request parameters
