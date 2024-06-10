@@ -1,0 +1,10 @@
+{
+    "data": {},
+    "server": {
+        "authentication_url": "https://did.dyne.org/dids/"
+    },
+    "secrets_path": "authz_server/secrets.keys",
+    "controller_path": "controller",
+    "well-known_path": "public/authz_server/.well-known/oauth-authorization-server",
+    "credential_configuration_id_path": "0.credential_configuration_id"
+}

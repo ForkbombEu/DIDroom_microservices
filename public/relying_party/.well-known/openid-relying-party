@@ -1,4 +1,3 @@
-
 {
   "relying_party": "https://relying-party1.zenswarm.forkbomb.eu/relying_party",
   "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify",
