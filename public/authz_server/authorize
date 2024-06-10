@@ -77,7 +77,7 @@
 							<span
 								class="block -translate-x-2 -translate-y-2 border-2 border-black bg-red-500 text-xl p-2 hover:-translate-y-3 active:translate-x-0 active:translate-y-0 transition-all"
 							>
-								Press this
+								Authenticate
 							</span>
 						</button>
 						<div class="ml-4 h-8 w-10 animate-bounce htmx-indicator hidden">
@@ -92,77 +92,21 @@
 				<pre id="error" class="overflow-auto max-h-[30rem] text-sm mb-4"></pre>
 			</div>
 		</main>
-		<section>
-			<details class="text-slate-600">
-				<summary>contract</summary>
-				<pre id="contract" class="overflow-auto max-h-[30rem] text-sm mb-4"><%= contract %></pre>
-			</details>
-		</section>
-		<footer>
-			<!-- https://cruip.com/creating-a-sliding-text-animation-with-tailwind-css/ -->
-			<div class="font-extrabold text-3xl text-opacity-60 lg:text-center bg-red-500 p-4">
-				Explore
-				<span
-					class="text-white underline inline-flex flex-col h-[calc(theme(fontSize.3xl)*theme(lineHeight.tight))] md:h-[calc(theme(fontSize.4xl)*theme(lineHeight.tight))] overflow-hidden"
-				>
-					<ul class="block animate-slide text-left leading-tight [&_li]:block">
-						<li>
-							<a href="https://apiroom.net" target="_blank">Apiroom</a>
-						</li>
-						<li>
-							<a href="https://forkbomb.solutions/solution/didroom/" target="_blank"> DIDroom </a>
-						</li>
-						<li>
-							<a
-								href="https://forkbomb.solutions/solution/w3c-did-federate-service/"
-								target="_blank"
-							>
-								W3C DID
-							</a>
-						</li>
-						<li>
-							<a href="https://forkbomb.solutions/solution/zenbridge/" target="_blank">
-								Zenbridge
-							</a>
-						</li>
-						<li>
-							<a href="https://forkbomb.solutions/component/zenswarm-oracles/" target="_blank">
-								Zenswarm
-							</a>
-						</li>
-						<li>&nbsp;</li>
-					</ul>
-				</span>
-				in the Zenroom ecosystem
-			</div>
-			<div class="pt-4">
-				<div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4">
-					<div>
-						Deploy this PWA to the <br />
-						<ul class="underline">
-							<li>
-								<a href="https://docs.pwabuilder.com/#/builder/android"> Google Play Store </a>
-							</li>
-							<li>
-								<a href="https://docs.pwabuilder.com/#/builder/app-store"> iOS App Store </a>
-							</li>
-							<li>
-								<a href="https://docs.pwabuilder.com/#/builder/windows"> Microsft Store </a>
-							</li>
-						</ul>
-					</div>
-					<div>
-						crafted with ❤️‍🔥 by
-						<a href="https://dyne.org" class="text-red-500 underline"> dyne.org </a>
-						hackers
-					</div>
-				</div>
-			</div>
-		</footer>
 		<script>
-            const type = 'Auth1';
-			const contracts = {"Auth1":"Given I have a 'string' named 'email'\nand I have a 'string' named 'password'\n\nThen print the data"}
-			const schemas = {"Auth1":{"type":"object","properties":{"email":{"type":"string","example":"uYi7H@example.com"},"password":{"type":"string","example":"testtest"}},"required":["email","password"]}}
+			// get url
+			const paramsIdx = document.URL.indexOf('?');
+			const baseUrl = document.URL.substring(0, paramsIdx - "authorize".length - 1);
+			const params = {};
+			if (paramsIdx != -1) {
+				const pairs = document.URL.substring(paramsIdx + 1, document.URL.length).split('&');
+				for (const pair of pairs) {
+					const nameVal = pair.split('=');
+					params[nameVal[0]] = nameVal[1];
+				}
+			}
+			// filled by make authorize
+			const contracts = {}
+			const schemas = {}
 
 			const highlight = (json) => {
 				json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -186,37 +130,58 @@
 				);
 			};
 
-			const editor = new JSONEditor(document.getElementById('form'), {
-				schema: schemas[type],
-				compact: true,
-				disable_collapse: true,
-				disable_edit_json: true,
-				disable_properties: true,
-				required_by_default: true,
-				show_errors: 'interaction',
-				use_name_attributes: false,
-				theme: 'tailwind',
-				iconlib: 'spectre'
-			});
+            fetch(`${baseUrl}/ru_to_toc`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(params)
+			})
+			.then((response) => response.json())
+			.then((toc) => {
+				const type = toc.credential_configuration_id;
+				const editor = new JSONEditor(document.getElementById('form'), {
+					schema: schemas[type],
+					compact: true,
+					disable_collapse: true,
+					disable_edit_json: true,
+					disable_properties: true,
+					required_by_default: true,
+					show_errors: 'interaction',
+					use_name_attributes: false,
+					theme: 'tailwind',
+					iconlib: 'spectre'
+				});
 
-			$(document).ready(() => {
-				$('#execute').on('click', async (e) => {
-					$('.htmx-indicator').show();
-					e.preventDefault();
-					$('#error').html('');
-					$('#response').html('');
-					try {
-						const data = editor.getValue();
-                        const respose = slangroom.execute(contracts[type], { data })
-                            .then(async (r) => {
-							    $('#response').html(highlight(JSON.stringify(r.result, null, 3)));
-							    console.log(JSON.stringify(r.result, null, 4));
-						    });
+				$(document).ready(() => {
+					$('#execute').on('click', async (e) => {
+						$('.htmx-indicator').show();
+						e.preventDefault();
 						$('#error').html('');
-					} catch (e) {
-						$('#error').html(e);
-					}
-					$('.htmx-indicator').hide();
+						$('#response').html('');
+						try {
+							const data = editor.getValue();
+							const respose = slangroom.execute(contracts[type], { data })
+								.then((r) => {
+									/* waiting for the API to be there
+									fetch(`${baseUrl}/ru_to_ac`, {
+										method: 'POST',
+										headers: { 'Content-Type': 'application/json' },
+										body: JSON.stringify({...params, ...(r.result)})
+									})
+									.then((response) => response.json())
+									.then((ac) => {
+										console.log(ac)
+										$('#response').html(highlight(ac));
+									})
+									*/
+									$('#response').html(highlight(JSON.stringify(r.result, null, 3)));
+									console.log(JSON.stringify(r.result, null, 4));
+								});
+							$('#error').html('');
+						} catch (e) {
+							$('#error').html(e);
+						}
+						$('.htmx-indicator').hide();
+					});
 				});
 			});
 		</script>

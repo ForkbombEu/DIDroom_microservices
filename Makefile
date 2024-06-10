@@ -92,8 +92,8 @@ authorize:
 		jq --arg name $$name --arg contract "$$(sed -z 's/\n/\\n/g' $$f)" '.[$$name] = $$contract ' ${tmp_zen} > ${tmp} && mv ${tmp} ${tmp_zen}; \
 		fi; \
 	done; \
-	sed -i "s/\(const contracts = JSON\.parse\).*/\1$$(jq -r tostring ${tmp_zen})/" public/authz_server/authorize; \
-	sed -i "s/\(const schemas = JSON\.parse\).*/\1$$(jq -r tostring ${tmp_schema})/" public/authz_server/authorize;
+	sed -i "s/\(const contracts = \).*/\1$$(jq -r tostring ${tmp_zen})/" public/authz_server/authorize; \
+	sed -i "s/\(const schemas = \).*/\1$$(jq -r tostring ${tmp_schema})/" public/authz_server/authorize;
 	@rm ${tmp_schema} ${tmp_zen}
 
 up: UP_PORT?=3000
