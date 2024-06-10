@@ -1,0 +1,10 @@
+Given I have a 'string dictionary' named 'authorization_details'
+and I have a 'time' named 'expires_in'
+
+When I create the 'string dictionary' named 'holder_claims'
+and I set 'I have been verified' to 'true' as 'string'
+and I move 'I have been verified' in 'holder_claims'
+
+Then print the 'holder_claims'
+and print the 'expires_in'
+and print the 'authorization_details'
