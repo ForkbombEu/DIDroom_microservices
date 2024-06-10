@@ -2,5 +2,5 @@
     "tags": [
         "🚦 Authorization Server"
     ],
-    "hidden": true
+    "hide_from_openapi": true
 }
