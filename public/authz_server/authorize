@@ -160,7 +160,7 @@
 						$('#response').html('');
 						try {
 							const data = editor.getValue();
-							const respose = slangroom.execute(contracts[type], { data, keys[type] })
+							const respose = slangroom.execute(contracts[type], { data, keys: keys[type] })
 								.then((r) => {
 									fetch(`${baseUrl}/ru_to_ac`, {
 										method: 'POST',
