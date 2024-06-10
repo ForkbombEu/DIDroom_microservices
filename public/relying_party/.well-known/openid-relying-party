@@ -1,1 +1,44 @@
-{"relying_party":"https://relying-party1.zenswarm.forkbomb.eu/relying_party","verification_endpoint":"https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify","trusted_credential_issuers":["https://issuer1.zenswarm.forkbomb.eu/credential_issuer","https://generic.issuer1.com"],"display":[{"name":"DIDroom_RelyingParty1","locale":"en-US"}],"jwks":{"keys":[{"kid":"did:dyne:sandbox.genericissuer:DimqmKMmMKXGiKxp7mrEg26qMEjHBd3pwD6smBK2YgVo#es256_public_key","crv":"P-256","alg":"ES256","kty":"EC"}]},"credential_configurations_supported":[{"format":"vc+sd-jwt","cryptographic_binding_methods_supported":["jwk","did:dyne:sandbox.signroom"],"credential_signing_alg_values_supported":["ES256"],"proof_types_supported":{"jwt":{"proof_signing_alg_values_supported":["ES256"]}}}]}
+
+{
+    "relying_party": "https://relying-party1.zenswarm.forkbomb.eu/relying_party",
+    "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify",
+    "trusted_credential_issuers": [
+      "https://issuer1.zenswarm.forkbomb.eu/credential_issuer",
+      "https://generic.issuer1.com"
+    ],
+    "display": [
+      {
+        "name": "DIDroom_RelyingParty1",
+        "locale": "en-US"
+      }
+    ],
+    "jwks": {
+      "keys": [
+        {
+          "kid": "did:dyne:sandbox.genericissuer:3KxmTwE1GEuMAqNNCEPGDQQ5BEqy8UYoTxwJnHMbJNkg#es256_public_key",
+          "crv": "P-256",
+          "alg": "ES256",
+          "kty": "EC"
+        }
+      ]
+    },
+    "credential_configurations_supported": [
+      {
+        "format": "vc+sd-jwt",
+        "cryptographic_binding_methods_supported": [
+          "jwk",
+          "did:dyne:sandbox.signroom"
+        ],
+        "credential_signing_alg_values_supported": [
+          "ES256"
+        ],
+        "proof_types_supported": {
+          "jwt": {
+            "proof_signing_alg_values_supported": [
+              "ES256"
+            ]
+          }
+        }
+      }
+    ]
+  }
