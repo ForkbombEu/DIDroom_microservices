@@ -161,7 +161,6 @@
 							const data = editor.getValue();
 							const respose = slangroom.execute(contracts[type], { data })
 								.then((r) => {
-									/* waiting for the API to be there
 									fetch(`${baseUrl}/ru_to_ac`, {
 										method: 'POST',
 										headers: { 'Content-Type': 'application/json' },
@@ -169,13 +168,10 @@
 									})
 									.then((response) => response.json())
 									.then((ac) => {
-										console.log(ac)
-										$('#response').html(highlight(ac));
+										$('#response').html(highlight(JSON.stringify(ac, null, 4)));
+										window.parent.postMessage(JSON.stringify(ac), '*');
+										// console.log(JSON.stringify(ac, null, 4));
 									})
-									*/
-									window.parent.postMessage(JSON.stringify(r.result), '*');
-									$('#response').html(highlight(JSON.stringify(r.result, null, 3)));
-									console.log(JSON.stringify(r.result, null, 4));
 								})
 								.catch((e) => {
 									$('#error').html(e);
