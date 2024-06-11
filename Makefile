@@ -80,12 +80,13 @@ authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
 authorize: tmp_schema := $(shell mktemp)
 authorize: tmp_keys := $(shell mktemp)
+authorize: AUTHZ_FILE?=public/authz_server/authorize
 authorize: ## 📦 Setup the authorize page
 authorize:
 	@echo "{}" > ${tmp_schema}
 	@echo "{}" > ${tmp_zen}
 	@echo "{}" > ${tmp_keys}
-	@if [ -d authz_server/custom_code ] && [ -f public/authz_server/authorize ]; then \
+	@if [ -d authz_server/custom_code ] && [ -f ${AUTHZ_FILE} ]; then \
 		for f in authz_server/custom_code/*; do \
 			name=$$(echo $$f | rev | cut -d'/' -f1 | rev | cut -d'.' -f1); \
 			ext=$$(echo $$f | cut -d'.' -f2-); \
@@ -97,9 +98,9 @@ authorize:
 			jq --arg name $$name '.[$$name] = input ' ${tmp_keys} $$f > ${tmp} && mv ${tmp} ${tmp_keys}; \
 			fi; \
 		done; \
-		awk -v c="$$(jq -r tostring ${tmp_zen})" '{gsub ("const contracts = .*", "const contracts = " c); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
-		awk -v s="$$(jq -r tostring ${tmp_schema})"  '{gsub ("const schemas = .*", "const schemas = " s); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
-		awk -v k="$$(jq -r tostring ${tmp_keys})"          '{gsub ("const keys = .*", "const keys = " k); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
+		awk -v c="$$(jq -r tostring ${tmp_zen})" '{gsub ("const contracts = .*", "const contracts = " c); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
+		awk -v s="$$(jq -r tostring ${tmp_schema})"  '{gsub ("const schemas = .*", "const schemas = " s); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
+		awk -v k="$$(jq -r tostring ${tmp_keys})"          '{gsub ("const keys = .*", "const keys = " k); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
 	fi;
 	@rm ${tmp_schema} ${tmp_zen} ${tmp_keys}
 
