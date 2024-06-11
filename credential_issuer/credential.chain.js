@@ -6,21 +6,13 @@
                 zencodeFromFile: "credential_issuer/credential_1_verify.zencode",
                 keysFromFile: "credential_issuer/credential.keys.json",
                 onAfter: (result, zencode) => {
-                    if (customChain.steps.length == 3) {
-                        customChain.steps.splice(2, 0, {
+                    customChain.steps[2] = {
                             id: "credential_3_custom_code",
                             zencodeFromFile: `credential_issuer/custom_code/${JSON.parse(result).vct}.zen`,
                             keysFromFile: `credential_issuer/custom_code/${JSON.parse(result).vct}.keys.json`,
                             dataFromStep: "credential_2_token_to_introspection"
-                        })
-                    } else {
-                        customChain.steps[2] = {
-                            id: "credential_3_custom_code",
-                            zencodeFromFile: `credential_issuer/custom_code/${JSON.parse(result).vct}.zen`,
-                            keysFromFile: `credential_issuer/custom_code/${JSON.parse(result).vct}.keys.json`,
-                            dataFromStep: "credential_2_token_to_introspection"
-                        }
                     }
+                    console.log(customChain)
                 }
             },
             {
@@ -28,6 +20,7 @@
                 zencodeFromFile: "credential_issuer/credential_2_token_to_introspection.zencode",
                 dataFromStep: "credential_1_verify"
             },
+            {},
             {
                 id: "credential_4_sd_jwt",
                 zencodeFromFile: "credential_issuer/credential_4_sd_jwt.zencode",
