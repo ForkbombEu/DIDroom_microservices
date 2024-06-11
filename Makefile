@@ -97,9 +97,9 @@ authorize:
 			jq --arg name $$name '.[$$name] = input ' ${tmp_keys} $$f > ${tmp} && mv ${tmp} ${tmp_keys}; \
 			fi; \
 		done; \
-		awk -v c=$$(jq -r tostring ${tmp_zen}) '{gsub ("const contracts = .*", "const contracts = " c); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
-		awk -v s=$$(jq -r tostring ${tmp_schema})  '{gsub ("const schemas = .*", "const schemas = " s); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
-		awk -v k=$$(jq -r tostring ${tmp_keys})          '{gsub ("const keys = .*", "const keys = " k); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
+		awk -v c="$$(jq -r tostring ${tmp_zen})" '{gsub ("const contracts = .*", "const contracts = " c); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
+		awk -v s="$$(jq -r tostring ${tmp_schema})"  '{gsub ("const schemas = .*", "const schemas = " s); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
+		awk -v k="$$(jq -r tostring ${tmp_keys})"          '{gsub ("const keys = .*", "const keys = " k); print}' public/authz_server/authorize > ${tmp} && mv ${tmp} public/authz_server/authorize; \
 	fi;
 	@rm ${tmp_schema} ${tmp_zen} ${tmp_keys}
 
