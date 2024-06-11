@@ -76,30 +76,32 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			;; \
 	esac
 
-# TODO: perform only wwhen public/authz_server is present
 authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
 authorize: tmp_schema := $(shell mktemp)
 authorize: tmp_keys := $(shell mktemp)
+authorize: AUTHZ_FILE?=public/authz_server/authorize
 authorize: ## 📦 Setup the authorize page
 authorize:
 	@echo "{}" > ${tmp_schema}
 	@echo "{}" > ${tmp_zen}
 	@echo "{}" > ${tmp_keys}
-	@for f in authz_server/custom_code/*; do \
-		name=$$(echo $$f | rev | cut -d'/' -f1 | rev | cut -d'.' -f1); \
-		ext=$$(echo $$f | cut -d'.' -f2-); \
-		if [ -f $$f ] && [ "$$ext" = "schema.json" ]; then \
-		jq --arg name $$name '.[$$name] = input ' ${tmp_schema} $$f > ${tmp} && mv ${tmp} ${tmp_schema}; \
-		elif [ -f $$f ] && [ "$$ext" = "zen" ]; then \
-		jq --arg name $$name --arg contract "$$(sed -z 's/\n/\\n/g' $$f)" '.[$$name] = $$contract ' ${tmp_zen} > ${tmp} && mv ${tmp} ${tmp_zen}; \
-		elif [ -f $$f ] && [ "$$ext" = "keys.json" ]; then \
-		jq --arg name $$name '.[$$name] = input ' ${tmp_keys} $$f > ${tmp} && mv ${tmp} ${tmp_keys}; \
-		fi; \
-	done; \
-	sed -i "s/\(const contracts = \).*/\1$$(jq -r tostring ${tmp_zen})/" public/authz_server/authorize; \
-	sed -i "s/\(const schemas = \).*/\1$$(jq -r tostring ${tmp_schema})/" public/authz_server/authorize; \
-	sed -i "s/\(const keys = \).*/\1$$(jq -r tostring ${tmp_keys})/" public/authz_server/authorize;
+	@if [ -d authz_server/custom_code ] && [ -f ${AUTHZ_FILE} ]; then \
+		for f in authz_server/custom_code/*; do \
+			name=$$(echo $$f | rev | cut -d'/' -f1 | rev | cut -d'.' -f1); \
+			ext=$$(echo $$f | cut -d'.' -f2-); \
+			if [ -f $$f ] && [ "$$ext" = "schema.json" ]; then \
+			jq --arg name $$name '.[$$name] = input ' ${tmp_schema} $$f > ${tmp} && mv ${tmp} ${tmp_schema}; \
+			elif [ -f $$f ] && [ "$$ext" = "zen" ]; then \
+			jq --arg name $$name --arg contract "$$(sed -z 's/\n/\\n/g' $$f)" '.[$$name] = $$contract ' ${tmp_zen} > ${tmp} && mv ${tmp} ${tmp_zen}; \
+			elif [ -f $$f ] && [ "$$ext" = "keys.json" ]; then \
+			jq --arg name $$name '.[$$name] = input ' ${tmp_keys} $$f > ${tmp} && mv ${tmp} ${tmp_keys}; \
+			fi; \
+		done; \
+		awk -v c="$$(jq -r tostring ${tmp_zen})" '{gsub ("const contracts = .*", "const contracts = " c); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
+		awk -v s="$$(jq -r tostring ${tmp_schema})"  '{gsub ("const schemas = .*", "const schemas = " s); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
+		awk -v k="$$(jq -r tostring ${tmp_keys})"          '{gsub ("const keys = .*", "const keys = " k); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
+	fi;
 	@rm ${tmp_schema} ${tmp_zen} ${tmp_keys}
 
 up: UP_PORT?=3000

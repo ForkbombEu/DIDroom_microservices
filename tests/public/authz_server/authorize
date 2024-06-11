@@ -176,11 +176,9 @@
 								})
 								.catch((e) => {
 									$('#error').html(e);
-									window.parent.postMessage((e as Error).message, '*');
 								})
 						} catch (e) {
 							$('#error').html(e);
-							window.parent.postMessage((e as Error).message, '*');
 						}
 						$('.htmx-indicator').hide();
 					});
