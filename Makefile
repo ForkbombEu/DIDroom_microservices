@@ -76,6 +76,7 @@ announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
 			;; \
 	esac
 
+# TODO: perform only wwhen public/authz_server is present
 authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
 authorize: tmp_schema := $(shell mktemp)
@@ -103,7 +104,7 @@ authorize:
 
 up: UP_PORT?=3000
 up: UP_HOSTNAME?=${hn}
-up: ncr announce auhtorize ## 🚀 Up & run the project
+up: ncr announce authorize ## 🚀 Up & run the project
 	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
 
 
