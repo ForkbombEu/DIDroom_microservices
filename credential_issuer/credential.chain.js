@@ -12,7 +12,6 @@
                             keysFromFile: `credential_issuer/custom_code/${JSON.parse(result).vct}.keys.json`,
                             dataFromStep: "credential_2_token_to_introspection"
                     }
-                    console.log(customChain)
                 }
             },
             {
