@@ -1,8 +1,0 @@
-Given I have a 'string' named 'email'
-and I have a 'string' named 'password'
-
-When I set 'id' to '123456789' as 'string'
-and I create the 'string dictionary' named 'data'
-and I move 'id' in 'data'
-
-Then print the data
