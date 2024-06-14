@@ -192,7 +192,8 @@ test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_se
 	git restore authz_server/.autorun/identity.keys.json
 	git restore authz_server/par.keys.json
 	git restore authz_server/token.keys.json
-	git restore authz_server/authorize.keys.json
+	git restore authz_server/ru_to_ac.keys.json
+	git restore authz_server/ru_to_toc.keys.json
 	git restore credential_issuer/credential.keys.json
 	git restore credential_issuer/.autorun/identity.keys.json
 	git restore relying_party/verify.keys.json
