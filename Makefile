@@ -121,7 +121,8 @@ tests-well-known:
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/.autorun/identity.keys.json > ${tmp} && mv ${tmp} authz_server/.autorun/identity.keys.json
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/par.keys.json > ${tmp} && mv ${tmp} authz_server/par.keys.json
 	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/token.keys.json > ${tmp} && mv ${tmp} authz_server/token.keys.json
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/authorize.keys.json > ${tmp} && mv ${tmp} authz_server/authorize.keys.json
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/ru_to_ac.keys.json > ${tmp} && mv ${tmp} authz_server/ru_to_ac.keys.json
+	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/ru_to_toc.keys.json > ${tmp} && mv ${tmp} authz_server/ru_to_toc.keys.json
 # ci
 	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/credential.keys.json > ${tmp} && mv ${tmp} credential_issuer/credential.keys.json
 	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/.autorun/identity.keys.json > ${tmp} && mv ${tmp} credential_issuer/.autorun/identity.keys.json
@@ -151,7 +152,18 @@ verifier_up: ncr
 push_server_up: ncr
 	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
 
-test: tests-deps tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
+test_custom_code:
+# custom code
+	@for f in authz_server/custom_code/*.example; do \
+		name=$$(echo $$f | rev | cut -d'.' -f2- | rev); \
+		cp $$f $${name}; \
+	done;
+	@for f in credential_issuer/custom_code/*.example; do \
+		name=$$(echo $$f | rev | cut -d'.' -f2- | rev); \
+		cp $$f $${name}; \
+	done;
+
+test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
@@ -180,7 +192,8 @@ test: tests-deps tests-well-known tests/mobile_zencode authz_server_up credentia
 	git restore authz_server/.autorun/identity.keys.json
 	git restore authz_server/par.keys.json
 	git restore authz_server/token.keys.json
-	git restore authz_server/authorize.keys.json
+	git restore authz_server/ru_to_ac.keys.json
+	git restore authz_server/ru_to_toc.keys.json
 	git restore credential_issuer/credential.keys.json
 	git restore credential_issuer/.autorun/identity.keys.json
 	git restore relying_party/verify.keys.json
