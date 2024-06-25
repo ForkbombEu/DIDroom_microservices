@@ -1,10 +1,11 @@
 # env variables
-$(if $(wildcard ".env"),,$(shell cp .env.example .env))
+$(if $(wildcard .env),, $(shell cp .env.example .env))
 include .env
 
 .DEFAULT_GOAL := up
 .PHONY: help
 TEST_DEPS := git jq npx
+DEPLOY_DEPS := wget jq awk
 
 hn=$(shell hostname)
 
@@ -20,12 +21,8 @@ ifneq ($(OS),Windows_NT)
 	endif
 endif
 
-WGET := $(shell command -v wget 2> /dev/null)
-
 all:
-ifndef WGET
-    $(error "🥶 wget is not available! Please retry after you install it")
-endif
+	$(foreach exec,$(DEPLOY_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
 
 help: ## 🛟  Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
