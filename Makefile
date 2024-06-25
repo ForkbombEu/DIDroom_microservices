@@ -33,45 +33,23 @@ ncr: ## 📦 Install and setup the server
 	@echo "📦 Setup is done!"
 
 announce: ANN_PORT?=8000
-announce: ANN_AS_PORT?=8000
-announce: ANN_CI_PORT?=8001
-announce: ANN_RP_PORT?=8002
-announce: SERVICE?=all
-announce: ncr ## 📡 Create and send a DID request for the oracle [SERVICE]
-	@case ${SERVICE} in \
-		all) \
-			./ncr -p ${ANN_AS_PORT} -z ./authz_server --public-directory public/authz_server & echo $$! > .announce.as.pid; \
-			./ncr -p ${ANN_CI_PORT} -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .announce.ci.pid; \
-			./ncr -p ${ANN_RP_PORT} -z ./relying_party --public-directory public/relying_party & echo $$! > .announce.rp.pid; \
-			for port in ${ANN_AS_PORT} ${ANN_CI_PORT} ${ANN_RP_PORT}; do \
-				timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
-					echo "Port $$port is not yet reachable, waiting..."; \
-					sleep 1; \
-					done' _ "$$port" || { \
-						echo "Timeout while waiting for port $$port to be reachable"; \
-						exit 1; \
-					}; \
-			done; \
-			kill `cat .announce.as.pid` && rm .announce.as.pid; \
-			kill `cat .announce.ci.pid` && rm .announce.ci.pid; \
-			kill `cat .announce.rp.pid` && rm .announce.rp.pid; \
-			;; \
-		authz_server|credential_issuer|relying_party) \
-			./ncr -p ${ANN_PORT} -z ./${SERVICE} --public-directory public/${SERVICE} & echo $$! > .announce.pid; \
-			timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
-				echo "Port $$port is not yet reachable, waiting..."; \
+announce: ncr ## 📡 Create and send a DID request for the service
+	@service=$$(ls | grep "authz_server\|credential_issuer\|relying_party" --color=never | awk '{printf "%s ", $$1}'); \
+	if [ "$${service}" != "" ]; then echo "🐣 Announce services: $${service}"; else echo "😢 No service found"; false; fi; \
+	for s in $${service}; do \
+		./ncr -p ${ANN_PORT} -z $$s --public-directory public/$$s & echo $$! > .announce.pid; \
+		timeout --foreground 30s bash -c ' \
+			until nc -z localhost $$1; do \
+				echo "Port $$1 is not yet reachable, waiting..."; \
 				sleep 1; \
-				done' _ "${ANN_PORT}" || { \
-					echo "Timeout while waiting for port $$port to be reachable"; \
-					exit 1; \
-				}; \
-			kill `cat .announce.pid` && rm .announce.pid; \
-			;; \
-		*) \
-			echo "Unknown service: ${SERVICE}. Known service are: authz_server, credential_issuer, relying_party or all"; \
+			done' _ "${ANN_PORT}" \
+		|| { \
+			echo "Timeout while waiting for port $$1 to be reachable"; \
 			exit 1; \
-			;; \
-	esac
+		}; \
+		kill `cat .announce.pid` && rm .announce.pid; \
+		sleep 1; \
+	done
 
 authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
