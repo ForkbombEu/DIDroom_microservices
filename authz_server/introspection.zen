@@ -26,7 +26,7 @@ When I move 'issuer' to 'url' in 'server'
 Then print the 'bearer_authorization_string'
 Then print the 'server'
 
-Then I send token 'bearer_authorization_string' and send server_data 'server' and get claims from token and output into 'output_claims'
+Then I send token 'bearer_authorization_string' and send server_data 'server' and get authorization details from token and output into 'output_claims'
 Then I send object 'output_claims' and send path 'holder_claims_path' and manipulate and get and output into 'holder_claims'
 
 Then I manipulate and delete and output into 'server'
