@@ -2,36 +2,36 @@ Scenario 'sd_jwt': verify presentation
 Scenario 'w3c': create jws proof
 Scenario 'es256' : verify SD-JWT signature
 
+# keys
 Given I have a 'keyring'
-Given I have a 'time' named 'expires_in'
 
+# data
 Given I have a 'string dictionary' named 'body'
+Given I have a 'string dictionary' named 'relying_party_well-known'
 Given I have a 'string' named 'id'
+Given I have a 'time' named 'expires_in'
 Given I have a 'signed selective disclosure' named 'vp'
-
 Given I have a 'es256 public key' from 'credential_issuer'
 
-Given I have a 'string dictionary' named 'relying_party_well-known'
-Given I have a 'string' named 'relying_party' in 'relying_party_well-known'
-
 #verify the verifiable presentation and create 'result' the array of disclosed claims
-When I create the 'string array' named 'result'
+When I create the 'string array' named 'vp_result'
 
 If I verify signed selective disclosure 'vp' issued by 'credential_issuer' is valid
     When I pickup from path 'vp.disclosures'
     Foreach 'dis_array' in 'disclosures'
         When I create the copy of element '2' from array 'dis_array'
-        When I move the 'copy' in 'result'
+        When I move the 'copy' in 'vp_result'
     EndForeach
 EndIf
 
 ## 1. Create response
-
-When I create the 'string dictionary' named 'response'
-When I move the 'result' in 'response'
-When I move the 'id' in 'response'
 When I create the timestamp
 When I create result of 'timestamp' + 'expires_in'
+When I pickup from path 'relying_party_well-known.relying_party'
+
+When I create the 'string dictionary' named 'response'
+When I move 'vp_result' to 'result' in 'response'
+When I move 'id' in 'response'
 When I move 'timestamp' to 'iat' in 'response'
 When I move 'result' to 'exp' in 'response'
 When I move 'relying_party' to 'iss' in 'response'

@@ -3,9 +3,8 @@ Given I have a 'string' named 'given_alg'
 Given I have a 'string' named 'did'
 
 Foreach 'jwk' in 'keys'
-    When I pickup from path 'jwk.alg'
-    If I verify 'alg' is equal to 'given_alg'
-        When I copy 'kid' from 'jwk' to 'kid'
+    If I verify 'given_alg' is equal to 'alg' in 'jwk'
+        When I pickup from path 'jwk.kid'
     EndIf
 EndForeach
 
