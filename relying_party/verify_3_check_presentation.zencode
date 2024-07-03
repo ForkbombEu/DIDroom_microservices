@@ -14,13 +14,17 @@ Given I have a 'signed selective disclosure' named 'vp'
 Given I have a 'es256 public key' from 'credential_issuer'
 
 #verify the verifiable presentation and create 'result' the array of disclosed claims
-When I create the 'string array' named 'vp_result'
+When I create the 'string dictionary' named 'vp_result'
 
 If I verify signed selective disclosure 'vp' issued by 'credential_issuer' is valid
     When I pickup from path 'vp.disclosures'
     Foreach 'dis_array' in 'disclosures'
         When I create the copy of element '2' from array 'dis_array'
-        When I move the 'copy' in 'vp_result'
+        When I rename 'copy' to 'key'
+        When I create the copy of element '3' from array 'dis_array'
+        When I rename 'copy' to named by 'key'
+        When I move named by 'key' in 'vp_result'
+        When I remove 'key'
     EndForeach
 EndIf
 
