@@ -4,7 +4,4 @@ Given I have a 'string dictionary' in path 'result.didDocument'
 
 When I create 'es256' public key from did document 'didDocument'
 
-When I create the 'string dictionary' named 'credential_issuer'
-When I move the 'es256 public key' in 'credential_issuer'
-
-Then print the 'credential_issuer' as 'base64'
+Then print the 'es256_public_key' as 'base64' in 'credential_issuer'

@@ -1,19 +1,20 @@
 Scenario 'sd_jwt': verify presentation
 Scenario 'w3c': create jws proof
 
+# keyring
 Given I send path 'secrets_path' and read file content and output into 'secrets'
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
 Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
 
-#read relying_party well-known
+# wk
 Given I send path 'well-known_path' and read file content and output into 'relying_party_well-known'
 
-#data from the previous slangroom
-Given I have a 'string dictionary' named 'relying_party_well-known'
-
-#data from verify.keys.json
+# data from slangroom
 Given my name is in a 'string' named 'controller'
 Given I have the 'keyring' in 'personal_keyring'
+Given I have a 'string dictionary' named 'relying_party_well-known'
+
+# keys
 Given I have a 'string' named 'credential_issuer_well-known_api'
 Given I have a 'string' named 'did'
 Given I have a 'string' named 'f'
@@ -21,7 +22,7 @@ Given I have a 'string' named 'a'
 Given I have a 'string' named 'firebase_url'
 Given I have a 'time' named 'expires_in'
 
-#data from the verifier
+# data
 Given I have a 'string' named 'm'
 Given I have a 'string' named 'registrationToken'
 Given I have a 'string' named 'id'
@@ -57,43 +58,36 @@ When I move the 'id' in 'data_3'
 When I move the 'vp_string' to 'vp' in 'data_3'
 When I move the 'expires_in' in 'data_3'
 
-#contruct keys for script_3
-When I create the 'string dictionary' named 'keys_3'
-When I move the 'keyring' in 'keys_3'
-
 Then print the 'iss' as 'string'
 Then print the 'data_1'
 Then print the 'data_3'
-Then print the 'keys_3' as 'keyring'
+Then print the 'keyring' as 'keyring' in 'keys_3'
 Then print the 'url'
 
 Then I connect to 'iss' and do get and output into 'credential_issuer_well-known'
-Then I send keys 'credential_issuer_well-known' and send data 'data_1' and send script 'zen_1' and execute zencode and output into 'zen_1_output'
+Then I send keys 'credential_issuer_well-known' and send data 'data_1' and send script 'zen_1_kid_from_wk' and execute zencode and output into 'zen_1_output'
 
 Then I send object 'zen_1_output' and send path 'did_path' and manipulate and get and output into 'did_url'
 Then I connect to 'did_url' and do get and output into 'credential_issuer_did'
 
-Then I send keys 'credential_issuer_did' and send data 'data_2' and send script 'zen_2' and execute zencode and output into 'zen_2_output'
+Then I send keys 'credential_issuer_did' and send data 'data_2' and send script 'zen_2_pk_from_did' and execute zencode and output into 'zen_2_output'
 
 Then I send object 'zen_2_output' and send path 'credential_issuer_path' and manipulate and get and output into 'ci'
 Then I send object 'data_3' and send path 'credential_issuer_path' and send value 'ci' and manipulate and set
 
-Then I send keys 'keys_3' and send data 'data_3' and send script 'zen_3' and execute zencode and output into 'zen_3_output'
+Then I send keys 'keys_3' and send data 'data_3' and send script 'zen_3_check_presentation' and execute zencode and output into 'zen_3_output'
 Then I send object 'zen_3_output' and send path 'body_path' and manipulate and get and output into 'body'
 
-Then I manipulate and delete and output into 'zen_3_output'
-Then I manipulate and delete and output into 'zen_2_output'
-Then I manipulate and delete and output into 'zen_1_output'
-Then I manipulate and delete and output into 'keys_1'
-Then I manipulate and delete and output into 'keys_2'
-Then I manipulate and delete and output into 'keys_3'
-Then I manipulate and delete and output into 'data_1'
-Then I manipulate and delete and output into 'data_2'
-Then I manipulate and delete and output into 'data_3'
-Then I manipulate and delete and output into 'credential_issuer_did'
-Then I manipulate and delete and output into 'credential_issuer_well-known'
 Then I manipulate and delete and output into 'iss'
+Then I manipulate and delete and output into 'data_1'
+Then I manipulate and delete and output into 'data_3'
+Then I manipulate and delete and output into 'keys_3'
+Then I manipulate and delete and output into 'credential_issuer_well-known'
+Then I manipulate and delete and output into 'zen_1_output'
 Then I manipulate and delete and output into 'did_url'
+Then I manipulate and delete and output into 'credential_issuer_did'
+Then I manipulate and delete and output into 'zen_2_output'
 Then I manipulate and delete and output into 'ci'
+Then I manipulate and delete and output into 'zen_3_output'
 
 Then I connect to 'url' and send object 'body' and do post and output into 'server_response'
