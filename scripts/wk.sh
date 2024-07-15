@@ -19,7 +19,7 @@ setup() {
         -e "s|{{ ci_name }}|DIDroom_Test_Issuer|" \
         public/credential_issuer/.well-known/openid-credential-issuer
     tmp=$(mktemp)
-    jq '.credential_configurations_supported = [
+    jq --indent 4 '.credential_configurations_supported = [
             {
                 "format": "vc+sd-jwt",
                 "cryptographic_binding_methods_supported": [
@@ -66,6 +66,9 @@ setup() {
                 }
             }
         ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
+    jq --indent 4 '.authorization_servers = [
+            "http://localhost:3000"
+        ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
 
     ## rp
     if [ ! -f public/relying_party/.well-known/openid-relying-party.tmp ]; then
@@ -75,6 +78,9 @@ setup() {
         -e "s|{{ rp_url }}|http://localhost:3003|" \
         -e "s|{{ rp_name }}|DIDroom_Test_RP|" \
         public/relying_party/.well-known/openid-relying-party
+    jq --indent 4 '.trusted_credential_issuers = [
+            "http://localhost:3001"
+        ]' public/relying_party/.well-known/openid-relying-party > $tmp && mv $tmp public/relying_party/.well-known/openid-relying-party
 }
 
 cleanup() {
