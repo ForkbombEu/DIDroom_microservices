@@ -1,13 +1,13 @@
 {
-	"authorization_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/authorize",
-	"pushed_authorization_request_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/par",
-	"token_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/token",
-	"introspection_endpoint": "https://authz-server1.zenswarm.forkbomb.eu/authz_server/introspection",
-	"issuer": "https://authz-server1.zenswarm.forkbomb.eu/authz_server",
+	"authorization_endpoint": "{{ as_url }}/authorize",
+	"pushed_authorization_request_endpoint": "{{ as_url }}/par",
+	"token_endpoint": "{{ as_url }}/token",
+	"introspection_endpoint": "{{ as_url }}/introspection",
+	"issuer": "{{ as_url }}",
 	"jwks": {
 		"keys": [
 			{
-				"kid": "did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5#es256_public_key",
+				"kid": "{{ as_did }}#es256_public_key",
 				"crv": "P-256",
 				"alg": "ES256",
 				"kty": "EC"
@@ -15,9 +15,7 @@
 		]
 	},
 	"scopes_supported": [
-		"Identity",
-		"Auth1",
-		"above16"
+		"{{ as_scopes }}"
 	],
 	"dpop_signing_alg_values_supported": [
 		"ES256"

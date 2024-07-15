@@ -1,20 +1,19 @@
 {
-  "relying_party": "https://relying-party1.zenswarm.forkbomb.eu/relying_party",
-  "verification_endpoint": "https://relying-party1.zenswarm.forkbomb.eu/relying_party/verify",
+  "relying_party": "{{ rp_url }}",
+  "verification_endpoint": "{{ rp_url }}/verify",
   "trusted_credential_issuers": [
-    "https://issuer1.zenswarm.forkbomb.eu/credential_issuer",
-    "https://generic.issuer1.com"
+    "{{ ci_urls }}"
   ],
   "display": [
     {
-      "name": "DIDroom_RelyingParty1",
+      "name": "{{ rp_name }}",
       "locale": "en-US"
     }
   ],
   "jwks": {
     "keys": [
       {
-        "kid": "did:dyne:sandbox.genericissuer:3KxmTwE1GEuMAqNNCEPGDQQ5BEqy8UYoTxwJnHMbJNkg#es256_public_key",
+        "kid": "{{ rp_did }}#es256_public_key",
         "crv": "P-256",
         "alg": "ES256",
         "kty": "EC"
