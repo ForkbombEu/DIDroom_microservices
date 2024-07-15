@@ -90,36 +90,23 @@ up: ncr announce authorize ## 🚀 Up & run the project
 tests-deps: ## 🧪 Check test dependencies
 	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
 
-tests-well-known: tmp := $(shell mktemp)
 tests-well-known:
-# as
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/.autorun/identity.keys.json > ${tmp} && mv ${tmp} authz_server/.autorun/identity.keys.json
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/par.keys.json > ${tmp} && mv ${tmp} authz_server/par.keys.json
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/token.keys.json > ${tmp} && mv ${tmp} authz_server/token.keys.json
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/ru_to_ac.keys.json > ${tmp} && mv ${tmp} authz_server/ru_to_ac.keys.json
-	@jq '."well-known_path" = "tests/public/authz_server/.well-known/oauth-authorization-server"' authz_server/ru_to_toc.keys.json > ${tmp} && mv ${tmp} authz_server/ru_to_toc.keys.json
-# ci
-	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/credential.keys.json > ${tmp} && mv ${tmp} credential_issuer/credential.keys.json
-	@jq '."well-known_path" = "tests/public/credential_issuer/.well-known/openid-credential-issuer"' credential_issuer/.autorun/identity.keys.json > ${tmp} && mv ${tmp} credential_issuer/.autorun/identity.keys.json
-# rp
-	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying-party"' relying_party/verify.keys.json > ${tmp} && mv ${tmp} relying_party/verify.keys.json
-	@jq '."well-known_path" = "tests/public/relying_party/.well-known/openid-relying-party"' relying_party/.autorun/identity.keys.json > ${tmp} && mv ${tmp} relying_party/.autorun/identity.keys.json
-	@rm -f ${tmp}
+	./scripts/wk.sh setup
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
 
 authz_server_up: ncr
-	./ncr -p 3000 -z ./authz_server --public-directory tests/public/authz_server & echo $$! > .test.authz_server.pid
+	./ncr -p 3000 -z ./authz_server --public-directory public/authz_server & echo $$! > .test.authz_server.pid
 
 credential_issuer_up: ncr
-	./ncr -p 3001 -z ./credential_issuer --public-directory tests/public/credential_issuer & echo $$! > .test.credential_issuer.pid
+	./ncr -p 3001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .test.credential_issuer.pid
 
 mobile_zencode_up: ncr
 	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 
 relying_party_up: ncr
-	./ncr -p 3003 -z ./relying_party --public-directory tests/public/relying_party & echo $$! > .test.relying_party.pid
+	./ncr -p 3003 -z ./relying_party --public-directory public/relying_party & echo $$! > .test.relying_party.pid
 
 verifier_up: ncr
 	./ncr -p 3004 -z ./tests/mobile_zencode/verifier & echo $$! > .test.verifier.pid
@@ -164,15 +151,7 @@ test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_se
 	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
 	rm -fr tests/mobile_zencode
 	@mv relying_party/temp-verify.keys.json relying_party/verify.keys.json
-	git restore authz_server/.autorun/identity.keys.json
-	git restore authz_server/par.keys.json
-	git restore authz_server/token.keys.json
-	git restore authz_server/ru_to_ac.keys.json
-	git restore authz_server/ru_to_toc.keys.json
-	git restore credential_issuer/credential.keys.json
-	git restore credential_issuer/.autorun/identity.keys.json
-	git restore relying_party/verify.keys.json
-	git restore relying_party/.autorun/identity.keys.json
+	@./scripts/wk.sh cleanup
 
 testgen:
 	wget http://localhost:3000/oas.json
@@ -183,3 +162,4 @@ clean:
 	rm -rf tests/mobile_zencode
 	rm -f ncr
 	rm -f .env
+	rm -f .test.*.pid
