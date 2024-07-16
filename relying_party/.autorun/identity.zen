@@ -8,14 +8,19 @@ Scenario credential
 Scenario bbs
 Scenario qp
 
+## see if keyring exists and fails in case it is found
+Given I send command 'command_search_keyring' and execute in shell and output into 'result'
+Given I send path 'secrets_path' and verify file does not exist
+
 ## create and store keyring
 Given I send path 'key_zen_path' and read verbatim file content and output into 'key_zen'
-Given I send keys 'empty_keys' and send data 'key_data' and send script 'key_zen' and execute zencode and output into 'secrets'
+Given I send keys 'empty_keys' and send data 'key_data' and send script 'key_zen' and execute zencode and output secret into 'secrets'
 Given I send path 'secrets_path' and send content 'secrets' and store in file
+Given I send command 'command_store_keyring' and execute in shell and output into 'result'
 
 ## extract data for later
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
 
 ## read well-known
 Given I send path 'well-known_path' and read file content and output into 'well-known'
