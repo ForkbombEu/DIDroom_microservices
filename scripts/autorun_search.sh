@@ -33,8 +33,8 @@ else
 fi
 
 # check if keys are found
-if [ -f "~/.config/didroom/${MS_NAME}.keys.json" ]; then
-    cp "~/.config/didroom/${MS_NAME}.keys.json" ${PWD}/${1}/secret.keys
+if [ -f ~/.config/didroom/${MS_NAME}.keys.json ]; then
+    cp ~/.config/didroom/${MS_NAME}.keys.json ${PWD}/${1}/secrets.keys
     echo "keys found"
     exit 1
 fi
