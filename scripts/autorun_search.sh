@@ -32,9 +32,10 @@ else
     echo "    url: ${MS_URL}" >> ~/.config/didroom/metadata.yaml
 fi
 
+baseUrl=$(awk -F/ '{print $3}' <<<"${MS_URL}")
 # check if keys are found
-if [ -f ~/.config/didroom/${MS_NAME}.keys.json ]; then
-    cp ~/.config/didroom/${MS_NAME}.keys.json ${PWD}/${1}/secrets.keys
+if [ -f ~/.config/didroom/${baseUrl}-${MS_NAME}.keys.json ]; then
+    cp ~/.config/didroom/${baseUrl}-${MS_NAME}.keys.json ${PWD}/${1}/secrets.keys
     echo "keys found"
     exit 1
 fi
