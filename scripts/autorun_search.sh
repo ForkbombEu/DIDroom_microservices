@@ -4,38 +4,52 @@ if [ "${MS_URL}" = "" ] || [ "${MS_NAME}" = "" ]; then
     source .env
 fi
 
-mkdir -p ~/.config/didroom
+baseUrl=$(awk -F/ '{print $3}' <<<"${MS_URL}")
+
+if [ "${XDG_CONFIG_HOME}" = "" ]; then
+    CONFIG_DIR="${HOME}/.config/didroom"
+else
+    CONFIG_DIR="${XDG_CONFIG_HOME}/didroom"
+fi
+METADATA_FILE="${CONFIG_DIR}/metadata.yaml"
+MS_KEYS_FILE="${CONFIG_DIR}/${baseUrl}-${MS_NAME}.keys.json"
+
+mkdir -p ${CONFIG_DIR}
 
 # lock file to prevent concurrent writing to metadata.yaml
-LOCKFILE=~/.config/didroom/.lock
-exec 200>"$LOCKFILE"
+LOCKFILE="${CONFIG_DIR}/.lock"
+exec 200>"${LOCKFILE}"
 flock 200
-trap "flock -u 200; rm -f $LOCKFILE" EXIT
+trap "flock -u 200; rm -f ${LOCKFILE}" EXIT
 
 # create metadata file
-if [ ! -f ~/.config/didroom/metadata.yaml ]; then
-    echo "# This file is generated automatically, do not edit it" > ~/.config/didroom/metadata.yaml
-    echo "name: Deployed microservices" >> ~/.config/didroom/metadata.yaml
-    echo "services:" >> ~/.config/didroom/metadata.yaml
+if [ ! -f "${METADATA_FILE}" ]; then
+    cat << EOF > ${METADATA_FILE}
+# This file is generated automatically, do not edit it
+name: Deployed microservices
+services:
+EOF
 fi
 
 # if the service is already in the metadata file, update its folder and url
 # otherwise add a new one
-n=$(grep -n "${MS_NAME}$" ~/.config/didroom/metadata.yaml | cut -d ":" -f 1)
+n=$(grep -n "${MS_NAME}$" "${METADATA_FILE}" | cut -d ":" -f 1)
 if [ "${n}" != "" ]; then
     tmp=$(mktemp)
-    awk -v nr=$((n+1)) -v val=${PWD} 'NR==nr {$0="    folder: "'"val"'""} 1' ~/.config/didroom/metadata.yaml > $tmp && mv $tmp ~/.config/didroom/metadata.yaml
-    awk -v nr=$((n+2)) -v val=${MS_URL} 'NR==nr {$0="    url: "'"val"'""} 1' ~/.config/didroom/metadata.yaml > $tmp && mv $tmp ~/.config/didroom/metadata.yaml
+    awk -v nr=$((n+1)) -v val=${PWD} 'NR==nr {$0="    folder: "'"val"'""} 1' "${METADATA_FILE}" > $tmp && mv $tmp "${METADATA_FILE}"
+    awk -v nr=$((n+2)) -v val=${MS_URL} 'NR==nr {$0="    url: "'"val"'""} 1' "${METADATA_FILE}" > $tmp && mv $tmp "${METADATA_FILE}"
 else
-    echo "  - name: ${MS_NAME}" >> ~/.config/didroom/metadata.yaml
-    echo "    folder: ${PWD}" >> ~/.config/didroom/metadata.yaml
-    echo "    url: ${MS_URL}" >> ~/.config/didroom/metadata.yaml
+    cat << EOF >> "${METADATA_FILE}"
+  - name: ${MS_NAME}
+    folder: ${PWD}
+    url: ${MS_URL}
+EOF
 fi
 
-baseUrl=$(awk -F/ '{print $3}' <<<"${MS_URL}")
+
 # check if keys are found
-if [ -f ~/.config/didroom/${baseUrl}-${MS_NAME}.keys.json ]; then
-    cp ~/.config/didroom/${baseUrl}-${MS_NAME}.keys.json ${PWD}/${1}/secrets.keys
+if [ -f "${MS_KEYS_FILE}" ]; then
+    cp ${MS_KEYS_FILE} ${PWD}/${1}/secrets.keys
     echo "keys found"
     exit 1
 fi
