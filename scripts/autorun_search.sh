@@ -13,6 +13,8 @@ else
 fi
 METADATA_FILE="${CONFIG_DIR}/metadata.yaml"
 MS_KEYS_FILE="${CONFIG_DIR}/${baseUrl}-${MS_NAME}.keys.json"
+DEST_KEYS_FILE="${PWD}/${1}/secrets.keys"
+WK_FILE="${PWD}/public/${1}/.well-known/*"
 
 mkdir -p ${CONFIG_DIR}
 
@@ -49,8 +51,11 @@ fi
 
 # check if keys are found
 if [ -f "${MS_KEYS_FILE}" ]; then
-    cp ${MS_KEYS_FILE} ${PWD}/${1}/secrets.keys
-    echo "keys found"
+    cp ${MS_KEYS_FILE} ${DEST_KEYS_FILE}
+    kid=$(jq -r '.kid' ${DEST_KEYS_FILE})
+    tmp=$(mktemp)
+    jq --arg kid "${kid}" '.jwks.keys[0].kid = $kid' ${WK_FILE} > $tmp && mv $tmp ${WK_FILE}
+    echo "keys found: ${kid}"
     exit 1
 fi
 
