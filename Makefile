@@ -34,6 +34,9 @@ ncr: ## 📦 Install and setup the server
 
 announce: ANN_PORT?=8000
 announce: ncr ## 📡 Create and send a DID request for the service
+	$(if $(and ${MS_URL},${MS_NAME}),,$(error "Set MS_NAME and MS_URL in .env respectively to the name of this folder and the url of the service"),)
+	@chmod +x scripts/autorun_search.sh
+	@chmod +x scripts/autorun_store.sh
 	@service=$$(ls | grep "authz_server\|credential_issuer\|relying_party" --color=never | awk '{printf "%s ", $$1}'); \
 	if [ "$${service}" != "" ]; then echo "🐣 Announce services: $${service}"; else echo "😢 No service found"; false; fi; \
 	for s in $${service}; do \
