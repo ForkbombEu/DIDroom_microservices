@@ -22,7 +22,7 @@ mkdir -p ${CONFIG_DIR}
 LOCKFILE="${CONFIG_DIR}/.lock"
 exec 200>"${LOCKFILE}"
 flock 200
-trap "flock -u 200; rm -f ${LOCKFILE}" EXIT
+trap "flock -u 200; rm -f '${LOCKFILE}'" EXIT
 
 # create metadata file
 if [ ! -f "${METADATA_FILE}" ]; then
