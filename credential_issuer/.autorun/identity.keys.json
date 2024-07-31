@@ -1,9 +1,11 @@
 {
+    "command_search_keyring": "./scripts/autorun_search.sh credential_issuer",
+    "command_store_keyring": "./scripts/autorun_store.sh credential_issuer",
     "did_admin_endpoint": "https://apiroom.net/api/genericissuer/generate_sandbox_generic_issuer",
     "did_server_endpoint": "https://did.dyne.org/api/v1/sandbox/pubkeys-accept.chain",
     "did_data": {},
     "did_keys": {
-	"@context": [
+        "@context": [
             "https://www.w3.org/ns/did/v1",
             "https://w3id.org/security/suites/ed25519-2018/v1",
             "https://w3id.org/security/suites/secp256k1-2019/v1",
@@ -14,10 +16,10 @@
             "https://dyne.github.io/W3C-DID/specs/EcdsaSecp256r1.json",
             "https://dyne.github.io/W3C-DID/specs/Dilithium2.json",
             {
-		"description": "https://schema.org/description"
+                "description": "https://schema.org/description"
             }
-	],
-	"did_spec": "sandbox.genericissuer"
+        ],
+        "did_spec": "sandbox.genericissuer"
     },
     "key_data": {
         "controller": "credential_issuer"
