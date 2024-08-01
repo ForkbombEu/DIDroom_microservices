@@ -89,4 +89,4 @@ cleanup() {
     mv public/relying_party/.well-known/openid-relying-party.tmp public/relying_party/.well-known/openid-relying-party
 }
 
-$*
+"$@"
