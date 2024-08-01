@@ -2,9 +2,9 @@ Scenario 'sd_jwt': verify presentation
 Scenario 'w3c': create jws proof
 
 # keyring
-Given I send path 'secrets_path' and read file content and output into 'secrets'
+Given I send path 'secrets_path' and read file content and output secret into 'secrets'
 Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output into 'personal_keyring'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
 
 # wk
 Given I send path 'well-known_path' and read file content and output into 'relying_party_well-known'
