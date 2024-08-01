@@ -14,7 +14,22 @@ fi
 METADATA_FILE="${CONFIG_DIR}/metadata.yaml"
 MS_KEYS_FILE="${CONFIG_DIR}/${baseUrl}-${MS_NAME}.keys.json"
 DEST_KEYS_FILE="${PWD}/${1}/secrets.keys"
-WK_FILE="${PWD}/public/${1}/.well-known/*"
+case ${1} in
+    "authz_server")
+        WK_FILE="${PWD}/public/${1}/.well-known/oauth-authorization-server"
+        ;;
+    "credential_issuer")
+        WK_FILE="${PWD}/public/${1}/.well-known/openid-credential-issuer"
+        ;;
+    "relying_party")
+        WK_FILE="${PWD}/public/${1}/.well-known/openid-relying-party"
+        ;;
+    *)
+        echo "Unknown value for ${1}. Nothing to do." >&2
+        exit 1
+        ;;
+esac
+
 
 mkdir -p ${CONFIG_DIR}
 
