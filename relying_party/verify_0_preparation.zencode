@@ -1,0 +1,39 @@
+Scenario 'sd_jwt': verify presentation
+Scenario 'w3c': create jws proof
+
+# keys
+Given I have a 'string' named 'credential_issuer_well-known_api'
+Given I have a 'string' named 'did'
+Given I have a 'string' named 'f'
+Given I have a 'string' named 'a'
+Given I have a 'string' named 'firebase_url'
+
+# data
+Given I have a 'string' named 'm'
+Given I have a 'string' named 'registrationToken'
+Given I have a 'signed selective disclosure' named 'vp'
+
+#get path to credential_issuer well-known
+When I pickup from path 'vp.jwt.payload.iss'
+When I append 'credential_issuer_well-known_api' to 'iss'
+
+#data for script_1
+When I pickup from path 'vp.jwt.header.alg'
+When I create the 'string dictionary' named 'data_1'
+When I move 'alg' to 'given_alg' in 'data_1'
+When I move 'did' in 'data_1'
+
+When I create the 'string dictionary' named 'body'
+If I verify 'm' is equal to 'f'
+    When I rename the 'firebase_url' to 'url'
+    When I move the 'registrationToken' in 'body'
+EndIf
+
+If I verify 'm' is equal to 'a'
+    When I exit with error message 'Apple server not yet implemented'
+EndIf
+
+Then print the 'iss' as 'string'
+Then print the 'data_1'
+Then print the 'url'
+Then print the 'body'

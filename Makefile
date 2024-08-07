@@ -100,15 +100,18 @@ tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
 
 authz_server_up: ncr
+	rm -rf authz_server/secrets.keys
 	MS_NAME=test_authz_server MS_URL=http://localhost:3000 ./ncr -p 3000 -z ./authz_server --public-directory public/authz_server & echo $$! > .test.authz_server.pid
 
 credential_issuer_up: ncr
+	rm -rf credential_issuer/secrets.keys
 	MS_NAME=test_credential_issuer MS_URL=http://localhost:3001 ./ncr -p 3001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .test.credential_issuer.pid
 
 mobile_zencode_up: ncr
 	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 
 relying_party_up: ncr
+	rm -rf relying_party/secrets.keys
 	MS_NAME=test_relying_party MS_URL=http://localhost:3003 ./ncr -p 3003 -z ./relying_party --public-directory public/relying_party & echo $$! > .test.relying_party.pid
 
 verifier_up: ncr
@@ -134,7 +137,7 @@ test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_se
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
 	@cp relying_party/verify.keys.json relying_party/temp-verify.keys.json
-	@jq '."firebase_url" = "http://localhost:3366/verify-credential"' relying_party/temp-verify.keys.json > relying_party/verify.keys.json
+	@jq '.keys_0.firebase_url = "http://localhost:3366/verify-credential"' relying_party/temp-verify.keys.json > relying_party/verify.keys.json
 # start tests
 	@for port in 3000 3001 3002 3003 3004 3366; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
