@@ -32,28 +32,6 @@ ncr: ## 📦 Install and setup the server
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
 
-announce: ANN_PORT?=8000
-announce: ncr ## 📡 Create and send a DID request for the service
-	$(if $(and ${MS_URL},${MS_NAME}),,$(error "Set MS_NAME and MS_URL in .env respectively to the name of this folder and the url of the service"),)
-	@chmod +x scripts/autorun_search.sh
-	@chmod +x scripts/autorun_store.sh
-	@service=$$(ls | grep "authz_server\|credential_issuer\|relying_party" --color=never | awk '{printf "%s ", $$1}'); \
-	if [ "$${service}" != "" ]; then echo "🐣 Announce services: $${service}"; else echo "😢 No service found"; false; fi; \
-	for s in $${service}; do \
-		./ncr -p ${ANN_PORT} -z $$s --public-directory public/$$s & echo $$! > .announce.pid; \
-		timeout --foreground 30s bash -c ' \
-			until nc -z localhost $$1; do \
-				echo "Port $$1 is not yet reachable, waiting..."; \
-				sleep 1; \
-			done' _ "${ANN_PORT}" \
-		|| { \
-			echo "Timeout while waiting for port $$1 to be reachable"; \
-			exit 1; \
-		}; \
-		kill `cat .announce.pid` && rm .announce.pid; \
-		sleep 1; \
-	done
-
 authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
 authorize: tmp_schema := $(shell mktemp)
@@ -84,9 +62,23 @@ authorize:
 
 up: UP_PORT?=3000
 up: UP_HOSTNAME?=${hn}
-up: ncr announce authorize ## 🚀 Up & run the project
-	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
-
+up: ncr authorize ## 🚀 Up & run the project
+	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
+	@chmod +x scripts/autorun_search.sh
+	@chmod +x scripts/autorun_store.sh
+	service=$$(ls | grep "authz_server\$$\|credential_issuer\$$\|relying_party\$$" --color=never | awk '{printf "%s ", $$1}'); \
+	if [ -z "$${service}" ]; then \
+		echo "😢 No service found"; \
+		exit 1; \
+	fi; \
+	port=${UP_PORT}; \
+	for s in $${service}; do \
+		echo "🐣 Starting service: $${s}"; \
+		name=${MS_NAME}; \
+		if [ -z "$${name}" ]; then name=$$s; fi; \
+		MS_NAME=$$name BASEPATH='/'$$s ./ncr -p $$port -z $$s --public-directory public/$$s & echo $$! > $$s.pid; \
+		port=$$((port+1)); \
+	done
 
 # -- tests --
 
@@ -168,4 +160,5 @@ clean:
 	rm -rf tests/mobile_zencode
 	rm -f ncr
 	rm -f .env
-	rm -f .test.*.pid
+	rm -f *.pid
+	rm -f */secrets.keys
