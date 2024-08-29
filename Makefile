@@ -66,7 +66,7 @@ up: ncr authorize ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
 	@chmod +x scripts/autorun_search.sh
 	@chmod +x scripts/autorun_store.sh
-	service=$$(ls | grep "authz_server\$$\|credential_issuer\$$\|relying_party\$$" --color=never | awk '{printf "%s ", $$1}'); \
+	@service=$$(ls | grep "authz_server\$$\|credential_issuer\$$\|relying_party\$$" --color=never | awk '{printf "%s ", $$1}'); \
 	if [ -z "$${service}" ]; then \
 		echo "😢 No service found"; \
 		exit 1; \
@@ -161,4 +161,8 @@ clean:
 	rm -f ncr
 	rm -f .env
 	rm -f *.pid
+
+deepclean: clean
+	pkill ncr || true
+	git restore */.autorun/identity.metadata.json public/*/.well-known
 	rm -f */secrets.keys
