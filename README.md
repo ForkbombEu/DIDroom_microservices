@@ -197,7 +197,7 @@ TBD
 ***
 ## 🐛 Troubleshooting & debugging
 
-TBD
+Availabe bugs are reported via [GitHub issues](https://github.com/forkbombeu/DIDroom_microservices/issues).
 
 **[🔝 back to top](#toc)**
 
