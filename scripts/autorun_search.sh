@@ -52,8 +52,6 @@ fi
 # otherwise add a new one
 n=$(grep -n "^  - name: ${MS_NAME}$" "${METADATA_FILE}" | cut -d ":" -f 1)
 if [ "${n}" != "" ]; then
-    echo $MS_NAME
-    echo $n
 	tmp=$(mktemp)
 	awk -v nr=$((n + 1)) -v val=${PWD} 'NR==nr {$0="    folder: "'"val"'""} 1' "${METADATA_FILE}" >$tmp && mv $tmp "${METADATA_FILE}"
 	awk -v nr=$((n + 2)) -v val=${MS_URL} 'NR==nr {$0="    url: "'"val"'""} 1' "${METADATA_FILE}" >$tmp && mv $tmp "${METADATA_FILE}"
