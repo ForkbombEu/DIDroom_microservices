@@ -1,6 +1,6 @@
 <div align="center">
 
-# DIDroom standalone microservices
+# DIDroom standalone microservices <!-- omit in toc -->
 
 ### Implementation of the [OpenID4VC](https://openid.net/sg/openid4vc/) with the [Zenroom stack](https://forkbomb.solutions/component/zenroom/)
 
@@ -19,10 +19,29 @@ for secure, flexible, and human-readable protocol implementation.
 ---
 <br><br>
 
+<div id="toc">
+
+### 🚩 Table of Contents
+
+- [🧱 Building blocks](#-building-blocks)
+- [🎮 Quick start](#-quick-start)
+- [🚑 Community \& support](#-community--support)
+- [🐋 Docker](#-docker)
+- [🐝 API](#-api)
+- [🔧 Configuration](#-configuration)
+- [📋 Testing](#-testing)
+- [🐛 Troubleshooting \& debugging](#-troubleshooting--debugging)
+- [😍 Acknowledgements](#-acknowledgements)
+- [👤 Contributing](#-contributing)
+- [💼 License](#-license)
+
+</div>
+
+---
 
 ## 🧱 Building blocks
 
-### 🎫 Verifiable Credential issuer 
+### 🎫 Verifiable Credential issuer <!-- omit in toc -->
 
 [OIDC4VCI REFERENCE](https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-wg-draft.html)
 
@@ -61,7 +80,7 @@ Core concepts of the issuer:
    using the Credential Issuer's metadata
 
 
-### 🚦 Authorization Server OAuth 2.0 
+### 🚦 Authorization Server OAuth 2.0 <!-- omit in toc -->
 
 [REFERENCE RFC6749](https://www.rfc-editor.org/rfc/rfc6749.txt)
 
@@ -88,30 +107,9 @@ Some tweaks and enhancements are needed although, this extensions include:
 
 For details, refer to the full specification.
 
+**[🔝 back to top](#toc)**
 
-
-
-
-<br>
-
-<div id="toc">
-
-### 🚩 Table of Contents
-
-- [🎮 Quick start](#-quick-start)
-- [🚑 Community & support](#-community--support)
-- [🐋 Docker](#-docker)
-- [🐝 API](#-api)
-- [🔧 Configuration](#-configuration)
-- [📋 Testing](#-testing)
-- [🐛 Troubleshooting & debugging](#-troubleshooting--debugging)
-- [😍 Acknowledgements](#-acknowledgements)
-- [👤 Contributing](#-contributing)
-- [💼 License](#-license)
-
-</div>
-
-***
+--- 
 ## 🎮 Quick start
 
 To start using all the components run the following command in the root folder
@@ -122,8 +120,9 @@ make
 
 Then point your browser to the [http://localhost:3000/docs](http://localhost:3000/docs) to see all the exposed endpoints
 
+**[🔝 back to top](#toc)**
 
-***
+---
 ## 🚑 Community & support
 
 **[📝 Documentation](#toc)** - Getting started and more.
@@ -140,7 +139,7 @@ Then point your browser to the [http://localhost:3000/docs](http://localhost:300
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 🐋 Docker
 
 You can start it using docker, just have to mount you static file directory
@@ -154,7 +153,7 @@ Please refer to [DOCKER PACKAGES](../../packages)
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 🐝 API
 
 Available endpoints, TBD
@@ -179,29 +178,28 @@ Retrieves the actual value of the token type for the specified owner
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 🔧 Configuration
 
 TBD
 
 **[🔝 back to top](#toc)**
 
-***
-
+---
 ## 📋 Testing
 
 TBD
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 🐛 Troubleshooting & debugging
 
 Availabe bugs are reported via [GitHub issues](https://github.com/forkbombeu/DIDroom_microservices/issues).
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 😍 Acknowledgements
 
 Copyleft 🄯 2023 by [Forkbomb](https://www.forkbomb.eu) BV, Amsterdam
@@ -210,7 +208,7 @@ Designed, written and maintained by Puria Nafisi Azizi, Andrea D'Intino, Alberto
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 👤 Contributing
 
 Please first take a look at the our [Contributor License Agreement](CONTRIBUTING.md) then
@@ -225,7 +223,7 @@ Please first take a look at the our [Contributor License Agreement](CONTRIBUTING
 
 **[🔝 back to top](#toc)**
 
-***
+---
 ## 💼 License
     Didroom standalone microservices
     Copyleft 🄯 2023 Forkbomb BV, Amsterdam
