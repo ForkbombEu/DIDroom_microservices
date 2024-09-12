@@ -1,12 +1,12 @@
 # env variables
-ifneq ("$(wildcard .env.example)", "")
-  ifeq ("$(wildcard .env)", "")
-    sh cp .env.example .env
-  endif
-endif
-ifneq ("$(wildcard .env)", "")
-  include .env
-  export
+ifneq ($(wildcard .env),)
+	include .env
+	export
+else
+	ifneq ($(wildcard .env.example),)
+		include .env.example
+		export
+	endif
 endif
 
 .DEFAULT_GOAL := up
