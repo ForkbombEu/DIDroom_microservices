@@ -1,6 +1,13 @@
 # env variables
-$(if $(wildcard .env),, $(shell cp .env.example .env))
-include .env
+ifneq ($(wildcard .env),)
+	include .env
+	export
+else
+	ifneq ($(wildcard .env.example),)
+		include .env.example
+		export
+	endif
+endif
 
 .DEFAULT_GOAL := up
 .PHONY: help
