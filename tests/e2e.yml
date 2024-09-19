@@ -5,10 +5,11 @@
 version: "1.1"
 name: test all the microservices
 env:
-  mz_host: localhost:3002
+  mz_host: localhost:3003
   path_to_wallet: /mobile_zencode
-  ci_host: localhost:3001
-  as_host: localhost:3000
+  ci_host: localhost:3001/credential_issuer
+  as_host: localhost:3000/authz_server
+  rp_host: localhost:3002/relying_party
   verifier_host: localhost:3004
 tests:
   whole_flow:

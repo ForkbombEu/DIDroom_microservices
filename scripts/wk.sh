@@ -6,7 +6,7 @@ setup() {
         cp public/authz_server/.well-known/oauth-authorization-server public/authz_server/.well-known/oauth-authorization-server.tmp
     fi
     sed -i \
-        -e "s|{{ as_url }}|http://localhost:3000|" \
+        -e "s|{{ as_url }}|http://localhost:3000/authz_server|" \
         public/authz_server/.well-known/oauth-authorization-server
 
 
@@ -15,7 +15,7 @@ setup() {
         cp public/credential_issuer/.well-known/openid-credential-issuer public/credential_issuer/.well-known/openid-credential-issuer.tmp
     fi
     sed -i \
-        -e "s|{{ ci_url }}|http://localhost:3001|" \
+        -e "s|{{ ci_url }}|http://localhost:3001/credential_issuer|" \
         -e "s|{{ ci_name }}|DIDroom_Test_Issuer|" \
         public/credential_issuer/.well-known/openid-credential-issuer
     tmp=$(mktemp)
@@ -67,7 +67,7 @@ setup() {
             }
         ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
     jq --indent 4 '.authorization_servers = [
-            "http://localhost:3000"
+            "http://localhost:3000/authz_server"
         ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
 
     ## rp
@@ -75,11 +75,11 @@ setup() {
         cp public/relying_party/.well-known/openid-relying-party public/relying_party/.well-known/openid-relying-party.tmp
     fi
     sed -i \
-        -e "s|{{ rp_url }}|http://localhost:3003|" \
+        -e "s|{{ rp_url }}|http://localhost:3002/relying_party|" \
         -e "s|{{ rp_name }}|DIDroom_Test_RP|" \
         public/relying_party/.well-known/openid-relying-party
     jq --indent 4 '.trusted_credential_issuers = [
-            "http://localhost:3001"
+            "http://localhost:3001/credential_issuer"
         ]' public/relying_party/.well-known/openid-relying-party > $tmp && mv $tmp public/relying_party/.well-known/openid-relying-party
 }
 

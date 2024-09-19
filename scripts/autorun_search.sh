@@ -50,7 +50,7 @@ fi
 
 # if the service is already in the metadata file, update its folder and url
 # otherwise add a new one
-n=$(grep -n "${MS_NAME}$" "${METADATA_FILE}" | cut -d ":" -f 1)
+n=$(grep -n "^  - name: ${MS_NAME}$" "${METADATA_FILE}" | cut -d ":" -f 1)
 if [ "${n}" != "" ]; then
 	tmp=$(mktemp)
 	awk -v nr=$((n + 1)) -v val=${PWD} 'NR==nr {$0="    folder: "'"val"'""} 1' "${METADATA_FILE}" >$tmp && mv $tmp "${METADATA_FILE}"
