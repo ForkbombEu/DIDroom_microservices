@@ -82,7 +82,7 @@ up: ncr authorize ## 🚀 Up & run the project
 		echo "🐣 Starting service: $${s}"; \
 		name=${MS_NAME}; \
 		if [ -z "$${name}" ]; then name=$$s; fi; \
-		MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public --basepath '/'$$s & echo $$! > .$$s.pid; \
+		MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s & echo $$! > .$$s.pid; \
 		port=$$((port+1)); \
 	done
 
