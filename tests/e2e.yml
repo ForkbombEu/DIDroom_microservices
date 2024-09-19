@@ -7,7 +7,7 @@ name: test all the microservices
 env:
   mz_host: localhost:3003
   path_to_wallet: /mobile_zencode
-  ci_host: localhost:3001/credemtial_issuer
+  ci_host: localhost:3001/credential_issuer
   as_host: localhost:3000/authz_server
   verifier_host: localhost:3004
 tests:
