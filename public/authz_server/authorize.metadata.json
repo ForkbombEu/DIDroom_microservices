@@ -1,4 +1,4 @@
 {
     "contentType": "text/html",
-    "precondition": "authz_server/.authorize"
+    "precondition": ".authorize"
 }

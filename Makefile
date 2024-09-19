@@ -39,28 +39,6 @@ ncr: ## 📦 Install and setup the server
 	@chmod +x ./ncr
 	@echo "📦 Setup is done!"
 
-announce: ANN_PORT?=8000
-announce: ncr ## 📡 Create and send a DID request for the service
-	$(if $(and ${MS_URL},${MS_NAME}),,$(error "Set MS_NAME and MS_URL in .env respectively to the name of this folder and the url of the service"),)
-	@chmod +x scripts/autorun_search.sh
-	@chmod +x scripts/autorun_store.sh
-	@service=$$(ls | grep "authz_server\|credential_issuer\|relying_party" --color=never | awk '{printf "%s ", $$1}'); \
-	if [ "$${service}" != "" ]; then echo "🐣 Announce services: $${service}"; else echo "😢 No service found"; false; fi; \
-	for s in $${service}; do \
-		./ncr -p ${ANN_PORT} -z $$s --public-directory public/$$s & echo $$! > .announce.pid; \
-		timeout --foreground 30s bash -c ' \
-			until nc -z localhost $$1; do \
-				echo "Port $$1 is not yet reachable, waiting..."; \
-				sleep 1; \
-			done' _ "${ANN_PORT}" \
-		|| { \
-			echo "Timeout while waiting for port $$1 to be reachable"; \
-			exit 1; \
-		}; \
-		kill `cat .announce.pid` && rm .announce.pid; \
-		sleep 1; \
-	done
-
 authorize: tmp := $(shell mktemp)
 authorize: tmp_zen := $(shell mktemp)
 authorize: tmp_schema := $(shell mktemp)
@@ -90,38 +68,34 @@ authorize:
 	@rm ${tmp_schema} ${tmp_zen} ${tmp_keys}
 
 up: UP_PORT?=3000
-up: UP_HOSTNAME?=${hn}
-up: ncr announce authorize ## 🚀 Up & run the project
-	./ncr -p ${UP_PORT} --hostname ${UP_HOSTNAME} --public-directory public
-
+up: ncr authorize ## 🚀 Up & run the project
+	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
+	@chmod +x scripts/autorun_search.sh
+	@chmod +x scripts/autorun_store.sh
+	@service=$$(ls | grep "authz_server\$$\|credential_issuer\$$\|relying_party\$$" --color=never | awk '{printf "%s ", $$1}'); \
+	if [ -z "$${service}" ]; then \
+		echo "😢 No service found"; \
+		exit 1; \
+	fi; \
+	port=${UP_PORT}; \
+	for s in $${service}; do \
+		echo "🐣 Starting service: $${s}"; \
+		name=${MS_NAME}; \
+		if [ -z "$${name}" ]; then name=$$s; fi; \
+		MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s & echo $$! > .$$s.pid; \
+		port=$$((port+1)); \
+	done
 
 # -- tests --
 
 tests-deps: ## 🧪 Check test dependencies
 	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
 
-tests-well-known:
-	./scripts/wk.sh setup
-
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
 
-authz_server_up: ncr
-	rm -rf authz_server/secrets.keys
-	MS_NAME=test_authz_server MS_URL=http://localhost:3000 ./ncr -p 3000 -z ./authz_server --public-directory public/authz_server & echo $$! > .test.authz_server.pid
-
-credential_issuer_up: ncr
-	rm -rf credential_issuer/secrets.keys
-	MS_NAME=test_credential_issuer MS_URL=http://localhost:3001 ./ncr -p 3001 -z ./credential_issuer --public-directory public/credential_issuer & echo $$! > .test.credential_issuer.pid
-
-mobile_zencode_up: ncr
-	./ncr -p 3002 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
-
-relying_party_up: ncr
-	rm -rf relying_party/secrets.keys
-	MS_NAME=test_relying_party MS_URL=http://localhost:3003 ./ncr -p 3003 -z ./relying_party --public-directory public/relying_party & echo $$! > .test.relying_party.pid
-
-verifier_up: ncr
+mobile_zencode_up: ncr tests/mobile_zencode
+	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 	./ncr -p 3004 -z ./tests/mobile_zencode/verifier & echo $$! > .test.verifier.pid
 
 push_server_up: ncr
@@ -138,7 +112,8 @@ test_custom_code:
 		cp $$f $${name}; \
 	done;
 
-test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_server_up credential_issuer_up mobile_zencode_up relying_party_up verifier_up push_server_up ## 🧪 Run e2e tests on the APIs
+test: tests-deps test_custom_code up mobile_zencode_up push_server_up ## 🧪 Run e2e tests on the APIs
+	@./scripts/wk.sh setup
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
@@ -156,10 +131,10 @@ test: test_custom_code tests-deps tests-well-known tests/mobile_zencode authz_se
 			}; \
 	done
 	npx stepci run tests/e2e.yml
-	@kill `cat .test.credential_issuer.pid` && rm .test.credential_issuer.pid
-	@kill `cat .test.authz_server.pid` && rm .test.authz_server.pid
+	@kill `cat .credential_issuer.pid` && rm .credential_issuer.pid
+	@kill `cat .authz_server.pid` && rm .authz_server.pid
+	@kill `cat .relying_party.pid` && rm .relying_party.pid
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
-	@kill `cat .test.relying_party.pid` && rm .test.relying_party.pid
 	@kill `cat .test.verifier.pid` && rm .test.verifier.pid
 	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
 	rm -fr tests/mobile_zencode
@@ -171,8 +146,14 @@ testgen:
 	npx stepci generate ./oas.json ./tests/oapi.yml
 	rm oas.json
 
-clean:
+clean: ## 🧹 Clean
 	rm -rf tests/mobile_zencode
 	rm -f ncr
 	rm -f .env
 	rm -f .test.*.pid
+	rm -f .*.pid
+
+deepclean: clean ## 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
+	git restore */.autorun/identity.metadata.json public/*/.well-known
+	rm -f */secrets.keys
+	pkill ncr || true
