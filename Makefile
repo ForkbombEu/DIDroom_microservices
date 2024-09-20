@@ -78,13 +78,20 @@ up: ncr authorize ## 🚀 Up & run the project
 		exit 1; \
 	fi; \
 	port=${UP_PORT}; \
-	for s in $${service}; do \
-		echo "🐣 Starting service: $${s}"; \
+	if [ "$(echo -n \"$${service}\" | grep -c '^')" = "1" ]; then \
+		echo "🐣 Starting service: $${service}"; \
 		name=${MS_NAME}; \
 		if [ -z "$${name}" ]; then name=$$s; fi; \
-		MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s & echo $$! > .$$s.pid; \
-		port=$$((port+1)); \
-	done
+		MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s; \
+	else \
+		for s in $${service}; do \
+			echo "🐣 Starting service: $${s}"; \
+			name=${MS_NAME}; \
+			if [ -z "$${name}" ]; then name=$$s; fi; \
+			MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s & echo $$! > .$$s.pid; \
+			port=$$((port+1)); \
+		done \
+	fi
 
 # -- tests --
 
