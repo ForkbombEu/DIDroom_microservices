@@ -78,7 +78,7 @@ up: ncr authorize ## 🚀 Up & run the project
 		exit 1; \
 	fi; \
 	port=${UP_PORT}; \
-	if [ "$$(echo -n \"$${service}\" | grep -c '\s')" = "0" ]; then \
+	if [ "$$(echo -n \"$${service}\" | grep -o '\s' | wc -l)" = "1" ]; then \
 		echo "🐣 Starting service: $${service}"; \
 		name=${MS_NAME}; \
 		if [ -z "$${name}" ]; then name=$$service; fi; \
