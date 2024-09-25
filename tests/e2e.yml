@@ -29,7 +29,7 @@ tests:
             authorization_details: 
               - type: openid_credential
                 locations: 
-                  - http://${{env.ci_host}}/credential_issuer/
+                  - http://${{env.ci_host}}
                 credential_configuration_id: test_credential
             code_challenge: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
             code_challenge_method: S256
