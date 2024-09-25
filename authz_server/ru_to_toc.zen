@@ -28,9 +28,11 @@ Then print the 'server'
 Then print the 'data'
 Then print the 'request_uri'
 
-Then I send request_uri 'request_uri' and send data 'data' and send server_data 'server' and add data to authorization details and output into 'auth_details'
+Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
+Then I manipulate and delete and output into 'server'
 
-Then I manipulate and delete and output into 'server' 
+Then I send request_uri 'request_uri' and send data 'data' and send server_data 'secret_server' and add data to authorization details and output into 'auth_details'
+Then I manipulate and delete and output into 'secret_server' 
 Then I manipulate and delete and output into 'data' 
 Then I manipulate and delete and output into 'request_uri' 
 Then I send object 'auth_details' and send path 'credential_configuration_id_path' and manipulate and get and output into 'credential_configuration_id'

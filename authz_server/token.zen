@@ -60,6 +60,7 @@ Then I manipulate and delete and output into 'server'
 
 Then I send request 'request' and send server_data 'secret_server' and generate access token and output into 'accessToken_jwt'
 Then I manipulate and delete and output into 'request'
+Then I manipulate and delete and output into 'secret_server'
 
 Then I send object 'accessToken_jwt' and send path 'accessToken_path' and manipulate and get and output into 'access_token'
 Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'

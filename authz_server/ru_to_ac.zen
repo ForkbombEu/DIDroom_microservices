@@ -39,13 +39,16 @@ Then print the 'request'
 Then print the 'request_uri'
 Then print the 'data'
 
-Then I send request_uri 'request_uri' and send data 'data' and send server_data 'server' and add data to authorization details
+Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
+Then I manipulate and delete and output into 'server'
+
+Then I send request_uri 'request_uri' and send data 'data' and send server_data 'secret_server' and add data to authorization details
 Then I manipulate and delete and output into 'request_uri'
 Then I manipulate and delete and output into 'data'  
 
-Then I send request 'request' and send server_data 'server' and generate authorization code and output into 'authCode_jwt'
+Then I send request 'request' and send server_data 'secret_server' and generate authorization code and output into 'authCode_jwt'
 Then I manipulate and delete and output into 'request'
-Then I manipulate and delete and output into 'server' 
+Then I manipulate and delete and output into 'secret_server' 
 
 Then I send object 'authCode_jwt' and send path 'code_path' and manipulate and get and output into 'code'
 
