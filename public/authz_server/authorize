@@ -1,246 +1,241 @@
 <!doctype html>
 <html lang="en" class="text-xs md:text-lg">
-	<head>
-		<meta charset="utf-8" />
-		<title>noˑcodeˑroom &mdash; <%= title %></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
-		<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-		<script src="https://cdn.jsdelivr.net/npm/cash-dom/dist/cash.min.js"></script>
-		<script type="module" src="https://cdn.jsdelivr.net/npm/@slangroom/browser"></script>
-		<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css" />
 
-		<script>
-			tailwind.config = {
-				theme: {
-					extend: {
-						backgroundSize: {
-							'300%': '300%'
-						},
-						fontFamily: {
-							sans: ['Onest Variable']
-						},
-						animation: {
-							gradient: 'animatedgradient 6s ease infinite alternate',
-							slide: 'slide 12.5s cubic-bezier(0.83, 0, 0.17, 1) infinite'
-						},
-						keyframes: {
-							animatedgradient: {
-								'0%': { backgroundPosition: '0% 50%' },
-								'50%': { backgroundPosition: '100% 50%' },
-								'100%': { backgroundPosition: '0% 50%' }
-							},
-							slide: {
-								'0%, 16%': {
-									transform: 'translateY(0%)'
-								},
-								'20%, 36%': {
-									transform: 'translateY(-16.66%)'
-								},
-								'40%, 56%': {
-									transform: 'translateY(-33.33%)'
-								},
-								'60%, 76%': {
-									transform: 'translateY(-50%)'
-								},
-								'80%, 96%': {
-									transform: 'translateY(-66.66%)'
-								},
-								'100%': {
-									transform: 'translateY(-83.33%)'
-								}
-							}
-						}
-					}
-				},
-				plugins: []
-			};
-		</script>
-	</head>
-	<body
-		class="border-double font-sans antialised font-extrabold text-xl flex flex-col h-full min-h-screen border-[26px] p-8 border-black"
-	>
-		<main class="flex-grow">
-			<h1 class="text-6xl font-black">
-				<span
-					class="bg-gradient-to-r from-red-500 via-blue-500 to-green-400 text-transparent bg-clip-text bg-300% animate-gradient"
-				>
-					noˑcodeˑroom
-				</span>
-				OpenID4VCI
-			</h1>
-			<div hx-ext="response-targets">
-				<form id="params">
-					<div id="form"></div>
-					<div class="flex pl-2 pt-2 my-4">
-						<button class="bg-black text-white font-bold w-full lg:w-fit" id="execute">
-							<span
-								class="block -translate-x-2 -translate-y-2 border-2 border-black bg-red-500 text-xl p-2 hover:-translate-y-3 active:translate-x-0 active:translate-y-0 transition-all"
-							>
-								Authenticate
-							</span>
-						</button>
-						<div class="ml-4 h-8 w-10 animate-bounce htmx-indicator hidden">
-							<div class="mx-auto h-8 w-8 animate-pulse rounded-full bg-gray-300"></div>
-							<span class="absolute flex h-6 w-6 animate-spin">
-								<span class="h-4 w-4 rounded-full bg-gray-300"></span>
-							</span>
-						</div>
-					</div>
-				</form>
-				<pre id="response" class="overflow-auto max-h-[30rem] text-sm mb-4"></pre>
-				<pre id="error" class="overflow-auto max-h-[30rem] text-sm mb-4"></pre>
-			</div>
-		</main>
-		<script>
-			// get url
-			const paramsIdx = document.URL.indexOf('?');
-			const baseUrl = document.URL.substring(0, paramsIdx - "authorize".length - 1);
-			const params = {};
-			if (paramsIdx != -1) {
-				const pairs = document.URL.substring(paramsIdx + 1, document.URL.length).split('&');
-				for (const pair of pairs) {
-					const nameVal = pair.split('=');
-					params[nameVal[0]] = nameVal[1];
-				}
-			}
-			// filled by make authorize
-			const contracts = {}
-			const schemas = {}
-			const keys = {}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cash-dom/dist/cash.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@slangroom/browser"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+  <script type="module"
+    src="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.esm.js"></script>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.css" />
+  <script>
+    tailwind.config = {
+      plugins: [
+        require('@tailwindcss/typography'),
+      ],
+    }
+  </script>
+</head>
 
-			const highlight = (json) => {
-				json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-				return json.replace(
-					/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-					function (match) {
-						var cls = 'number';
-						if (/^"/.test(match)) {
-							if (/:$/.test(match)) {
-								cls = 'key';
-							} else {
-								cls = 'string';
-							}
-						} else if (/true|false/.test(match)) {
-							cls = 'boolean';
-						} else if (/null/.test(match)) {
-							cls = 'null';
-						}
-						return '<span class="' + cls + '">' + match + '</span>';
-					}
-				);
-			};
+<body class="font-sans antialised flex flex-col h-full min-h-screen bg-primary p-8">
+  <main class="flex-grow">
+    <div class="mx-auto w-fit">
+      <div class="flex items-center gap-2 text-xl font-semibold not-italic w-fit p-2">
+        <d-avatar id="avatar" shape="square"></d-avatar>
+        <d-heading class="font-semibold" size="xs" id="heading"></d-heading>
+      </div>
+      <article id="description" class="prose dark:prose-invert rounded p-2"></article>
+    </div>
+    <div hx-ext="response-targets">
+      <form id="params">
+        <div id="form"></div>
+        <div class="flex w-full">
+          <d-button color="accent" id="execute" expand="true" class="w-full mt-4">AUTHENTICATE</d-button>
+          <div class="ml-4 h-8 w-10 animate-bounce htmx-indicator hidden">
+            <div class="mx-auto h-8 w-8 animate-pulse rounded-full bg-gray-300"></div>
+            <span class="absolute flex h-6 w-6 animate-spin">
+              <span class="h-4 w-4 rounded-full bg-gray-300"></span>
+            </span>
+          </div>
+        </div>
+      </form>
+      <pre id="response" class="overflow-auto max-h-[30rem] text-sm mb-4"></pre>
+      <pre id="error" class="overflow-auto max-h-[30rem] text-black dark:text-white text-sm mb-4"></pre>
+    </div>
+  </main>
+  <script>
+    // get url
+    const paramsIdx = document.URL.indexOf('?');
+    const baseUrl = document.URL.substring(0, paramsIdx - "authorize".length - 1);
+    const params = {};
+    if (paramsIdx != -1) {
+      const pairs = document.URL.substring(paramsIdx + 1, document.URL.length).split('&');
+      for (const pair of pairs) {
+        const nameVal = pair.split('=');
+        params[nameVal[0]] = nameVal[1];
+      }
+    }
+    // filled by make authorize
+    const contracts = {"discount_from_voucher": "Given I have a 'string' named 'voucher'\nGiven I have a 'number dictionary' named 'discounts'\n\nWhen I verify 'voucher' is found in 'discounts'\n\nWhen I create the 'string dictionary' named 'data'\nWhen I create copy of object named by 'voucher' from dictionary 'discounts'\nWhen I move 'copy' to 'discount' in 'data'\n\nThen print the 'data'"}
+    const schemas = {"discount_from_voucher": {"type": "object", "properties": {"voucher": {"type": "string", "title": "Voucher"}}, "required": ["voucher"], "form_fields": ["voucher"], "user_attributes": []}}
+    const keys = {"discount_from_voucher": {"discounts": {"ten": 10, "twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "lucky": 100}}}
 
-			fetch(`${baseUrl}/ru_to_toc`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(params)
-			})
-			.then((response) => response.json())
-			.then((toc) => {
-				const type = toc.credential_configuration_id;
-				const issuerUrl = toc.auth_details[0].locations[0];
-				fetch(`${issuerUrl}/.well-known/openid-credential-issuer`)
-				.then((response) => response.json())
-				.then((wk) => {
-					const credConf = wk.credential_configurations_supported.find(config => config.credential_definition.type[0] === type).display[0];
-					const editor = new JSONEditor(document.getElementById('form'), {
-						schema: schemas[type],
-						compact: true,
-						disable_collapse: true,
-						disable_edit_json: true,
-						disable_properties: true,
-						required_by_default: true,
-						show_errors: 'interaction',
-						use_name_attributes: false,
-						theme: 'tailwind',
-						iconlib: 'spectre'
-					});
+    const highlight = (json) => {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+        function (match) {
+          var cls = 'number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'key';
+            } else {
+              cls = 'string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+          } else if (/null/.test(match)) {
+            cls = 'null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        }
+      );
+    };
 
-					$(document).ready(() => {
-						$('#execute').on('click', async (e) => {
-							$('.htmx-indicator').show();
-							e.preventDefault();
-							$('#error').html('');
-							$('#response').html('');
-							try {
-								const data = editor.getValue();
-								const respose = slangroom.execute(contracts[type], { data, keys: keys[type] })
-									.then((r) => {
-										fetch(`${baseUrl}/ru_to_ac`, {
-											method: 'POST',
-											headers: { 'Content-Type': 'application/json' },
-											body: JSON.stringify({...params, ...(r.result)})
-										})
-										.then((response) => response.json())
-										.then((ac) => {
-											$('#response').html(highlight(JSON.stringify(ac, null, 4)));
-											window.parent.postMessage(JSON.stringify(ac), '*');
-											// console.log(JSON.stringify(ac, null, 4));
-										})
-									})
-									.catch((e) => {
-										$('#error').html(e);
-										window.parent.postMessage(e, '*');
-									})
-							} catch (e) {
-								$('#error').html(e);
-								window.parent.postMessage(e, '*');
-							}
-							$('.htmx-indicator').hide();
-						});
-					});
-				});
-			});
-		</script>
-		<style>
-			/* onest-latin-wght-normal */
-			@font-face {
-				font-family: 'Onest Variable';
-				font-style: normal;
-				font-display: swap;
-				font-weight: 100 900;
-				src: url(https://cdn.jsdelivr.net/fontsource/fonts/onest:vf@latest/latin-wght-normal.woff2)
-					format('woff2-variations');
-				unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
-					U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-					U+FEFF, U+FFFD;
-			}
-			div[data-theme='html'] .je-indented-panel.je-indented-panel {
-				border: none;
-				padding: 0px;
-				margin: 0px;
-			}
-			.form-control > input {
-				border-color: black;
-				border-width: 2px;
-			}
-			.htmx-added {
-				outline-color: #22c55e;
-				outline-width: 8px;
-				outline-style: solid;
-			}
-			.je-header {
-				display: none;
-			}
-			.je-object__container {
-				border: none;
-			}
-			.string {
-				color: violet;
-			}
-			.number {
-				color: darkorange;
-			}
-			.boolean {
-				color: blue;
-			}
-			.null {
-				color: magenta;
-			}
-			.key {
-				color: red;
-			}
-		</style>
-	</body>
+    fetch(`${baseUrl}/ru_to_toc`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(params)
+    })
+      .then((response) => response.json())
+      .then((toc) => {
+        const type = toc.credential_configuration_id;
+        const issuerUrl = toc.auth_details[0].locations[0];
+        fetch(`${issuerUrl}/.well-known/openid-credential-issuer`)
+          .then((response) => response.json())
+          .then((wk) => {
+            const credentialInfo = wk.credential_configurations_supported[0].display[0]
+            $("#avatar").attr("name", credentialInfo?.name)
+            $("#avatar").attr("alt", credentialInfo?.logo.alt_text)
+            $("#avatar").attr("src", credentialInfo?.logo.url)
+            $("#heading").text(credentialInfo?.name)
+            $("#description").html(marked.parse(credentialInfo?.description))
+            if (credentialInfo?.text_color.length > 0)
+              $("#description").addClass("text-[" + credentialInfo.text_color + "]")
+            if (credentialInfo?.background_color.length > 0)
+              $("#description").addClass("bg-[" + credentialInfo.background_color + "]")
+            const credConf = wk.credential_configurations_supported.find(config => config.credential_definition.type[0] === type).display[0];
+            const editor = new JSONEditor(document.getElementById('form'), {
+              schema: schemas[type],
+              compact: true,
+              disable_collapse: true,
+              disable_edit_json: true,
+              disable_properties: true,
+              required_by_default: true,
+              show_errors: 'change',
+              use_name_attributes: false,
+              theme: 'html'
+            });
+            editor.on('ready', function () {
+              const err = editor.validate();
+
+              Object.values(editor.editors).forEach(editor => {
+                editor.is_dirty = true // If not dirty the editor will not display errors
+                editor.showValidationErrors(err) // every editor filters errors by path
+              })
+              document.querySelector('#params input').focus();
+            });
+
+            $(document).ready(() => {
+              $('#execute').on('click', async (e) => {
+                $('.htmx-indicator').show();
+                e.preventDefault();
+                $('#error').html('');
+                $('#response').html('');
+                try {
+                  const data = editor.getValue();
+                  const respose = slangroom.execute(contracts[type], {data, keys: keys[type]})
+                    .then((r) => {
+                      fetch(`${baseUrl}/ru_to_ac`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({...params, ...(r.result)})
+                      })
+                        .then((response) => response.json())
+                        .then((ac) => {
+                          $('#response').html(highlight(JSON.stringify(ac, null, 4)));
+                          window.parent.postMessage(JSON.stringify(ac), '*');
+                        })
+                    })
+                    .catch((e) => {
+                      $('#error').html(e);
+                      window.parent.postMessage(e, '*');
+                    })
+                } catch (e) {
+                  $('#error').html(e);
+                  window.parent.postMessage(e, '*');
+                }
+                $('.htmx-indicator').hide();
+              });
+            });
+          });
+      });
+  </script>
+  <style>
+    /* gantari-latin-wght-normal */
+    @font-face {
+      font-family: 'Gantari Variable';
+      font-style: normal;
+      font-display: swap;
+      font-weight: 100 900;
+      src: url(https://cdn.jsdelivr.net/fontsource/fonts/gantari:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    body {
+      font-family: "Gantari Variable";
+    }
+
+    div[data-theme='html'] .je-indented-panel.je-indented-panel {
+      border: none;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .form-control>input {
+      border-color: black;
+      border-width: 2px;
+    }
+
+    .htmx-added {
+      outline-color: #22c55e;
+      outline-width: 8px;
+      outline-style: solid;
+    }
+
+    .je-header {
+      display: none;
+    }
+
+    .je-object__container {
+      border: none;
+    }
+
+    .string {
+      color: violet;
+    }
+
+    .number {
+      color: darkorange;
+    }
+
+    .boolean {
+      color: blue;
+    }
+
+    .null {
+      color: magenta;
+    }
+
+    .key {
+      color: red;
+    }
+
+    form#params label {
+      color: var(--on);
+      margin-bottom: 5px;
+    }
+
+    form#params input {
+      border-radius: 6px;
+      width: 100%;
+    }
+  </style>
+</body>
+
 </html>
