@@ -61,9 +61,9 @@
       }
     }
     // filled by make authorize
-    const contracts = {"discount_from_voucher": "Given I have a 'string' named 'voucher'\nGiven I have a 'number dictionary' named 'discounts'\n\nWhen I verify 'voucher' is found in 'discounts'\n\nWhen I create the 'string dictionary' named 'data'\nWhen I create copy of object named by 'voucher' from dictionary 'discounts'\nWhen I move 'copy' to 'discount' in 'data'\n\nThen print the 'data'"}
-    const schemas = {"discount_from_voucher": {"type": "object", "properties": {"voucher": {"type": "string", "title": "Voucher"}}, "required": ["voucher"], "form_fields": ["voucher"], "user_attributes": []}}
-    const keys = {"discount_from_voucher": {"discounts": {"ten": 10, "twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "lucky": 100}}}
+    const contracts = {}
+    const schemas = {}
+    const keys = {}
 
     const highlight = (json) => {
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
