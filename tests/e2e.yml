@@ -26,7 +26,11 @@ tests:
             response_type: code
             client_id: did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5
             state: xyz
-            authorization_details: [{type: openid_credential, locations: [https://issuer1.zenswarm.forkbomb.eu/credential_issuer/], credential_configuration_id: Auth1, given_name: Pippo, family_name: Peppe, is_human: true}]
+            authorization_details: 
+              - type: openid_credential
+                locations: 
+                  - http://${{env.ci_host}}/credential_issuer/
+                credential_configuration_id: test_credential
             code_challenge: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
             code_challenge_method: S256
             redirect_uri: didroom://openwallet-credential
