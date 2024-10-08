@@ -109,15 +109,8 @@ push_server_up: ncr
 	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
 
 test_custom_code:
-# custom code
-	@for f in authz_server/custom_code/*.example; do \
-		name=$$(echo $$f | rev | cut -d'.' -f2- | rev); \
-		cp $$f $${name}; \
-	done;
-	@for f in credential_issuer/custom_code/*.example; do \
-		name=$$(echo $$f | rev | cut -d'.' -f2- | rev); \
-		cp $$f $${name}; \
-	done;
+	@cp tests/custom_code/as/* authz_server/custom_code/
+	@cp tests/custom_code/ci/* credential_issuer/custom_code/
 
 test: tests-deps test_custom_code up mobile_zencode_up push_server_up ## 🧪 Run e2e tests on the APIs
 	@./scripts/wk.sh setup
@@ -144,7 +137,9 @@ test: tests-deps test_custom_code up mobile_zencode_up push_server_up ## 🧪 Ru
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
 	@kill `cat .test.verifier.pid` && rm .test.verifier.pid
 	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
-	rm -fr tests/mobile_zencode
+	@rm -fr tests/mobile_zencode
+	@rm -f authz_server/custom_code/*
+	@rm -f credential_issuer/custom_code/*
 	@mv relying_party/temp-verify.keys.json relying_party/verify.keys.json
 	@./scripts/wk.sh cleanup
 
