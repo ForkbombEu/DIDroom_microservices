@@ -33,7 +33,9 @@ function start_service() {
     name=${MS_NAME}
     if [ -z "${name}" ]; then name=$service; fi
     (
-        MS_NAME=$name ./ncr -p $port -z $service --public-directory public/$service --basepath '/'$service & APP_PID=$!
+        MS_NAME=$name ./ncr -p $port -z $service --public-directory public/$service --basepath '/'$service &
+        APP_PID=$!
+        echo $APP_PID > .${service}.pid
         (
             sleep 5
             if [ ! -f $service/secrets.keys ]; then
@@ -68,7 +70,7 @@ if [ "$(echo ${service} | wc -w)" = "1" ]; then
     start_service ${service} ${port}
 else
     for s in ${service}; do
-        start_service ${s} ${port} & echo $! > .${s}.pid
+        start_service ${s} ${port} &
         port=$((port+1))
     done
 fi
