@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 UP_PORT=${1}
-MS_URL=${2}
-MS_NAME=${3}
+MS_NAME=${2}
 
 if [ ! -x scripts/autorun_search.sh ]; then
     chmod +x scripts/autorun_search.sh
