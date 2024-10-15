@@ -58,8 +58,12 @@ function start_service() {
     )
 }
 
-
-service=$(ls | grep -E "authz_server$|credential_issuer$|relying_party$" --color=never)
+service=""
+for s in authz_server credential_issuer relying_party; do
+    if [[ -d "$s" ]]; then
+        service="$service $s"
+    fi
+done
 if [ -z "${service}" ]; then
     echo "😢 No service found"
     exit 1
