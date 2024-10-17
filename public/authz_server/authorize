@@ -13,13 +13,7 @@
     src="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.esm.js"></script>
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.css" />
-  <script>
-    tailwind.config = {
-      plugins: [
-        require('@tailwindcss/typography'),
-      ],
-    }
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/21.6.6/i18next.min.js"></script>
 </head>
 
 <body class="font-sans antialised flex flex-col h-full min-h-screen bg-primary p-8">
@@ -35,7 +29,7 @@
       <form id="params">
         <div id="form"></div>
         <div class="flex w-full">
-          <d-button color="accent" id="execute" expand="true" class="w-full mt-4">AUTHENTICATE</d-button>
+          <d-button color="accent" id="execute" expand="true" class="w-full mt-4" data-i18n="authenticate">AUTHENTICATE</d-button>
           <div class="ml-4 h-8 w-10 animate-bounce htmx-indicator hidden">
             <div class="mx-auto h-8 w-8 animate-pulse rounded-full bg-gray-300"></div>
             <span class="absolute flex h-6 w-6 animate-spin">
@@ -49,6 +43,36 @@
     </div>
   </main>
   <script>
+    // i18n
+    const userLanguage = navigator.language || navigator.userLanguage;
+    const supportedLanguages = ['en-US', 'it-IT'];
+    const defaultLanguage = supportedLanguages.includes(userLanguage) ? userLanguage : 'en-US';
+    i18next.init({
+      lng: defaultLanguage,
+      debug: false,
+      resources: {
+        en: {
+          translation: {
+            "authenticate": "AUTHENTICATE",
+          }
+        },
+        it: {
+          translation: {
+            "authenticate": "AUTENTICA",
+          }
+        }
+      }
+    }, function (err, t) {
+      updateContent();
+    });
+
+    function updateContent() {
+      document.querySelectorAll("[data-i18n]").forEach(function (element) {
+        const key = element.getAttribute("data-i18n");
+        element.textContent = i18next.t(key);
+      });
+    }
+
     // get url
     const paramsIdx = document.URL.indexOf('?');
     const baseUrl = document.URL.substring(0, paramsIdx - "authorize".length - 1);
@@ -99,9 +123,11 @@
         fetch(`${issuerUrl}/.well-known/openid-credential-issuer`)
           .then((response) => response.json())
           .then((wk) => {
-            const credentialInfo = wk.credential_configurations_supported.filter(
+            const credentialInfoDisplay = wk.credential_configurations_supported.find(
               (c) => c.credential_definition.type[0] === type
-            )[0].display[0];
+            ).display
+            const credentialInfo = credentialInfoDisplay.find((d) => d.locale === userLanguage) ||
+              credentialInfoDisplay.find((d) => d.locale === 'en-US');
             $("#avatar").attr("name", credentialInfo?.name)
             $("#avatar").attr("alt", credentialInfo?.logo.alt_text)
             $("#avatar").attr("src", credentialInfo?.logo.url)
