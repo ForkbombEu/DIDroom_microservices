@@ -25,8 +25,13 @@ Given I have a 'string' named 'code_challenge'
 Given I have a 'string' named 'code_challenge_method'
 Given I have a 'string' named 'redirect_uri'
 Given I have a 'string' named 'client_secret'
-Given I have a 'string array' named 'authorization_details'
-Given I have a 'string array' named 'locations' inside 'authorization_details'
+Given I have a 'string' named 'authorization_details'
+
+# restore array from string (due to url encoding)
+When I create the json unescaped object of 'authorization_details'
+and I remove 'authorization_details'
+and I rename the 'json unescaped object' to 'authorization_details'
+and I pickup from path 'authorization_details.1.locations'
 
 When I rename 'client_secret' to 'clientSecret'
 
