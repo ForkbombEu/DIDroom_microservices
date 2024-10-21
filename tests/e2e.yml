@@ -22,19 +22,10 @@ tests:
       - http:
           url: http://${{env.as_host}}/par
           method: POST
-          json:
-            response_type: code
-            client_id: did:dyne:sandbox.genericissuer:6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5
-            state: xyz
-            authorization_details: 
-              - type: openid_credential
-                locations: 
-                  - http://${{env.ci_host}}
-                credential_configuration_id: test_credential
-            code_challenge: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
-            code_challenge_method: S256
-            redirect_uri: didroom://openwallet-credential
-            client_secret: eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJwaXBwbyJ9.hiVPL2JTdmcZY7Vcso95KUBEzcTGvmvQ7wlwkCo0G74Unpzny2drvLsu-HzHWyckKbRjwWox-V5gqqKeka8kEQ
+          headers:
+            "Content-Type": "application/x-www-form-urlencoded"
+          body:
+            response_type=code&client_id=did%3Adyne%3Asandbox.genericissuer%3A6Cp8mPUvJmQaMxQPSnNyhb74f9Ga4WqfXCkBneFgikm5&state=xyz&authorization_details=%5B%7B%22type%22%3A%22openid_credential%22%2C%22locations%22%3A%5B%22http%3A%2F%2F${{env.ci_host}}%22%5D%2C%22credential_configuration_id%22%3A%22test_credential%22%7D%5D&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM&code_challenge_method=S256&redirect_uri=didroom%3A%2F%2Fopenwallet-credential&client_secret=eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJwaXBwbyJ9.hiVPL2JTdmcZY7Vcso95KUBEzcTGvmvQ7wlwkCo0G74Unpzny2drvLsu-HzHWyckKbRjwWox-V5gqqKeka8kEQ
           check:
             co2:
               - lte: 0.01 # in grams
