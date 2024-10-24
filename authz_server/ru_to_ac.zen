@@ -34,22 +34,30 @@ When I split the leftmost '8' bytes of 'url'
 When I rename the 'url' to 'body'
 When I move 'body' in 'request'
 
+# TODO: retrieve the redirect_uri from par request (new slangroom statement needed)
+When I create the 'string dictionary' named 'redirect_uri_dict'
+And I set 'redirect_uri' to 'https://wallet.didroom.com/' as 'string'
+And I move 'redirect_uri' in 'redirect_uri_dict'
+
 Then print the 'server'
 Then print the 'request'
 Then print the 'request_uri'
 Then print the 'data'
+Then print the 'redirect_uri_dict'
 
 Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
 Then I manipulate and delete and output into 'server'
 
 Then I send request_uri 'request_uri' and send data 'data' and send server_data 'secret_server' and add data to authorization details
 Then I manipulate and delete and output into 'request_uri'
-Then I manipulate and delete and output into 'data'  
+Then I manipulate and delete and output into 'data'
 
 Then I send request 'request' and send server_data 'secret_server' and generate authorization code and output into 'authCode_jwt'
 Then I manipulate and delete and output into 'request'
-Then I manipulate and delete and output into 'secret_server' 
+Then I manipulate and delete and output into 'secret_server'
 
-Then I send object 'authCode_jwt' and send path 'code_path' and manipulate and get and output into 'code'
+Then I send keys 'authCode_jwt' and send data 'redirect_uri_dict' and send script 'zen_location' and execute zencode and output into 'response'
+Then I send object 'http_headers_temp' and send path 'response_path' and send value 'response' and manipulate and set and output into 'http_headers'
 
-Then I manipulate and delete and output into 'authCode_jwt' 
+Then I manipulate and delete and output into 'authCode_jwt'
+Then I manipulate and delete and output into 'response'

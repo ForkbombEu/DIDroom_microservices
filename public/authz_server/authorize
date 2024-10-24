@@ -141,28 +141,26 @@
                 $('#response').html('');
                 try {
                   const data = editor.getValue();
-                  const respose = slangroom.execute(contracts[type], {data, keys: keys[type]})
-                    .then((r) => {
-                      fetch(`${baseUrl}/ru_to_ac`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({...params, ...(r.result)})
-                      })
-                        .then((response) => response.json())
-                        .then((ac) => {
-                          $('#response').html(highlight(JSON.stringify(ac, null, 4)));
-                          window.parent.postMessage(JSON.stringify(ac), '*');
-                        })
-                    })
-                    .catch((e) => {
-                      $('#error').html(e);
-                      window.parent.postMessage(e, '*');
-                    })
+                  const form = document.createElement('form');
+                  form.method = 'POST';
+                  form.action = `${baseUrl}/authorize_backend`;
+
+                  const form_input_and_params = { params, data, custom_code: type };
+
+                  const input = document.createElement('input');
+                  input.type = 'hidden';
+                  input.name = 'form_input_and_params';
+                  input.value = JSON.stringify(form_input_and_params);
+                  form.appendChild(input);
+                  document.body.appendChild(form);
+                  form.submit();
                 } catch (e) {
                   $('#error').html(e);
-                  window.parent.postMessage(e, '*');
+                  console.error(e);
+                  // window.parent.postMessage(e, '*');
+                } finally {
+                  $('.htmx-indicator').hide();
                 }
-                $('.htmx-indicator').hide();
               });
             });
           });
