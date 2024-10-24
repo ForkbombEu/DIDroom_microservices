@@ -1,4 +1,7 @@
 {
+    "tags": [
+        "🚦 Authorization Server"
+    ],
     "success_code": "302",
     "error_code": "302",
     "content_type": "application/x-www-form-urlencoded",
