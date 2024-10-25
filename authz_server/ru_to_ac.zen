@@ -1,3 +1,4 @@
+Rule unknown ignore
 Scenario 'http'
 Scenario 'w3c': create jwk
 
@@ -34,13 +35,10 @@ When I split the leftmost '8' bytes of 'url'
 When I rename the 'url' to 'body'
 When I move 'body' in 'request'
 
-When I create the 'string dictionary' named 'redirect_uri_dict'
-
 Then print the 'server'
 Then print the 'request'
 Then print the 'request_uri'
 Then print the 'data'
-Then print the 'redirect_uri_dict'
 
 Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
 Then I manipulate and delete and output into 'server'
@@ -48,8 +46,8 @@ Then I manipulate and delete and output into 'server'
 Then I send request_uri 'request_uri' and send data 'data' and send server_data 'secret_server' and add data to authorization details
 Then I manipulate and delete and output into 'data'
 
-Then I send redirect_uri 'request_uri' and send server_data 'secret_server' and get redirect_uri from request_uri and output into 'redirect_uri'
-Then I sned object 'redirect_uri_dict' and send path 'redirect_uri_path' and send value 'redirect_uri' and manipulate and set
+Then I send request_uri 'request_uri' and send server_data 'secret_server' and get redirect_uri from request_uri and output into 'redirect_uri'
+Then I send object 'redirect_uri_dict' and send path 'redirect_uri_path' and send value 'redirect_uri' and manipulate and set
 Then I manipulate and delete and output into 'redirect_uri'
 Then I manipulate and delete and output into 'request_uri'
 
