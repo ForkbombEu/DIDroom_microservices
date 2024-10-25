@@ -16,5 +16,6 @@
     ],
     "http_headers_temp": {},
     "response_path": "response",
-    "zen_location": "Scenario 'http': url\nGiven I have a 'string' named 'code'\nAnd I have a 'string' named 'redirect_uri'\nWhen I create the url from 'redirect_uri'\nAnd I append percent encoding of 'code' as http request to 'url'\nAnd I rename the 'url' to 'Location'\nThen print the 'Location'"
+    "zen_location": "Scenario 'http': url\nGiven I have a 'string' named 'code'\nAnd I have a 'string' named 'redirect_uri'\nWhen I create the url from 'redirect_uri'\nAnd I append percent encoding of 'code' as http request to 'url'\nAnd I rename the 'url' to 'Location'\nThen print the 'Location'",
+    "redirect_uri_path": "redirect_uri"
 }
