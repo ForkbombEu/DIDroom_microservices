@@ -19,8 +19,8 @@ setup() {
         -e "s|{{ ci_name }}|DIDroom_Test_Issuer|" \
         public/credential_issuer/.well-known/openid-credential-issuer
     tmp=$(mktemp)
-    jq --indent 4 '.credential_configurations_supported = [
-            {
+    jq --indent 4 '.credential_configurations_supported = {
+            "test_credential": {
                 "format": "vc+sd-jwt",
                 "cryptographic_binding_methods_supported": [
                     "jwk",
@@ -41,9 +41,10 @@ setup() {
                         "name": "Tested Credential",
                         "locale": "en-US",
                         "logo": {
-                        "url": "https://www.connetweb.com/wp-content/uploads/2021/06/canstockphoto22402523-arcos-creator.com_-1024x1024-1.jpg",
-                        "alt_text": "Test Logo"
+                            "uri": "https://www.connetweb.com/wp-content/uploads/2021/06/canstockphoto22402523-arcos-creator.com_-1024x1024-1.jpg",
+                            "alt_text": "Test Logo"
                         },
+                        "description": "a description",
                         "background_color": "#12107c",
                         "text_color": "#FFFFFF"
                     }
@@ -65,7 +66,7 @@ setup() {
                     }
                 }
             }
-        ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
+        }' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
     jq --indent 4 '.authorization_servers = [
             "http://localhost:3000/authz_server"
         ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
