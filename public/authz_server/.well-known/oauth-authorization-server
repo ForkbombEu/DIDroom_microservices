@@ -4,6 +4,7 @@
 	"token_endpoint": "{{ as_url }}/token",
 	"introspection_endpoint": "{{ as_url }}/introspection",
 	"issuer": "{{ as_url }}",
+	"require_pushed_authorization_requests": true,
 	"jwks": {
 		"keys": [
 			{
