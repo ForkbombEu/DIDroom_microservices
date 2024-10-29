@@ -42,7 +42,7 @@ function start_service() {
                 echo "📢 Announce phase failed"
                 echo "🗝️  Secret keys not created in file: ${s}/secrets.keys"
                 echo "⛔ Stopping the service"
-                kill $APP_PID
+                if ps -p $APP_PID 1>/dev/null; then kill $APP_PID; fi
                 exit 1
             fi
             kid=$(jq -r '.jwks.keys[0].kid' public/$service/.well-known/$wk_name)
@@ -50,11 +50,11 @@ function start_service() {
                 echo "📢 Announce phase failed"
                 echo "🪪 Kid not created in file: public/$service/.well-known/$wk_name"
                 echo "⛔ Stopping the service"
-                kill $APP_PID
+                if ps -p $APP_PID 1>/dev/null; then kill $APP_PID; fi
                 exit 1
             fi
         )
-        wait $APP_PID
+        if ps -p $APP_PID 1>/dev/null; then wait $APP_PID; fi
     )
 }
 
