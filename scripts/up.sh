@@ -76,5 +76,6 @@ else
     for s in ${service}; do
         start_service ${s} ${port} &
         port=$((port+1))
+        sleep 5
     done
 fi
