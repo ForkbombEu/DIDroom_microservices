@@ -6,17 +6,16 @@ setup() {
         cp public/authz_server/.well-known/oauth-authorization-server public/authz_server/.well-known/oauth-authorization-server.tmp
     fi
     sed -i \
-        -e "s|{{ as_url }}|http://localhost:3000/authz_server|" \
+        -e "s|{{ as_url }}|http://localhost:3000/authz_server|g" \
         public/authz_server/.well-known/oauth-authorization-server
-
 
     # ci
     if [ ! -f public/credential_issuer/.well-known/openid-credential-issuer.tmp ]; then
         cp public/credential_issuer/.well-known/openid-credential-issuer public/credential_issuer/.well-known/openid-credential-issuer.tmp
     fi
     sed -i \
-        -e "s|{{ ci_url }}|http://localhost:3001/credential_issuer|" \
-        -e "s|{{ ci_name }}|DIDroom_Test_Issuer|" \
+        -e "s|{{ ci_url }}|http://localhost:3001/credential_issuer|g" \
+        -e "s|{{ ci_name }}|DIDroom_Test_Issuer|g" \
         public/credential_issuer/.well-known/openid-credential-issuer
     tmp=$(mktemp)
     jq --indent 4 '.credential_configurations_supported = [
@@ -75,8 +74,8 @@ setup() {
         cp public/relying_party/.well-known/openid-relying-party public/relying_party/.well-known/openid-relying-party.tmp
     fi
     sed -i \
-        -e "s|{{ rp_url }}|http://localhost:3002/relying_party|" \
-        -e "s|{{ rp_name }}|DIDroom_Test_RP|" \
+        -e "s|{{ rp_url }}|http://localhost:3002/relying_party|g" \
+        -e "s|{{ rp_name }}|DIDroom_Test_RP|g" \
         public/relying_party/.well-known/openid-relying-party
     jq --indent 4 '.trusted_credential_issuers = [
             "http://localhost:3001/credential_issuer"
