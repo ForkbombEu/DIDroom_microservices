@@ -36,7 +36,7 @@ help: ## 🛟  Show this help message
 
 ncr: deps ## 📦 Install and setup the server
 	@if [ ! -f ./ncr ]; then \
-		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.5/ncr; \
+		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.6/ncr; \
 		chmod +x ./ncr; \
 	fi
 	@echo "📦 Setup is done!"
@@ -58,6 +58,7 @@ tests-deps: # 🧪 Check test dependencies
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+	cd tests/mobile_zencode && git checkout fix/credential_configurations_supported
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
