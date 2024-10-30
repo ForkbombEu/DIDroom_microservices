@@ -36,7 +36,7 @@ help: ## 🛟  Show this help message
 
 ncr: deps ## 📦 Install and setup the server
 	@if [ ! -f ./ncr ]; then \
-		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.5/ncr; \
+		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.6/ncr; \
 		chmod +x ./ncr; \
 	fi
 	@echo "📦 Setup is done!"
