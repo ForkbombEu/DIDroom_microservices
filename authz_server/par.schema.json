@@ -11,33 +11,7 @@
       "type": "string"
     },
     "authorization_details": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string"
-            },
-            "locations": {
-              "type": "array",
-              "items": [
-                {
-                  "type": "string"
-                }
-              ]
-            },
-            "credential_configuration_id": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "type",
-            "locations",
-            "credential_configuration_id"
-          ]
-        }
-      ]
+      "type": "string"
     },
     "code_challenge": {
       "type": "string"
