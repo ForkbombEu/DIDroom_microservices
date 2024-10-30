@@ -12,7 +12,7 @@ endif
 .DEFAULT_GOAL := up
 .PHONY: help
 TEST_DEPS := git jq npx
-DEPLOY_DEPS := wget jq awk
+DEPLOY_DEPS := wget jq awk wc
 
 hn=$(shell hostname)
 
@@ -28,74 +28,32 @@ ifneq ($(OS),Windows_NT)
 	endif
 endif
 
-all:
+deps:
 	$(foreach exec,$(DEPLOY_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
 
 help: ## 🛟  Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
-ncr: ## 📦 Install and setup the server
-	@wget -q --show-progress https://github.com/forkbombeu/ncr/releases/latest/download/ncr
-	@chmod +x ./ncr
+ncr: deps ## 📦 Install and setup the server
+	@if [ ! -f ./ncr ]; then \
+		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.5/ncr; \
+		chmod +x ./ncr; \
+	fi
 	@echo "📦 Setup is done!"
 
-authorize: tmp := $(shell mktemp)
-authorize: tmp_zen := $(shell mktemp)
-authorize: tmp_schema := $(shell mktemp)
-authorize: tmp_keys := $(shell mktemp)
-authorize: AUTHZ_FILE?=public/authz_server/authorize
-authorize: ## 📦 Setup the authorize page
-authorize:
-	@echo "{}" > ${tmp_schema}
-	@echo "{}" > ${tmp_zen}
-	@echo "{}" > ${tmp_keys}
-	@if [ -d authz_server/custom_code ] && [ -f ${AUTHZ_FILE} ]; then \
-		for f in authz_server/custom_code/*; do \
-			name=$$(echo $$f | rev | cut -d'/' -f1 | rev | cut -d'.' -f1); \
-			ext=$$(echo $$f | cut -d'.' -f2-); \
-			if [ -f $$f ] && [ "$$ext" = "schema.json" ]; then \
-			jq --arg name $$name '.[$$name] = input ' ${tmp_schema} $$f > ${tmp} && mv ${tmp} ${tmp_schema}; \
-			elif [ -f $$f ] && [ "$$ext" = "zen" ]; then \
-			jq --arg name $$name --arg contract "$$(sed -z 's/\n/\\n/g' $$f)" '.[$$name] = $$contract ' ${tmp_zen} > ${tmp} && mv ${tmp} ${tmp_zen}; \
-			elif [ -f $$f ] && [ "$$ext" = "keys.json" ]; then \
-			jq --arg name $$name '.[$$name] = input ' ${tmp_keys} $$f > ${tmp} && mv ${tmp} ${tmp_keys}; \
-			fi; \
-		done; \
-		awk -v c="$$(jq -r tostring ${tmp_zen})" '{gsub ("const contracts = .*", "const contracts = " c); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
-		awk -v s="$$(jq -r tostring ${tmp_schema})"  '{gsub ("const schemas = .*", "const schemas = " s); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
-		awk -v k="$$(jq -r tostring ${tmp_keys})"          '{gsub ("const keys = .*", "const keys = " k); print}' ${AUTHZ_FILE} > ${tmp} && mv ${tmp} ${AUTHZ_FILE}; \
-	fi;
-	@rm ${tmp_schema} ${tmp_zen} ${tmp_keys}
+authorize: deps ## 📦 Setup the authorize page
+	@chmod +x scripts/authorize.sh
+	@./scripts/authorize.sh
 
 up: UP_PORT?=3000
 up: ncr authorize ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
-	@chmod +x scripts/autorun_search.sh
-	@chmod +x scripts/autorun_store.sh
-	@service=$$(ls | grep "authz_server\$$\|credential_issuer\$$\|relying_party\$$" --color=never | awk '{printf "%s ", $$1}'); \
-	if [ -z "$${service}" ]; then \
-		echo "😢 No service found"; \
-		exit 1; \
-	fi; \
-	port=${UP_PORT}; \
-	if [ "$$(echo -n \"$${service}\" | grep -o '\s' | wc -l)" = "1" ]; then \
-		echo "🐣 Starting service: $${service}"; \
-		name=${MS_NAME}; \
-		if [ -z "$${name}" ]; then name=$$service; fi; \
-		MS_NAME=$$name ./ncr -p $$port -z $$service --public-directory public/$$service --basepath '/'$$service; \
-	else \
-		for s in $${service}; do \
-			echo "🐣 Starting service: $${s}"; \
-			name=${MS_NAME}; \
-			if [ -z "$${name}" ]; then name=$$s; fi; \
-			MS_NAME=$$name ./ncr -p $$port -z $$s --public-directory public/$$s --basepath '/'$$s & echo $$! > .$$s.pid; \
-			port=$$((port+1)); \
-		done \
-	fi
+	@chmod +x scripts/up.sh
+	@./scripts/up.sh ${UP_PORT} ${MS_NAME}
 
 # -- tests --
 
-tests-deps: ## 🧪 Check test dependencies
+tests-deps: # 🧪 Check test dependencies
 	$(foreach exec,$(TEST_DEPS),$(if $(shell which $(exec)),,$(error "🥶 `$(exec)` not found in PATH please install it")))
 
 tests/mobile_zencode:
@@ -112,7 +70,7 @@ test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
 
-test: tests-deps test_custom_code up mobile_zencode_up push_server_up ## 🧪 Run e2e tests on the APIs
+test: tests-deps test_custom_code up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
 	@./scripts/wk.sh setup
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
@@ -155,7 +113,7 @@ clean: ## 🧹 Clean
 	rm -f .test.*.pid
 	rm -f .*.pid
 
-deepclean: clean ## 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
+deepclean: clean # 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
 	git restore */.autorun/identity.metadata.json public/*/.well-known
 	rm -f */secrets.keys
 	pkill ncr || true
