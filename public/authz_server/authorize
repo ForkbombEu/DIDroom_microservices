@@ -61,9 +61,7 @@
       }
     }
     // filled by make authorize
-    const contracts = {}
     const schemas = {}
-    const keys = {}
 
     const highlight = (json) => {
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
