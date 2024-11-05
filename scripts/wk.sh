@@ -48,20 +48,16 @@ setup() {
                         "text_color": "#FFFFFF"
                     }
                 ],
-                "credential_definition": {
-                    "type": [
-                        "test_credential"
-                    ],
-                    "credentialSubject": {
-                        "tested": {
-                            "mandatory": true,
-                            "display": [
-                                {
-                                    "name": "Is tested",
-                                    "locale": "en-US"
-                                }
-                            ]
-                        }
+                "vct": "test_credential",
+                "claims": {
+                    "tested": {
+                        "mandatory": true,
+                        "display": [
+                            {
+                                "name": "Is tested",
+                                "locale": "en-US"
+                            }
+                        ]
                     }
                 }
             }
