@@ -182,6 +182,17 @@
       margin: 0px;
     }
 
+    input[type="radio"] {
+      width: 48px !important;
+      height: 48px !important;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    label {
+        font-size: 1.5rem;
+    }
+
     .form-control>input {
       border-color: black;
       border-width: 2px;
