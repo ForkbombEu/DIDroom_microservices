@@ -13,6 +13,8 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
+NCR_VERSION := 1.39.8
+NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
 
@@ -35,11 +37,11 @@ help: ## 🛟  Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
 ncr: deps ## 📦 Install and setup the server
-	@if [ ! -f ./ncr ]; then \
-		wget -q --show-progress https://github.com/ForkbombEu/ncr/releases/download/v1.39.8/ncr; \
+	@if [ ! -x ./ncr ] || [ "$$(./ncr -v)" != "${NCR_VERSION}" ]; then \
+		wget -q --show-progress $(NCR_URL) -O ncr; \
 		chmod +x ./ncr; \
 	fi
-	@echo "📦 Setup is done!"
+	@echo "📦 Setup is done! Ncr version ${NCR_VERSION} installed"
 
 authorize: deps ## 📦 Setup the authorize page
 	@chmod +x scripts/authorize.sh
