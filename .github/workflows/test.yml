@@ -18,7 +18,6 @@ jobs:
       - run: make test
 
   publish_docker_image:
-    needs: api_test
     name: 🐳 Publish Docker Image
     if: github.ref == 'refs/heads/stable'
     uses: interfacerproject/workflows/.github/workflows/publish-ghcr.yml@main
