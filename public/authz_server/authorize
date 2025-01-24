@@ -125,6 +125,14 @@
                 editor.is_dirty = true // If not dirty the editor will not display errors
                 editor.showValidationErrors(err) // every editor filters errors by path
               })
+              document.querySelectorAll('label').forEach(label => {
+                const input = label.querySelector('input[type="radio"]'); // Keep the input intact
+                const textNode = label.childNodes[1]; // Get the text node (after input)
+
+                if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                  textNode.nodeValue = textNode.nodeValue.replace('\u00A0', ''); // Replace `&nbsp;` with a regular space
+                }
+              });
               document.querySelector('#params input').focus();
             });
 
@@ -176,26 +184,56 @@
       font-family: "Gantari Variable";
     }
 
+    select {
+      border-radius: 6px;
+      width: 100%;
+      border-color: black;
+      border-width: 2px;
+      overflow: hidden;
+      word-wrap: normal;
+      white-space: normal;
+      font-size: 1.5rem;
+    }
+
     div[data-theme='html'] .je-indented-panel.je-indented-panel {
       border: none;
       padding: 0px;
       margin: 0px;
     }
 
-    input[type="radio"] {
+    input[type="radio"].je-radio {
       width: 48px !important;
-      height: 48px !important;
-      margin-bottom: 10px;
+      height: 48px;
+      margin-right: 20px;
       flex-shrink: 0;
+      border-color: black;
+      border-width: 2px;
+    }
+
+    label:has(input[type="radio"].je-radio) {
+      display: inline-flex;
+      align-items: center;
+      white-space: normal;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      margin-top: 2px;
+      width: 100%;
+    }
+
+    .je-form-input-label {
+      margin-left: 20px;
+      margin-top: 20px;
+      line-height: 1.2;
     }
 
     label {
-        font-size: 1.5rem;
+      font-size: 1.5rem;
     }
 
     .form-control>input {
       border-color: black;
       border-width: 2px;
+      font-size: 1.5rem;
     }
 
     .htmx-added {
