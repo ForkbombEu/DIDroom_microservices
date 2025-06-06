@@ -13,7 +13,7 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
-NCR_VERSION := 1.39.8
+NCR_VERSION := 1.42.12
 NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
@@ -46,6 +46,10 @@ ncr: deps ## 📦 Install and setup the server
 authorize: deps ## 📦 Setup the authorize page
 	@chmod +x scripts/authorize.sh
 	@./scripts/authorize.sh
+
+credential: deps ## 📦 Setup the credential issuer
+	@chmod +x scripts/credential.sh
+	@./scripts/credential.sh
 
 up: UP_PORT?=3000
 up: ncr authorize ## 🚀 Up & run the project
