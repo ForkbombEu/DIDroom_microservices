@@ -29,7 +29,7 @@ cat <<EOF >> ${CHAIN}
     precondition:
       zencode: |
         Given I have a 'string' named 'vct'
-        When I set 'condition' to '$vct' as ;string'
+        When I set 'condition' to '$vct' as 'string'
         When I verify 'vct' is equal to 'condition'
         Then print the string '$vct'
       dataFromStep: Verify
