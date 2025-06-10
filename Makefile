@@ -52,7 +52,7 @@ credential: deps ## 📦 Setup the credential issuer
 	@./scripts/credential.sh
 
 up: UP_PORT?=3000
-up: ncr authorize ## 🚀 Up & run the project
+up: ncr authorize credential ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
 	@chmod +x scripts/up.sh
 	@./scripts/up.sh ${UP_PORT} ${MS_NAME}
@@ -78,6 +78,7 @@ test_custom_code:
 
 test: tests-deps test_custom_code up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
 	@./scripts/wk.sh setup
+	@./scripts/credential.sh
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
