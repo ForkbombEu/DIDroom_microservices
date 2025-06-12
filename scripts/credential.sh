@@ -10,7 +10,7 @@ fi
 
 # get all vct from well_known
 # vcts=$(jq -r '.credential_configurations_supported.[].vct' ${WELL_KNOWN})
-vcts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "vc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
+vcts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
 ldp_keys=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
 
 chain="  "
