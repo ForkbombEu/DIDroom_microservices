@@ -20,7 +20,7 @@ setup() {
     tmp=$(mktemp)
     jq --indent 4 '.credential_configurations_supported = {
             "test_credential": {
-                "format": "vc+sd-jwt",
+                "format": "dc+sd-jwt",
                 "cryptographic_binding_methods_supported": [
                     "jwk",
                     "did:dyne:sandbox.signroom"
@@ -49,8 +49,9 @@ setup() {
                     }
                 ],
                 "vct": "test_credential",
-                "claims": {
-                    "tested": {
+                "claims": [
+                    {
+                        "path": [ "tested" ],
                         "mandatory": true,
                         "display": [
                             {
@@ -59,7 +60,72 @@ setup() {
                             }
                         ]
                     }
-                }
+                ]
+            },
+            "UniversityDegree_LDP_VC": {
+                "format": "ldp_vc",
+                "cryptographic_binding_methods_supported": [
+                    "jwk",
+                    "did:dyne:sandbox.signroom"
+                ],
+                "credential_signing_alg_values_supported": [
+                    "Ed25519Signature2018"
+                ],
+                "credentials_definition": {
+                    "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://www.w3.org/2018/credentials/examples/v1"
+                    ],
+                    "type": [
+                        "VerifiableCredential",
+                        "UniversityDegreeCredential"
+                    ]
+                },
+                "claims": [
+                    {
+                        "path": ["credentialSubject", "given_name"],
+                        "display": [
+                            {
+                                "name": "Given Name",
+                                "locale": "en-US"
+                            }
+                        ]
+                    },
+                    {
+                        "path": ["credentialSubject", "family_name"],
+                        "display": [
+                            {
+                                "name": "Surname",
+                                "locale": "en-US"
+                            }
+                        ]
+                    },
+                    {
+                        "path": ["credentialSubject", "degree"]
+                    },
+                    {
+                        "path": ["credentialSubject", "gpa"],
+                        "mandatory": true,
+                        "display": [
+                            {
+                                "name": "GPA"
+                            }
+                        ]
+                    }
+                ],
+                "display": [
+                    {
+                        "name": "University Credential",
+                        "locale": "en-US",
+                        "logo": {
+                            "uri": "https://university.example.edu/public/logo.png",
+                            "alt_text": "a square logo of a university"
+                        },
+                        "description": "University Degree Credential",
+                        "background_color": "#12107c",
+                        "text_color": "#FFFFFF"
+                    }
+                ]
             }
         }' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
     jq --indent 4 '.authorization_servers = [
