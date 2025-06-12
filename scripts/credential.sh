@@ -16,7 +16,7 @@ ldp_keys=$(jq -r '.credential_configurations_supported | to_entries[] | select(.
 chain="  "
 for vct in ${vcts}; do
 cat <<EOF >> ${CHAIN}
-  - id: Custom vc+sd-jwt $vct
+  - id: Custom dc+sd-jwt $vct
     precondition:
       zencode: |
         Given I have a 'string' named 'vct'
@@ -37,7 +37,7 @@ cat <<EOF >> ${CHAIN}
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode
     keysFromStep: Verify
-    dataFromStep: Custom $vct
+    dataFromStep: Custom dc+sd-jwt $vct
 EOF
 done
 for ldp_key in ${ldp_keys}; do
@@ -46,23 +46,23 @@ cat <<EOF >> ${CHAIN}
     precondition:
       zencode: |
         Given I have a 'string' named 'vct'
-        When I set 'condition' to '$vct' as 'string'
+        When I set 'condition' to '$ldp_keys' as 'string'
         When I verify 'vct' is equal to 'condition'
-        Then print the string '$vct'
+        Then print the string '$ldp_keys'
       dataFromStep: Verify
-    zencodeFromFile: credential_issuer/custom_code/$vct.zen
-    keysFromFile: credential_issuer/custom_code/$vct.keys.json
+    zencodeFromFile: credential_issuer/custom_code/$ldp_keys.zen
+    keysFromFile: credential_issuer/custom_code/$ldp_keys.keys.json
     dataFromStep: Introspection
   - id: w3c_vc for $ldp_keys
     precondition:
       zencode: |
         Given I have a 'string' named 'vct'
-        When I set 'condition' to '$vct' as 'string'
+        When I set 'condition' to '$ldp_keys' as 'string'
         When I verify 'vct' is equal to 'condition'
-        Then print the string '$vct'
+        Then print the string '$ldp_keys'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode
     keysFromStep: Verify
-    dataFromStep: Custom $vct
+    dataFromStep: Custom ldp_vc $ldp_keys
 EOF
 done
