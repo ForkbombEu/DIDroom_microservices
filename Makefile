@@ -64,6 +64,7 @@ tests-deps: # 🧪 Check test dependencies
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+	cd tests/mobile_zencode && git checkout feat/draft_15
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
