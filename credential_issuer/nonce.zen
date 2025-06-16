@@ -1,0 +1,19 @@
+Given nothing
+
+When I create the random 'c_nonce'
+When I create the timestamp
+When I set 'ten minutes' to '600' as 'time'
+
+When I create the result of 'timestamp' + 'ten_minutes'
+When I rename 'result' to 'expiry'
+
+When I set 'nonce_path' to 'credential_issuer/nonces/' as 'string'
+When I append 'url64' of 'c_nonce' to 'nonce_path'
+
+Then print the 'expiry'
+Then print the 'c_nonce'
+Then print the 'nonce_path'
+
+Compute: store in file where path is 'nonce_path', content is 'expiry'
+Compute 'expiry': manipulate and delete
+Compute 'nonce_path': manipulate and delete
