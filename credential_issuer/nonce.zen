@@ -11,7 +11,7 @@ When I set 'nonce_path' to 'credential_issuer/nonces/' as 'string'
 When I append 'url64' of 'c_nonce' to 'nonce_path'
 
 Then print the 'expiry'
-Then print the 'c_nonce'
+Then print the 'c_nonce' as 'url64'
 Then print the 'nonce_path'
 
 Compute: store in file where path is 'nonce_path', content is 'expiry'
