@@ -1,4 +1,4 @@
-Given nothing
+Given I have a 'string dictionary' named 'http_headers'
 
 When I create the random 'c_nonce'
 When I create the timestamp
@@ -10,9 +10,17 @@ When I rename 'result' to 'expiry'
 When I set 'nonce_path' to 'credential_issuer/nonces/' as 'string'
 When I append 'url64' of 'c_nonce' to 'nonce_path'
 
+When I create the 'string dictionary' named 'response'
+and I set 'Content-Type' to 'application/json' as 'string'
+and I move 'Content-Type' in 'response'
+and I set 'Cache-Control' to 'no-store' as 'string'
+and I move 'Cache-Control' in 'response'
+and I move 'response' in 'http_headers'
+
 Then print the 'expiry'
 Then print the 'c_nonce' as 'url64'
 Then print the 'nonce_path'
+Then print the 'http_headers'
 
 Compute: store in file where path is 'nonce_path', content is 'expiry'
 Compute 'expiry': manipulate and delete
