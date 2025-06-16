@@ -19,9 +19,9 @@ cat <<EOF >> ${CHAIN}
   - id: Custom dc+sd-jwt $vct
     precondition:
       zencode: |
-        Given I have a 'string' named 'vct'
+        Given I have a 'string' named 'credential_configuration_id'
         When I set 'condition' to '$vct' as 'string'
-        When I verify 'vct' is equal to 'condition'
+        When I verify 'credential_configuration_id' is equal to 'condition'
         Then print the string '$vct'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/custom_code/$vct.zen
@@ -30,9 +30,9 @@ cat <<EOF >> ${CHAIN}
   - id: sd_jwt for $vct
     precondition:
       zencode: |
-        Given I have a 'string' named 'vct'
+        Given I have a 'string' named 'credential_configuration_id'
         When I set 'condition' to '$vct' as 'string'
-        When I verify 'vct' is equal to 'condition'
+        When I verify 'credential_configuration_id' is equal to 'condition'
         Then print the string '$vct'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode
@@ -45,9 +45,9 @@ cat <<EOF >> ${CHAIN}
   - id: Custom ldp_vc $ldp_keys
     precondition:
       zencode: |
-        Given I have a 'string' named 'vct'
+        Given I have a 'string' named 'credential_configuration_id'
         When I set 'condition' to '$ldp_keys' as 'string'
-        When I verify 'vct' is equal to 'condition'
+        When I verify 'credential_configuration_id' is equal to 'condition'
         Then print the string '$ldp_keys'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/custom_code/$ldp_keys.zen
@@ -56,9 +56,9 @@ cat <<EOF >> ${CHAIN}
   - id: w3c_vc for $ldp_keys
     precondition:
       zencode: |
-        Given I have a 'string' named 'vct'
+        Given I have a 'string' named 'credential_configuration_id'
         When I set 'condition' to '$ldp_keys' as 'string'
-        When I verify 'vct' is equal to 'condition'
+        When I verify 'credential_configuration_id' is equal to 'condition'
         Then print the string '$ldp_keys'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode

@@ -63,9 +63,13 @@ Then I manipulate and delete and output into 'request'
 Then I manipulate and delete and output into 'secret_server'
 
 Then I send object 'accessToken_jwt' and send path 'accessToken_path' and manipulate and get and output into 'access_token'
-Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'
-Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipulate and get and output into 'c_nonce_expires_in'
+# Remove c_nonce and c_nonce_expires_in
+# Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'
+# Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipulate and get and output into 'c_nonce_expires_in'
+# Not clear if credential_configuration_id is required or not
+# Then I send object 'accessToken_jwt' and send path 'credential_configuration_id_path' and manipulate and get and output into 'credential_configuration_id'
+# Then I send object 'accessToken_jwt' and send path 'credential_identifiers_path' and send value 'credential_configuration_id' and manipulate and set
+# Then I manipulate and delete and output into 'credential_configuration_id'
 Then I send object 'accessToken_jwt' and send path 'exp_in_path' and manipulate and get and output into 'expires_in'
 Then I send object 'accessToken_jwt' and send path 'authorization_details_path' and manipulate and get and output into 'authorization_details'
 Then I manipulate and delete and output into 'accessToken_jwt'
-
