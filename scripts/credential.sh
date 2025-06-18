@@ -10,59 +10,70 @@ fi
 
 # get all vct from well_known
 # vcts=$(jq -r '.credential_configurations_supported.[].vct' ${WELL_KNOWN})
-vcts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
-ldp_keys=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
+sd_jwts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
+ldp_vcs=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
 
 chain="  "
-for vct in ${vcts}; do
+for sd_jwt in ${sd_jwts}; do
 cat <<EOF >> ${CHAIN}
-  - id: Custom dc+sd-jwt $vct
+  - id: Custom dc+sd-jwt $sd_jwt
     precondition:
       zencode: |
         Given I have a 'string' named 'credential_configuration_id'
-        When I set 'condition' to '$vct' as 'string'
+        When I set 'condition' to '$sd_jwt' as 'string'
         When I verify 'credential_configuration_id' is equal to 'condition'
-        Then print the string '$vct'
+        Then print the string '$sd_jwt'
       dataFromStep: Verify
-    zencodeFromFile: credential_issuer/custom_code/$vct.zen
-    keysFromFile: credential_issuer/custom_code/$vct.keys.json
+    zencodeFromFile: credential_issuer/custom_code/$sd_jwt.zen
+    keysFromFile: credential_issuer/custom_code/$sd_jwt.keys.json
     dataFromStep: Introspection
-  - id: sd_jwt for $vct
+  - id: sd_jwt for $sd_jwt
     precondition:
       zencode: |
         Given I have a 'string' named 'credential_configuration_id'
-        When I set 'condition' to '$vct' as 'string'
+        When I set 'condition' to '$sd_jwt' as 'string'
         When I verify 'credential_configuration_id' is equal to 'condition'
-        Then print the string '$vct'
+        Then print the string '$sd_jwt'
       dataFromStep: Verify
     zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode
     keysFromStep: Verify
-    dataFromStep: Custom dc+sd-jwt $vct
+    dataFromStep: Custom dc+sd-jwt $sd_jwt
 EOF
 done
-for ldp_key in ${ldp_keys}; do
+for ldp_vc in ${ldp_vcs}; do
 cat <<EOF >> ${CHAIN}
-  - id: Custom ldp_vc $ldp_keys
+  - id: Custom ldp_vc $ldp_vc
     precondition:
       zencode: |
         Given I have a 'string' named 'credential_configuration_id'
-        When I set 'condition' to '$ldp_keys' as 'string'
+        When I set 'condition' to '$ldp_vc' as 'string'
         When I verify 'credential_configuration_id' is equal to 'condition'
-        Then print the string '$ldp_keys'
+        Then print the string '$ldp_vc'
       dataFromStep: Verify
-    zencodeFromFile: credential_issuer/custom_code/$ldp_keys.zen
-    keysFromFile: credential_issuer/custom_code/$ldp_keys.keys.json
+    zencodeFromFile: credential_issuer/custom_code/$ldp_vc.zen
+    keysFromFile: credential_issuer/custom_code/$ldp_vc.keys.json
     dataFromStep: Introspection
-  - id: w3c_vc for $ldp_keys
+  - id: rdfcanon for $ldp_vc
     precondition:
       zencode: |
         Given I have a 'string' named 'credential_configuration_id'
-        When I set 'condition' to '$ldp_keys' as 'string'
+        When I set 'condition' to '$ldp_vc' as 'string'
         When I verify 'credential_configuration_id' is equal to 'condition'
-        Then print the string '$ldp_keys'
+        Then print the string '$ldp_vc'
       dataFromStep: Verify
-    zencodeFromFile: credential_issuer/credential_4_sd_jwt.zencode
+    zencodeFromFile: credential_issuer/credential_4_rdfcanon.zencode
     keysFromStep: Verify
-    dataFromStep: Custom ldp_vc $ldp_keys
+    dataFromStep: Custom ldp_vc $ldp_vc
+  - id: w3c_vc for $ldp_vc
+    precondition:
+      zencode: |
+        Given I have a 'string' named 'credential_configuration_id'
+        When I set 'condition' to '$ldp_vc' as 'string'
+        When I verify 'credential_configuration_id' is equal to 'condition'
+        Then print the string '$ldp_vc'
+      dataFromStep: Verify
+    zencodeFromFile: credential_issuer/credential_5_ldp_vc.zencode
+    keysFromStep: rdfcanon for $ldp_vc
+    dataFromStep: Custom ldp_vc $ldp_vc
 EOF
 done
