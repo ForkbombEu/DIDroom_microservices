@@ -13,7 +13,7 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
-NCR_VERSION := 1.42.18
+NCR_VERSION := 1.42.19
 NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
@@ -120,9 +120,11 @@ clean: ## 🧹 Clean
 	rm -f .env
 	rm -f .test.*.pid
 	rm -f .*.pid
+	rm -rf credential_issuer/nonces/ relying_party/temp-verify.keys.json
 
 deepclean: clean # 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
 	git restore */.autorun/identity.metadata.json public/*/.well-known
 	git clean -fd */custom_code public/*/.well-known
+	git restore credential_issuer/credential.chain.yaml public/authz_server/authorize relying_party/verify.keys.json
 	rm -f */secrets.keys
 	pkill ncr || true
