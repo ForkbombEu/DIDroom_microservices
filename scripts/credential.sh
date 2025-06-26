@@ -13,7 +13,6 @@ fi
 sd_jwts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
 ldp_vcs=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
 
-chain="  "
 for sd_jwt in ${sd_jwts}; do
 cat <<EOF >> ${CHAIN}
   - id: Custom dc+sd-jwt $sd_jwt
