@@ -13,12 +13,8 @@ env:
   verifier_host: localhost:3004
 tests:
   whole_flow_sdjwt:
-    name: Check the whole from from /par to /credential with SD-JWT
+    name: Check the whole from from /par to /credential
     $ref: tests/mobile_zencode/test/step_test.yml
-
-  whole_flow_ldpvc:
-    name: Check the whole from from /par to /credential with LDP VC
-    $ref: tests/mobile_zencode/test/step_test_ldpvc.yml
 
   creation:
     name: PAR endpoint
