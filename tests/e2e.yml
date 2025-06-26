@@ -12,9 +12,13 @@ env:
   rp_host: localhost:3002/relying_party
   verifier_host: localhost:3004
 tests:
-  whole_flow:
-    name: Check the whole from from /par to /credential
+  whole_flow_sdjwt:
+    name: Check the whole from from /par to /credential with SD-JWT
     $ref: tests/mobile_zencode/test/step_test.yml
+
+  whole_flow_ldpvc:
+    name: Check the whole from from /par to /credential with LDP VC
+    $ref: tests/mobile_zencode/test/step_test_ldpvc.yml
 
   creation:
     name: PAR endpoint
