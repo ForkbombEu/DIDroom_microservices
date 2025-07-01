@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "dcql_query": {
+            "type": "object"
+        },
+        "response_mode": {
+            "type": "string"
+        },
+        "response_type": {
+            "type": "string"
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

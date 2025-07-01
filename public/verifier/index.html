@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en" class="text-xs md:text-lg">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cash-dom/dist/cash.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@slangroom/browser"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.esm.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@didroom/components/dist/didroom-components/didroom-components.css" />
+    <script>
+        tailwind.config = {
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
+        }
+    </script>
+</head>
+
+<body class="font-sans antialised flex flex-col h-full min-h-screen bg-primary p-8">
+    <h1>DCQL query</h1>
+
+    <textarea id="dcql_query" placeholder='Paste dcql_query here...'></textarea>
+    <br>
+    <button onclick="createQR()">Create authorization request</button>
+    <h2>Scan the QR coide</h2>
+    <img id="qr_image" alt="QR Code" width="256" height="256"/>
+    <h2>Output</h2>
+    <pre id="output"></pre>
+    <script>
+        // backend add:
+        // * nonce
+        // * client_id (decentralized_identifier:{{did}})
+        // * response_type (code)
+        async function createQR() {
+            const dcql_query = JSON.parse(document.getElementById('dcql_query').value);
+            if (!dcql_query) {
+                alert('Please paste a DCQL query.');
+                return;
+            }
+            const url = location.origin + '/';
+            console.log(`Using URL: ${url}`);
+            const params = {
+                response_mode: 'direct_post',
+                response_type: 'vp_token',
+                dcql_query,
+                url,
+            };
+            const res = await fetch(`${url}generate_authorization_request`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params),
+            });
+            if (!res.ok) {
+                const errorText = await res.text();
+                document.getElementById('output').textContent = `Error: ${errorText}`;
+                return;
+            }
+            const data = await res.json();
+            document.getElementById('qr_image').src = data.qr_code;
+            document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        };
+    </script>
+    <style>
+        /* gantari-latin-wght-normal */
+        @font-face {
+            font-family: 'Gantari Variable';
+            font-style: normal;
+            font-display: swap;
+            font-weight: 100 900;
+            src: url(https://cdn.jsdelivr.net/fontsource/fonts/gantari:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        body {
+            font-family: "Gantari Variable";
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            font-family: monospace;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        pre {
+            background-color: #eee;
+            padding: 1rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .error {
+            color: red;
+        }
+
+        select {
+            border-radius: 6px;
+            width: 100%;
+            border-color: black;
+            border-width: 2px;
+            overflow: hidden;
+            word-wrap: normal;
+            white-space: normal;
+            font-size: 1.5rem;
+        }
+
+        div[data-theme='html'] .je-indented-panel.je-indented-panel {
+            border: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        input[type="radio"].je-radio {
+            width: 48px !important;
+            height: 48px;
+            margin-right: 20px;
+            flex-shrink: 0;
+            border-color: black;
+            border-width: 2px;
+        }
+
+        label:has(input[type="radio"].je-radio) {
+            display: inline-flex;
+            align-items: center;
+            white-space: normal;
+            line-height: 1.2;
+            margin-bottom: 2px;
+            margin-top: 2px;
+            width: 100%;
+        }
+
+        .je-form-input-label {
+            margin-left: 20px;
+            margin-top: 20px;
+            line-height: 1.2;
+        }
+
+        label {
+            font-size: 1.5rem;
+        }
+
+        .form-control>input {
+            border-color: black;
+            border-width: 2px;
+            font-size: 1.5rem;
+        }
+
+        .htmx-added {
+            outline-color: #22c55e;
+            outline-width: 8px;
+            outline-style: solid;
+        }
+
+        .je-header {
+            display: none;
+        }
+
+        .je-object__container {
+            border: none;
+        }
+
+        .string {
+            color: violet;
+        }
+
+        .number {
+            color: darkorange;
+        }
+
+        .boolean {
+            color: blue;
+        }
+
+        .null {
+            color: magenta;
+        }
+
+        .key {
+            color: red;
+        }
+
+        form#params label {
+            color: var(--on);
+            margin-bottom: 5px;
+        }
+
+        form#params input {
+            border-radius: 6px;
+            width: 100%;
+        }
+    </style>
+</body>
+
+</html>
