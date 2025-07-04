@@ -1,0 +1,21 @@
+Given I have a 'time' named 'timestamp'
+Given I have a 'string' named 'precondition_keys_path'
+Given I have a 'string' named 'executed'
+# timestamp
+When I set '5 min' to '300' as 'time'
+When I create the result of 'timestamp' + '5 min'
+When I remove 'timestamp'
+When I create the timestamp
+When I verify number 'timestamp' is less than 'result'
+# executed
+When I set 'false' to 'false' as 'string'
+When I verify 'executed' is equal to 'false'
+When I remove 'executed'
+When I set 'executed' to 'true' as 'string'
+When I create the 'string dictionary' named 'precondition_keys'
+When I move 'timestamp' in 'precondition_keys'
+When I move 'precondition_keys_path' in 'precondition_keys'
+When I move 'executed' in 'precondition_keys'
+Then print the string 'OK'
+Then print the 'precondition_keys'
+Then I send path 'precondition_keys_path' and send content 'precondition_keys' and store in file
