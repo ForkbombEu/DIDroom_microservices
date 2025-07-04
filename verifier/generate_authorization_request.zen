@@ -31,7 +31,7 @@ When I append the string 'request/' to 'request_uri'
 
 # request
 When I create the 'string dictionary' named 'body'
-When I move 'dcql_query' in 'body'
+When I copy 'dcql_query' in 'body'
 When I move 'client_id' in 'body'
 When I move 'response_mode' in 'body'
 When I move 'response_type' in 'body'
@@ -40,6 +40,7 @@ When I copy 'nonce' as 'hex' in 'body'
 When I create the timestamp
 When I move 'timestamp' to 'iat' in 'body'
 When I create the hash of 'body'
+When I append the string 'response/' to 'url'
 When I append the 'hex' of 'hash' to 'url'
 When I move 'url' to 'response_uri' in 'body'
 
@@ -56,7 +57,7 @@ When I move 'request_uri' in 'params_json'
 When I create http get parameters from 'params_json' using percent encoding
 and I append 'http get parameters' to 'intent_url'
 
-# paths
+# request paths
 When I write string 'public/verifier/request/' in 'request_uri_path'
 When I append the 'hex' of 'hash' to 'request_uri_path'
 When I copy 'request_uri_path' to 'request_uri_precondition_slang_path'
@@ -65,35 +66,73 @@ When I copy 'request_uri_path' to 'request_uri_precondition_keys_path'
 When I append the string '.keys.json' to 'request_uri_precondition_keys_path'
 When I copy 'request_uri_path' to 'request_uri_precondition_metadata_path'
 When I append the string '.metadata.json' to 'request_uri_precondition_metadata_path'
-When I write string 'verifier/' in 'response_uri_path'
+# response paths
+When I write string 'verifier/response/' in 'response_uri_path'
 When I append the 'hex' of 'hash' to 'response_uri_path'
+When I copy 'response_uri_path' to 'response_uri_keys_path'
+When I append the string '.keys.json' to 'response_uri_keys_path'
+When I copy 'response_uri_path' to 'response_uri_precondition_path'
+When I append the string '_pre' to 'response_uri_precondition_path'
+When I copy 'response_uri_precondition_path' to 'response_uri_precondition_slang_path'
+When I append the string '.slang' to 'response_uri_precondition_slang_path'
+When I copy 'response_uri_precondition_path' to 'response_uri_precondition_keys_path'
+When I append the string '.keys.json' to 'response_uri_precondition_keys_path'
+When I copy 'response_uri_precondition_path' to 'response_uri_precondition_metadata_path'
+When I append the string '.metadata.json' to 'response_uri_precondition_metadata_path'
 
-
-# precondition
-When I create the 'string dictionary' named 'precondition_data'
+# request precondition
+When I create the 'string dictionary' named 'request_precondition_keys'
 When I create the timestamp
-When I move 'timestamp' in 'precondition_data'
+When I move 'timestamp' in 'request_precondition_keys'
 When I set 'executed' to 'false' as 'string'
-When I move 'executed' in 'precondition_data'
-When I copy 'request_uri_precondition_keys_path' in 'precondition_data'
-When I create the 'string dictionary' named 'precondition_metadata'
+When I move 'executed' in 'request_precondition_keys'
+When I copy 'request_precondition_keys' to 'response_precondition_keys'
+When I copy 'request_uri_precondition_keys_path' to 'precondition_keys_path' in 'request_precondition_keys'
+When I create the 'string dictionary' named 'request_precondition_metadata'
 When I set 'precondition' to 'request/' as 'string'
 When I append the 'hex' of 'hash' to 'precondition'
-When I move 'precondition' in 'precondition_metadata'
+When I move 'precondition' in 'request_precondition_metadata'
+
+# response precondition/keys
+When I copy 'response_uri_precondition_keys_path' to 'precondition_keys_path' in 'response_precondition_keys'
+When I create the 'string dictionary' named 'response_precondition_metadata'
+When I set 'precondition' to 'response/' as 'string'
+When I append the 'hex' of 'hash' to 'precondition'
+When I move 'precondition' in 'response_precondition_metadata'
+When I create the 'string dictionary' named 'response_keys'
+When I copy 'dcql_query' in 'response_keys'
+When I copy 'nonce' in 'response_keys'
 
 Then print the 'jws_signature'
 Then print the 'intent_url'
-Then print the 'request_uri_path'
+# response
 Then print the 'response_uri_path'
+Then print the 'response_uri_keys_path'
+Then print the 'response_keys'
+Then print the 'response_uri_precondition_slang_path'
+Then print the 'response_uri_precondition_keys_path'
+Then print the 'response_uri_precondition_metadata_path'
+Then print the 'response_precondition_keys'
+Then print the 'response_precondition_metadata'
+# request
+Then print the 'request_uri_path'
 Then print the 'request_uri_precondition_slang_path'
 Then print the 'request_uri_precondition_keys_path'
 Then print the 'request_uri_precondition_metadata_path'
-Then print the 'precondition_data'
-Then print the 'precondition_metadata'
+Then print the 'request_precondition_keys'
+Then print the 'request_precondition_metadata'
 
+# request_uri
 Then I send path 'request_uri_path' and send content 'jws_signature' and store in file
-Then I send path 'request_uri_precondition_keys_path' and send content 'precondition_data' and store in file
+Then I send path 'request_uri_precondition_keys_path' and send content 'request_precondition_keys' and store in file
 Then I send path 'request_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
-Then I send path 'request_uri_precondition_metadata_path' and send content 'precondition_metadata' and store in file
+Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_keys' and store in file
+
+# response_uri
+Then I send path 'response_uri_path' and send content 'jws_signature' and store in file
+Then I send path 'response_uri_keys_path' and send content 'response_keys' and store in file
+Then I send path 'response_uri_precondition_keys_path' and send content 'response_precondition_keys' and store in file
+Then I send path 'response_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
+Then I send path 'response_uri_precondition_metadata_path' and send content 'response_precondition_metadata' and store in file
 
 Then I send text 'intent_url' and create qr code and output into 'qr_code'
