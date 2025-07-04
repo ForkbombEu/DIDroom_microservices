@@ -15,6 +15,8 @@ Given I have a 'string' named 'response_mode'
 Given I have a 'string' named 'response_type'
 Given I have a 'string' named 'url'
 
+# keys
+Given I have a 'string dictionary' named 'response_keys'
 
 When I write string 'openid4vp://' in 'intent_url'
 
@@ -71,6 +73,8 @@ When I write string 'verifier/response/' in 'response_uri_path'
 When I append the 'hex' of 'hash' to 'response_uri_path'
 When I copy 'response_uri_path' to 'response_uri_keys_path'
 When I append the string '.keys.json' to 'response_uri_keys_path'
+When I copy 'response_uri_path' to 'response_uri_schema_path'
+When I append the string '.schema.json' to 'response_uri_schema_path'
 When I copy 'response_uri_path' to 'response_uri_precondition_path'
 When I append the string '_pre' to 'response_uri_precondition_path'
 When I copy 'response_uri_precondition_path' to 'response_uri_precondition_slang_path'
@@ -99,7 +103,6 @@ When I create the 'string dictionary' named 'response_precondition_metadata'
 When I set 'precondition' to 'response/' as 'string'
 When I append the 'hex' of 'hash' to 'precondition'
 When I move 'precondition' in 'response_precondition_metadata'
-When I create the 'string dictionary' named 'response_keys'
 When I copy 'dcql_query' in 'response_keys'
 When I copy 'nonce' in 'response_keys'
 
@@ -109,6 +112,7 @@ Then print the 'intent_url'
 Then print the 'response_uri_path'
 Then print the 'response_uri_keys_path'
 Then print the 'response_keys'
+Then print the 'response_uri_schema_path'
 Then print the 'response_uri_precondition_slang_path'
 Then print the 'response_uri_precondition_keys_path'
 Then print the 'response_uri_precondition_metadata_path'
@@ -129,8 +133,9 @@ Then I send path 'request_uri_precondition_slang_path' and send content 'precond
 Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_keys' and store in file
 
 # response_uri
-Then I send path 'response_uri_path' and send content 'jws_signature' and store in file
+Then I send path 'response_uri_path' and send content 'response_slang' and store in file
 Then I send path 'response_uri_keys_path' and send content 'response_keys' and store in file
+Then I send path 'response_uri_schema_path' and send content 'response_schema' and store in file
 Then I send path 'response_uri_precondition_keys_path' and send content 'response_precondition_keys' and store in file
 Then I send path 'response_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
 Then I send path 'response_uri_precondition_metadata_path' and send content 'response_precondition_metadata' and store in file
