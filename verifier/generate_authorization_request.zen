@@ -132,7 +132,7 @@ Then print the 'request_precondition_metadata'
 Then I send path 'request_uri_path' and send content 'jws_signature' and store in file
 Then I send path 'request_uri_precondition_keys_path' and send content 'request_precondition_keys' and store in file
 Then I send path 'request_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
-Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_keys' and store in file
+Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_metadata' and store in file
 
 # response_uri
 Then I send path 'response_uri_zen_path' and send content 'response_slang' and store in file
