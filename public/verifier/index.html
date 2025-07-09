@@ -30,13 +30,35 @@
     <button onclick="createQR()">Create authorization request</button>
     <h2>Scan the QR coide</h2>
     <img id="qr_image" alt="QR Code" width="256" height="256"/>
-    <h2>Output</h2>
+    <h2>Result</h2>
     <pre id="output"></pre>
     <script>
         // backend add:
         // * nonce
         // * client_id (decentralized_identifier:{{did}})
         // * response_type (code)
+        let intervalId;
+        async function checkTransaction(transactionId) {
+            try {
+                const url = location.origin + '/';
+                const res = await fetch(`${url}${transactionId}`);
+                if (!res.ok) {
+                    console.warn(`Retrying... Server responded with status: ${res.status}`);
+                    return; // Keep polling
+                }
+
+                const transactionData = await res.json();
+                let presentedData = "Transaction completed, claims presented:\n";
+                transactionData.transaction_result.forEach((r, i) => {
+                    presentedData += `${r.path.join('.')}: ${r.value}\n`;
+                })
+                document.getElementById('output').textContent = `${presentedData}`;
+                clearInterval(intervalId); // ✅ Stop polling on success
+            } catch (err) {
+                console.error('Fetch error, will retry:', err);
+                // Keep polling on network error
+            }
+        };
         async function createQR() {
             const dcql_query = JSON.parse(document.getElementById('dcql_query').value);
             if (!dcql_query) {
@@ -65,7 +87,8 @@
             }
             const data = await res.json();
             document.getElementById('qr_image').src = data.qr_code;
-            document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            console.log('Zenroom output: \n', JSON.stringify(data, null, 2));
+            intervalId = setInterval(() => checkTransaction(data.transaction_id), 1000);
         };
     </script>
     <style>
