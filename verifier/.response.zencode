@@ -105,6 +105,7 @@ When I set 'true' to 'true' as 'string'
 When I verify 'type_matched' is equal to 'true'
 
 # 4. verify all requested claims are found
+When I create the 'string array' named 'transaction_result'
 Foreach 'c' in 'claims'
 When I copy 'path' from 'c' to 'path_array'
 When I copy 'VC' to 'root'
@@ -113,6 +114,10 @@ When I copy 'p' from 'root' to 'tmp'
 When I remove 'root'
 When I rename 'tmp' to 'root'
 EndForeach
+When I create the 'string dictionary' named 'tmp_transaction'
+When I copy 'path_array' to 'path' in 'tmp_transaction'
+When I copy 'root' to 'value' in 'tmp_transaction'
+When I move 'tmp_transaction' in 'transaction_result'
 When I remove 'root'
 When I remove 'path_array'
 EndForeach
@@ -162,3 +167,6 @@ EndIf
 When I verify 'vc_verified' is found
 
 Then print the string 'OK'
+Then print the 'transaction_result'
+
+Compute: store in file with content 'transaction_result', path 'transaction_id'
