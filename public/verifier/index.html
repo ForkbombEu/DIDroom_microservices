@@ -38,6 +38,7 @@
         // * client_id (decentralized_identifier:{{did}})
         // * response_type (code)
         let intervalId;
+        let timeoutId;
         async function checkTransaction(transactionId) {
             try {
                 const url = location.origin + '/';
@@ -48,18 +49,20 @@
                 }
 
                 const transactionData = await res.json();
-                let presentedData = "Transaction completed, claims presented:\n";
+                let presentedData = "\n✅ Transaction completed, claims presented:\n";
                 transactionData.transaction_result.forEach((r, i) => {
                     presentedData += `${r.path.join('.')}: ${r.value}\n`;
                 })
                 document.getElementById('output').textContent = `${presentedData}`;
                 clearInterval(intervalId); // ✅ Stop polling on success
+                clearTimeout(timeoutId);
             } catch (err) {
                 console.error('Fetch error, will retry:', err);
                 // Keep polling on network error
             }
         };
         async function createQR() {
+            document.getElementById('output').textContent = "";
             const dcql_query = JSON.parse(document.getElementById('dcql_query').value);
             if (!dcql_query) {
                 alert('Please paste a DCQL query.');
@@ -88,7 +91,11 @@
             const data = await res.json();
             document.getElementById('qr_image').src = data.qr_code;
             console.log('Zenroom output: \n', JSON.stringify(data, null, 2));
-            intervalId = setInterval(() => checkTransaction(data.transaction_id), 1000);
+            intervalId = setInterval(() => checkTransaction(data.transaction_id), 3000);
+            timeoutId = setTimeout(() => {
+                clearInterval(intervalId);
+                document.getElementById('output').textContent = '\n❌ Transaction timed out after 3 minutes.';
+            }, 180000);
         };
     </script>
     <style>
