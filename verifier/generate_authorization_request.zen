@@ -108,6 +108,13 @@ When I move 'precondition' in 'response_precondition_metadata'
 When I copy 'dcql_query' in 'response_keys'
 When I copy 'nonce' as 'hex' in 'response_keys'
 
+# transaction_id
+When I write string 'public/verfier/transaction/' in 'transaction_id'
+When I create the random 'rand'
+When I append the 'hex' of 'rand' to 'transaction_id'
+
+When I copy the 'transaction_id' in 'response_keys'
+
 Then print the 'jws_signature'
 Then print the 'intent_url'
 # response
@@ -127,6 +134,8 @@ Then print the 'request_uri_precondition_keys_path'
 Then print the 'request_uri_precondition_metadata_path'
 Then print the 'request_precondition_keys'
 Then print the 'request_precondition_metadata'
+# transaction_id
+Then print the 'transaction_id'
 
 # request_uri
 Then I send path 'request_uri_path' and send content 'jws_signature' and store in file
