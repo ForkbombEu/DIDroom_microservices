@@ -21,7 +21,8 @@ Prepare 'vp_proof_without_proofValue': manipulate and omit with object 'vp_proof
 # vp serialize body
 Prepare: manipulate and set with object 'vp_serialize_body', path 'document_path', value 'vp_without_proof'
 Prepare: manipulate and set with object 'vp_serialize_body', path 'proof_config_path', value 'vp_proof_without_proofValue'
-Prepare 'serialized_vp': connect to 'serialize_api' and do post with object 'vp_serialize_body'
+Prepare 'vp_serialize_body_clean': manipulate and omit with object 'vp_serialize_body', paths 'is_dict_path'
+Prepare 'serialized_vp': connect to 'serialize_api' and do post with object 'vp_serialize_body_clean'
 
 # resolve vp verificationMethod
 Prepare 'vp_zen_res': execute zencode with script 'did_zen', data 'vp_proof', keys 'empty_keys'
@@ -38,7 +39,8 @@ Prepare 'vc_proof_without_proofValue': manipulate and omit with object 'vc_proof
 # vc serialize body
 Prepare: manipulate and set with object 'vc_serialize_body', path 'document_path', value 'vc_without_proof'
 Prepare: manipulate and set with object 'vc_serialize_body', path 'proof_config_path', value 'vc_proof_without_proofValue'
-Prepare 'serialized_vc': connect to 'serialize_api' and do post with object 'vc_serialize_body'
+Prepare 'vc_serialize_body_clean': manipulate and omit with object 'vc_serialize_body', paths 'is_dict_path'
+Prepare 'serialized_vc': connect to 'serialize_api' and do post with object 'vc_serialize_body_clean'
 
 # resolve vc verificationMethod
 Prepare 'vc_zen_res': execute zencode with script 'did_zen', data 'vc_proof', keys 'empty_keys'

@@ -7,7 +7,7 @@ Scenario 'http': url
 # Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
 
 Given I have a 'keyring'
-Given I have a 'string' named 'did' 
+Given I have a 'string' named 'did'
 
 # data
 Given I have a 'string dictionary' named 'dcql_query'
@@ -77,14 +77,14 @@ When I copy 'response_uri_path' to 'response_uri_keys_path'
 When I append the string '.keys.json' to 'response_uri_keys_path'
 When I copy 'response_uri_path' to 'response_uri_schema_path'
 When I append the string '.schema.json' to 'response_uri_schema_path'
+When I copy 'response_uri_path' to 'response_uri_metadata_path'
+When I append the string '.metadata.json' to 'response_uri_metadata_path'
 When I copy 'response_uri_path' to 'response_uri_precondition_path'
 When I append the string '_pre' to 'response_uri_precondition_path'
 When I copy 'response_uri_precondition_path' to 'response_uri_precondition_slang_path'
 When I append the string '.slang' to 'response_uri_precondition_slang_path'
 When I copy 'response_uri_precondition_path' to 'response_uri_precondition_keys_path'
 When I append the string '.keys.json' to 'response_uri_precondition_keys_path'
-When I copy 'response_uri_precondition_path' to 'response_uri_precondition_metadata_path'
-When I append the string '.metadata.json' to 'response_uri_precondition_metadata_path'
 
 # request precondition
 When I create the 'string dictionary' named 'request_precondition_keys'
@@ -102,8 +102,9 @@ When I move 'precondition' in 'request_precondition_metadata'
 # response precondition/keys
 When I copy 'response_uri_precondition_keys_path' to 'precondition_keys_path' in 'response_precondition_keys'
 When I create the 'string dictionary' named 'response_precondition_metadata'
-When I set 'precondition' to 'response/' as 'string'
+When I set 'precondition' to 'verifier/response/' as 'string'
 When I append the 'hex' of 'hash' to 'precondition'
+When I append the string '_pre' to 'precondition'
 When I move 'precondition' in 'response_precondition_metadata'
 When I copy 'dcql_query' in 'response_keys'
 When I copy 'nonce' as 'hex' in 'response_keys'
@@ -122,9 +123,9 @@ Then print the 'response_uri_zen_path'
 Then print the 'response_uri_keys_path'
 Then print the 'response_keys'
 Then print the 'response_uri_schema_path'
+Then print the 'response_uri_metadata_path'
 Then print the 'response_uri_precondition_slang_path'
 Then print the 'response_uri_precondition_keys_path'
-Then print the 'response_uri_precondition_metadata_path'
 Then print the 'response_precondition_keys'
 Then print the 'response_precondition_metadata'
 # request
@@ -147,8 +148,8 @@ Then I send path 'request_uri_precondition_metadata_path' and send content 'requ
 Then I send path 'response_uri_zen_path' and send content 'response_slang' and store in file
 Then I send path 'response_uri_keys_path' and send content 'response_keys' and store in file
 Then I send path 'response_uri_schema_path' and send content 'response_schema' and store in file
+Then I send path 'response_uri_metadata_path' and send content 'response_precondition_metadata' and store in file
 Then I send path 'response_uri_precondition_keys_path' and send content 'response_precondition_keys' and store in file
 Then I send path 'response_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
-Then I send path 'response_uri_precondition_metadata_path' and send content 'response_precondition_metadata' and store in file
 
 Then I send text 'intent_url' and create qr code and output into 'qr_code'
