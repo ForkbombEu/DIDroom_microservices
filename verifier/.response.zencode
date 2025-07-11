@@ -1,3 +1,5 @@
+Scenario 'w3c': pk from did
+
 # Validate:
 # 1. form
 # 2. match the nonce
@@ -131,17 +133,17 @@ When I set 'mldsa-rdfc-2025' to 'mldsa-rdfc-2025' as 'string'
 If I verify 'vp_cryptosuite' is equal to 'ecdsa-rdfc-2019'
 When I create the 'es256' public key from did document 'vp_did'
 When I verify 'vp_serialization' has a es256 signature in 'vp_proofValue' by 'es256 public key'
-When I set 'vp_verified' to 'true'
+When I set 'vp_verified' to 'true' as 'string'
 EndIf
 If I verify 'vp_cryptosuite' is equal to 'eddsa-rdfc-2022'
 When I create the 'eddsa' public key from did document 'vp_did'
 When I verify 'vp_serialization' has a eddsa signature in 'vp_proofValue' by 'eddsa public key'
-When I set 'vp_verified' to 'true'
+When I set 'vp_verified' to 'true' as 'string'
 EndIf
 If I verify 'vp_cryptosuite' is equal to 'mldsa-rdfc-2025'
-When I create the 'mldsa' public key from did document 'vp_did'
-When I verify 'vp_serialization' has a mldsa signature in 'vp_proofValue' by 'mldsa public key'
-When I set 'vp_verified' to 'true'
+When I create the 'mldsa44' public key from did document 'vp_did'
+When I verify 'vp_serialization' has a mldsa44 signature in 'vp_proofValue' by 'mldsa44 public key'
+When I set 'vp_verified' to 'true' as 'string'
 EndIf
 When I verify 'vp_verified' is found
 
@@ -152,17 +154,17 @@ When I rename 'cryptosuite' to 'vc_cryptosuite'
 If I verify 'vc_cryptosuite' is equal to 'ecdsa-rdfc-2019'
 When I create the 'es256' public key from did document 'vc_did'
 When I verify 'vc_serialization' has a es256 signature in 'vc_proofValue' by 'es256 public key'
-When I set 'vc_verified' to 'true'
+When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 If I verify 'vc_cryptosuite' is equal to 'eddsa-rdfc-2022'
 When I create the 'eddsa' public key from did document 'vc_did'
 When I verify 'vc_serialization' has a eddsa signature in 'vc_proofValue' by 'eddsa public key'
-When I set 'vc_verified' to 'true'
+When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 If I verify 'vc_cryptosuite' is equal to 'mldsa-rdfc-2025'
-When I create the 'mldsa' public key from did document 'vc_did'
-When I verify 'vc_serialization' has a mldsa signature in 'vc_proofValue' by 'mldsa public key'
-When I set 'vc_verified' to 'true'
+When I create the 'mldsa44' public key from did document 'vc_did'
+When I verify 'vc_serialization' has a mldsa44 signature in 'vc_proofValue' by 'mldsa44 public key'
+When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 When I verify 'vc_verified' is found
 
