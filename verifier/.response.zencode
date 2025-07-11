@@ -175,7 +175,7 @@ EndIf
 When I verify 'vc_verified' is found
 
 # transaction_id
-When I prepend string 'public/verifier' to 'transaction_id'
+When I prepend string 'public/verifier/' to 'transaction_id'
 When I rename 'transaction_id' to 'complete_transaction_id'
 
 
