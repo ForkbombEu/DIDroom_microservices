@@ -110,7 +110,7 @@ When I copy 'dcql_query' in 'response_keys'
 When I copy 'nonce' as 'hex' in 'response_keys'
 
 # transaction_id
-When I write string 'public/verfier/transaction/' in 'transaction_id'
+When I write string 'transaction/' in 'transaction_id'
 When I create the random 'rand'
 When I append the 'hex' of 'rand' to 'transaction_id'
 

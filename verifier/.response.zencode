@@ -67,6 +67,7 @@ Given I have a 'string dictionary' named 'vp_token'
 # keys
 Given I have a 'string dictionary' named 'dcql_query'
 Given I have a 'string' named 'nonce'
+Given I have a 'string' named 'transaction_id'
 
 # pickup requested information
 When I pickup from path 'dcql_query.credentials.1.format'
@@ -135,16 +136,19 @@ When I set 'mldsa-rdfc-2025' to 'mldsa-rdfc-2025' as 'string'
 If I verify 'vp_cryptosuite' is equal to 'ecdsa-rdfc-2019'
 When I create the 'es256' public key from did document 'vp_did'
 When I verify 'vp_serialization' has a es256 signature in 'vp_proofValue' by 'es256 public key'
+When I remove 'es256 public key'
 When I set 'vp_verified' to 'true' as 'string'
 EndIf
 If I verify 'vp_cryptosuite' is equal to 'eddsa-rdfc-2022'
 When I create the 'eddsa' public key from did document 'vp_did'
 When I verify 'vp_serialization' has a eddsa signature in 'vp_proofValue' by 'eddsa public key'
+When I remove 'eddsa public key'
 When I set 'vp_verified' to 'true' as 'string'
 EndIf
 If I verify 'vp_cryptosuite' is equal to 'mldsa-rdfc-2025'
 When I create the 'mldsa44' public key from did document 'vp_did'
 When I verify 'vp_serialization' has a mldsa44 signature in 'vp_proofValue' by 'mldsa44 public key'
+When I remove 'mldsa44 public key'
 When I set 'vp_verified' to 'true' as 'string'
 EndIf
 When I verify 'vp_verified' is found
@@ -170,7 +174,13 @@ When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 When I verify 'vc_verified' is found
 
+# transaction_id
+When I prepend string 'public/verifier' to 'transaction_id'
+When I rename 'transaction_id' to 'complete_transaction_id'
+
+
 Then print the string 'OK'
 Then print the 'transaction_result'
+Then print the 'complete_transaction_id'
 
-Compute: store in file with content 'transaction_result', path 'transaction_id'
+Compute: store in file with content 'transaction_result', path 'complete_transaction_id'
