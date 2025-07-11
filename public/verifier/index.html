@@ -50,7 +50,7 @@
 
                 const transactionData = await res.json();
                 let presentedData = "\n✅ Transaction completed, claims presented:\n";
-                transactionData.transaction_result.forEach((r, i) => {
+                transactionData.forEach((r, i) => {
                     presentedData += `${r.path.join('.')}: ${r.value}\n`;
                 })
                 document.getElementById('output').textContent = `${presentedData}`;
