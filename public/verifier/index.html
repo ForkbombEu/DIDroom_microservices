@@ -150,12 +150,13 @@
       const defaultQuery = `{
   "credentials": [
     {
-      "id": "paperino",
+      "id": "university_credential_presentation",
       "format": "ldp_vc",
       "meta": { "type_values": [["IDCredential"]] },
       "claims": [
         { "path": ["credentialSubject", "family_name"] },
-        { "path": ["credentialSubject", "given_name"] }
+        { "path": ["credentialSubject", "given_name"] },
+        { "path": ["credentialSubject", "participation"] }
       ]
     }
   ]
