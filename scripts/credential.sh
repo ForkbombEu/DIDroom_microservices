@@ -5,13 +5,28 @@ CUSTOM_CODE=credential_issuer/custom_code
 WELL_KNOWN=public/credential_issuer/.well-known/openid-credential-issuer
 
 if [ ! -d ${CUSTOM_CODE} ] || [ ! -f ${WELL_KNOWN} ]; then
-    exit 0
+  echo "Custom code directory or well-known file not found."
+  exit 1
 fi
 
 # get all vct from well_known
-# vcts=$(jq -r '.credential_configurations_supported.[].vct' ${WELL_KNOWN})
 sd_jwts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
 ldp_vcs=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
+
+if [ -z "${sd_jwts}" ] || [ -z "${ldp_vcs}" ]; then
+  echo "No sd-jwts or ldp_vcs found in the well-known file."
+  exit 1
+fi
+
+cat <<EOF > ${CHAIN}
+steps:
+  - id: Verify
+    zencodeFromFile: credential_issuer/credential_1_verify.zencode
+    keysFromFile: credential_issuer/credential.keys.json
+  - id: Introspection
+    zencodeFromFile: credential_issuer/credential_2_token_to_introspection.zencode
+    dataFromStep: Verify
+EOF
 
 for sd_jwt in ${sd_jwts}; do
 cat <<EOF >> ${CHAIN}
