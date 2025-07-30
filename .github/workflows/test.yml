@@ -19,6 +19,6 @@ jobs:
 
   publish_docker_image:
     name: 🐳 Publish Docker Image
-    if: github.ref == 'refs/heads/stable'
+    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/main'
     uses: interfacerproject/workflows/.github/workflows/publish-ghcr.yml@main
     secrets: inherit
