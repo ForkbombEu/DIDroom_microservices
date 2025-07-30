@@ -1,0 +1,17 @@
+{
+    "title": "mail and psw auth",
+    "description": "user authentication",
+    "type": "object",
+    "properties": {
+        "email": {
+            "title": "Email",
+            "description": "your email",
+            "type": "string"
+        },
+        "password": {
+            "title": "Password",
+            "description": "your password",
+            "type": "string"
+        }
+    }
+}

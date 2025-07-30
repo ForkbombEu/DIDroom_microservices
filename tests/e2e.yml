@@ -12,7 +12,7 @@ env:
   rp_host: localhost:3002/relying_party
   verifier_host: localhost:3004
 tests:
-  whole_flow:
+  whole_flow_sdjwt:
     name: Check the whole from from /par to /credential
     $ref: tests/mobile_zencode/test/step_test.yml
 

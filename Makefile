@@ -13,7 +13,7 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
-NCR_VERSION := 1.39.8
+NCR_VERSION := 1.42.25
 NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
@@ -47,8 +47,12 @@ authorize: deps ## 📦 Setup the authorize page
 	@chmod +x scripts/authorize.sh
 	@./scripts/authorize.sh
 
+credential: deps ## 📦 Setup the credential issuer
+	@chmod +x scripts/credential.sh
+	@./scripts/credential.sh
+
 up: UP_PORT?=3000
-up: ncr authorize ## 🚀 Up & run the project
+up: ncr authorize credential ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
 	@chmod +x scripts/up.sh
 	@./scripts/up.sh ${UP_PORT} ${MS_NAME}
@@ -60,6 +64,7 @@ tests-deps: # 🧪 Check test dependencies
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+	cd tests/mobile_zencode && git checkout feat/draft_15
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
@@ -72,8 +77,10 @@ test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
 
-test: tests-deps test_custom_code up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
+test_wk:
 	@./scripts/wk.sh setup
+
+test: tests-deps test_custom_code test_wk up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
@@ -114,8 +121,11 @@ clean: ## 🧹 Clean
 	rm -f .env
 	rm -f .test.*.pid
 	rm -f .*.pid
+	rm -rf credential_issuer/nonces/ relying_party/temp-verify.keys.json
 
 deepclean: clean # 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
 	git restore */.autorun/identity.metadata.json public/*/.well-known
+	git clean -fd */custom_code public/*/.well-known
+	git restore credential_issuer/credential.chain.yaml public/authz_server/authorize relying_party/verify.keys.json
 	rm -f */secrets.keys
 	pkill ncr || true
