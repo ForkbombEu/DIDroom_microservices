@@ -77,9 +77,10 @@ test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
 
-test: tests-deps test_custom_code up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
+test_wk:
 	@./scripts/wk.sh setup
-	@./scripts/credential.sh
+
+test: tests-deps test_custom_code test_wk up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
