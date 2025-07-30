@@ -4,9 +4,9 @@ CHAIN=credential_issuer/credential.chain.yaml
 CUSTOM_CODE=credential_issuer/custom_code
 WELL_KNOWN=public/credential_issuer/.well-known/openid-credential-issuer
 
+# This script is also run from all microservices, so if we are not in the credential_issuer, we exit
 if [ ! -d ${CUSTOM_CODE} ] || [ ! -f ${WELL_KNOWN} ]; then
-  echo "Custom code directory or well-known file not found."
-  exit 1
+  exit 0
 fi
 
 # get all vct from well_known
