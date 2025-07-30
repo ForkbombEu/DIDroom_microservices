@@ -13,7 +13,7 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
-NCR_VERSION := 1.42.19
+NCR_VERSION := 1.42.25
 NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
