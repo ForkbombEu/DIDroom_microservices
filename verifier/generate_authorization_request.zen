@@ -6,7 +6,7 @@ Given I send object 'secrets' and send path 'controller_path' and manipulate and
 Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
 Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
 
-Given I have a 'keyring'
+Given I have a 'keyring' in 'personal_keyring'
 Given I have a 'string' named 'did'
 
 # data
@@ -118,6 +118,7 @@ When I copy the 'transaction_id' in 'response_keys'
 
 Then print the 'jws_signature'
 Then print the 'intent_url'
+Then print the 'params_json'
 # response
 Then print the 'response_uri_zen_path'
 Then print the 'response_uri_keys_path'
