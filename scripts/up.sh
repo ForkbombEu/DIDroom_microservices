@@ -60,7 +60,7 @@ function start_service() {
 }
 
 service=""
-for s in verifier; do
+for s in authz_server credential_issuer verifier; do
     if [[ -d "$s" ]]; then
         service="$service $s"
     fi
