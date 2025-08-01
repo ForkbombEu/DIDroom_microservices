@@ -9,8 +9,8 @@ env:
   path_to_wallet: /mobile_zencode
   ci_host: localhost:3001/credential_issuer
   as_host: localhost:3000/authz_server
-  rp_host: localhost:3002/relying_party
-  verifier_host: localhost:3004
+  verifier_host: localhost:3002/verifier
+#  verifier_host: localhost:3004
 tests:
   whole_flow_sdjwt:
     name: Check the whole from from /par to /credential
