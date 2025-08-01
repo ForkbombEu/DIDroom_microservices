@@ -1,10 +1,10 @@
 Scenario 'w3c': jws
 Scenario 'http': url
 
-# Given I send path 'secrets_path' and read file content and output secret into 'secrets'
-# Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-# Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
-# Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
+Given I send path 'secrets_path' and read file content and output secret into 'secrets'
+Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
+Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
 
 Given I have a 'keyring'
 Given I have a 'string' named 'did'

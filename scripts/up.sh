@@ -22,9 +22,8 @@ function start_service() {
         "credential_issuer")
             wk_name="openid-credential-issuer"
             ;;
-        "relying_party")
-            wk_name="openid-relying-party"
-            ;;
+        "verifier")
+            ;; # no well-known for verifier
         *)
             echo "Unknown value for ${service}. Nothing to do." >&2
             exit 1
@@ -45,13 +44,15 @@ function start_service() {
                 if ps -p $APP_PID 1>/dev/null; then kill $APP_PID; fi
                 exit 1
             fi
-            kid=$(jq -r '.jwks.keys[0].kid' public/$service/.well-known/$wk_name)
-            if [ "${kid:0:1}" = "{" ]; then
-                echo "📢 Announce phase failed"
-                echo "🪪 Kid not created in file: public/$service/.well-known/$wk_name"
-                echo "⛔ Stopping the service"
-                if ps -p $APP_PID 1>/dev/null; then kill $APP_PID; fi
-                exit 1
+            if [ "${service}" != "verifier" ]; then
+                kid=$(jq -r '.jwks.keys[0].kid' public/$service/.well-known/$wk_name)
+                if [ "${kid:0:1}" = "{" ]; then
+                    echo "📢 Announce phase failed"
+                    echo "🪪 Kid not created in file: public/$service/.well-known/$wk_name"
+                    echo "⛔ Stopping the service"
+                    if ps -p $APP_PID 1>/dev/null; then kill $APP_PID; fi
+                    exit 1
+                fi
             fi
         )
         if ps -p $APP_PID 1>/dev/null; then wait $APP_PID; fi
@@ -59,7 +60,7 @@ function start_service() {
 }
 
 service=""
-for s in authz_server credential_issuer relying_party; do
+for s in verifier; do
     if [[ -d "$s" ]]; then
         service="$service $s"
     fi

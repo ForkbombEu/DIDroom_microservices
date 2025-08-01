@@ -224,7 +224,7 @@
         };
         try {
           const res = await fetch(
-            `${location.origin}/generate_authorization_request`,
+            `${location.origin}/verifier/generate_authorization_request`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
