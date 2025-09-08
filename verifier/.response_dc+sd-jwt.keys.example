@@ -1,0 +1,21 @@
+{
+    "dcql_query": {
+        "credentials": [
+            {
+                "id": "example_dc+sd-jwt",
+                "format": "dc+sd-jwt",
+                "meta": {
+                    "vct_values": [
+                        "test_credential"
+                    ]
+                },
+                "claims": [
+                    {"path": ["given_name"]},
+                    {"path": ["family_name"]},
+                    {"path": ["address", "street_address"]}
+                ]
+            }
+        ]
+    },
+    "nonce": "n-0S6_WzA2Mj"
+}
