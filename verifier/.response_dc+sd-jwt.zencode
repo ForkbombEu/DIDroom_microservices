@@ -1,4 +1,4 @@
-Scenario 'sd-jwt': aknsn
+Scenario 'sd_jwt': sd-jwt_kb
 
 # Validate:
 # 1. form
@@ -7,6 +7,15 @@ Scenario 'sd-jwt': aknsn
 # 4. requested claims are present
 # 5. holder binding
 # 6. integrity and authenticity of the Credential
+
+# resolve holder pk
+Prepare 'vc_id': manipulate and get where object is 'dcql_query', path is 'id_path'
+Prepare 'did_and_iss': execute zencode where script is 'did_and_iss_script', keys is 'vc_id', data is 'vp_token'
+Prepare 'did': manipulate and get where object is 'did_and_iss', path is 'did_path'
+Prepare 'holder_did_document': resolve the did where did is 'did'
+
+# resolve issuer pk
+
 
 # data
 Given I have a 'string dictionary' named 'vp_token'
@@ -24,7 +33,29 @@ When I pickup from path 'dcql_query.credentials.1.id'
 When I pickup from path 'dcql_query.credentials.1.meta.vct_values'
 When I pickup from path 'dcql_query.credentials.1.claims'
 
-# for the moment support only ldp_vc verification
+# pickup dc+sd-jwt as string
+When I copy 'id' from 'vp_token' to 'vp_array'
+When I copy '1' from 'vp_array' to 'dc+sd-jwt_kb_as_string'
+When I set '~' to '~' as 'string'
+When I create the array by splitting 'dc+sd-jwt_kb_as_string' at '~'
+When I create the size of 'array'
+When I write string '' in 'dc+sd-jwt_as_string'
+When I set 'i' to '1' as 'number'
+When I set '1' to '1' as 'number'
+Foreach 'a' in 'array'
+    When I append 'a' to 'dc+sd-jwt_as_string'
+    When I append the string '~' to 'dc+sd-jwt_as_string'
+    When I create the result of 'i' + '1'
+    When I remove 'i'
+    When I rename 'result' to 'i'
+    If I verify 'i' is equal to 'size'
+        When I remove 'i'
+        When I remove 'size'
+        When I exit the foreach
+    EndIf
+Endforeach
+
+# support only dc+sd-jwt verification
 When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
 When I verify 'dc+sd-jwt' is equal to 'format'
 
@@ -36,7 +67,7 @@ When I pickup a 'string dictionary' from path 'sd-jwt+kb.jwt.header'
 When I rename 'header' to 'sd-jwt_header'
 When I pickup a 'string dictionary' from path 'sd-jwt+kb.jwt.payload'
 When I rename 'payload' to 'sd-jwt_payload'
-When I pickup a 'string dictionary' from path 'sd-jwt+kb.disclosures'
+When I pickup a 'string array' from path 'sd-jwt+kb.disclosures'
 When I rename 'disclosures' to 'sd-jwt_disclosures'
 
 When I pickup a 'string dictionary' from path 'sd-jwt+kb.key_binding.header'
@@ -61,7 +92,6 @@ When I verify 'cred_vct' is equal to 'verify vct'
 
 # 4. verify all requested claims are found
 When I create the 'string array' named 'transaction_result'
-When I set '1' to '1' as 'number'
 Foreach 'c' in 'claims'
     When I copy 'path' from 'c' to 'path_array'
     When I copy '1' from 'path_array' to 'claim_identifier'
@@ -107,7 +137,15 @@ When I set 'eddsa-rdfc-2022' to 'eddsa-rdfc-2022' as 'string'
 When I set 'mldsa-rdfc-2025' to 'mldsa-rdfc-2025' as 'string'
 
 # 5. verify key binding (aka holder binding)
-
+# typ
+When I pickup from path 'kb_header.typ'
+When I set 'kb+jwt' to 'kb+jwt' as 'string'
+When I verify 'typ' is equal to 'kb+jwt'
+# hash
+When I pickup from path 'kb_payload.sd_hash'
+When I create the hash of 'dc+sd-jwt_as_string'
+When I move 'hash' as 'hex' to 'hex_hash'
+When I verify 'hex_hash' is equal to 'sd_hash'
 
 # 6. verify sd-jwt
 

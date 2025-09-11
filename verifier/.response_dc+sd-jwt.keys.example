@@ -1,4 +1,6 @@
 {
+    "id_path": "credentials.0",
+    "did_and_iss_script": "Scenario 'sd_jwt': dc+sd-jwt_kb\nGiven I have a 'string' named 'id'\nGiven I have a 'signed selective disclosure with key binding array' named by 'id'\nWhen I rename object named by 'id' to 'dc+sd-jwt_kb_array'\nWhen I copy '1' from 'dc+sd-jwt_kb_array' to 'dc+sd-jwt_kb'\nWhen I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.sub'\nWhen I rename 'sub' to 'did'\nWhen I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.iss'\nThen print the 'did'\nThen print the 'iss'",
     "dcql_query": {
         "credentials": [
             {
@@ -10,12 +12,10 @@
                     ]
                 },
                 "claims": [
-                    {"path": ["given_name"]},
-                    {"path": ["family_name"]},
-                    {"path": ["address", "street_address"]}
+                    {"path": ["tested"]}
                 ]
             }
         ]
     },
-    "nonce": "n-0S6_WzA2Mj"
+    "nonce": "ebfba795b9cf970df0ea8bd17e384986b66981f4b4cb92a18b9eabfd5427a9a5"
 }
