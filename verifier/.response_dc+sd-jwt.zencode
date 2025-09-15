@@ -20,7 +20,7 @@ Prepare 'holder_did_document': resolve the did where did is 'holder_did'
 Prepare 'iss_url': manipulate and get where object is 'did_and_iss', path is 'iss_path'
 Prepare 'iss_wk': connect to 'iss_url' and do get
 Prepare 'iss_did': manipulate and get where object is 'iss_wk', path is 'kid_path'
-Prepare 'issuer_did_document': resolve the did where did is 'did'
+Prepare 'issuer_did_document': resolve the did where did is 'iss_did'
 
 # extract vp
 Prepare 'id': manipulate and get where object is 'credential', path is 'id_path'
