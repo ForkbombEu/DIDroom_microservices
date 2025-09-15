@@ -1,6 +1,6 @@
 Scenario 'sd_jwt': sd-jwt_kb
 Scenario 'did': did document
-Scenario 'jws': verification of kb
+Scenario 'w3c': verification of kb
 
 # Validate:
 # 1. form
