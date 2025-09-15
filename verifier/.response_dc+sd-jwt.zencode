@@ -35,7 +35,7 @@ Given I rename 'didDocument' to 'holder_did_document'
 # data
 Given I have a 'signed selective disclosure with key binding array' named 'vp_array'
 Given I rename 'vp array' to 'sd-jwt+kb array'
-Given I have a 'string dictionary' named 'vp_array'
+Given I have a 'string array' named 'vp_array'
 
 # keys
 Given I have a 'string dictionary' named 'dcql_query'
