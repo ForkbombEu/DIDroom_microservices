@@ -70,9 +70,6 @@ mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
 	./ncr -p 3004 -z ./tests/mobile_zencode/verifier & echo $$! > .test.verifier.pid
 
-push_server_up: ncr
-	./ncr -p 3366 -z ./tests/test_push_server & echo $$! > .test.push_server.pid
-
 test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
@@ -80,13 +77,11 @@ test_custom_code:
 test_wk:
 	@./scripts/wk.sh setup
 
-test: tests-deps test_custom_code test_wk up mobile_zencode_up push_server_up # 🧪 Run e2e tests on the APIs
+test: tests-deps test_custom_code test_wk up mobile_zencode_up # 🧪 Run e2e tests on the APIs
 # modify wallet contract to not use capacitor
 	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
-	@cp relying_party/verify.keys.json relying_party/temp-verify.keys.json
-	@jq '.keys_0.firebase_url = "http://localhost:3366/verify-credential"' relying_party/temp-verify.keys.json > relying_party/verify.keys.json
 # start tests
 	@for port in 3000 3001 3002 3003 3004 3366; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
@@ -100,14 +95,12 @@ test: tests-deps test_custom_code test_wk up mobile_zencode_up push_server_up # 
 	npx stepci run tests/e2e.yml
 	@kill `cat .credential_issuer.pid` && rm .credential_issuer.pid
 	@kill `cat .authz_server.pid` && rm .authz_server.pid
-	@kill `cat .relying_party.pid` && rm .relying_party.pid
+	@kill `cat .verifier.pid` && rm .verifier.pid
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
 	@kill `cat .test.verifier.pid` && rm .test.verifier.pid
-	@kill `cat .test.push_server.pid` && rm .test.push_server.pid
 	@rm -fr tests/mobile_zencode
 	@rm -f authz_server/custom_code/*
 	@rm -f credential_issuer/custom_code/*
-	@mv relying_party/temp-verify.keys.json relying_party/verify.keys.json
 	@./scripts/wk.sh cleanup
 
 testgen:
