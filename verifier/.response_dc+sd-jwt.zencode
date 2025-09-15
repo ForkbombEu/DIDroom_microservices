@@ -27,9 +27,9 @@ Prepare 'id': manipulate and get where object is 'credential', path is 'id_path'
 Prepare 'vp array': manipulate and get where object is 'vp_token', path is 'id'
 
 # slangroom
-Given I have a 'did document' in path 'issuer_did_document.result.didDocument'
+Given I have a 'did document' in path 'issuer_did_document.didDocument'
 Given I rename 'didDocument' to 'issuer_did_document'
-Given I have a 'did document' in path 'holder_did_document.result.didDocument'
+Given I have a 'did document' in path 'holder_did_document.didDocument'
 Given I rename 'didDocument' to 'holder_did_document'
 
 # data
