@@ -83,7 +83,7 @@ test: tests-deps test_custom_code test_wk up mobile_zencode_up # 🧪 Run e2e te
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
 # start tests
-	@for port in 3000 3001 3002 3003 3004 3366; do \
+	@for port in 3000 3001 3002 3003 3004; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
 			echo "Port $$port is not yet reachable, waiting..."; \
 			sleep 1; \
