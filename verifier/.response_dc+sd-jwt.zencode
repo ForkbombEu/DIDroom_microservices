@@ -1,4 +1,6 @@
 Scenario 'sd_jwt': sd-jwt_kb
+Scenario 'did': did document
+Scenario 'jws': verification of kb
 
 # Validate:
 # 1. form
@@ -9,17 +11,29 @@ Scenario 'sd_jwt': sd-jwt_kb
 # 6. integrity and authenticity of the Credential
 
 # resolve holder pk
-Prepare 'vc_id': manipulate and get where object is 'dcql_query', path is 'id_path'
-Prepare 'did_and_iss': execute zencode where script is 'did_and_iss_script', keys is 'vc_id', data is 'vp_token'
-Prepare 'did': manipulate and get where object is 'did_and_iss', path is 'did_path'
-Prepare 'holder_did_document': resolve the did where did is 'did'
+Prepare 'credential': manipulate and get where object is 'dcql_query', path is 'credential_path'
+Prepare 'did_and_iss': execute zencode where script is 'did_and_iss_script', keys is 'credential', data is 'vp_token'
+Prepare 'holder_did': manipulate and get where object is 'did_and_iss', path is 'did_path'
+Prepare 'holder_did_document': resolve the did where did is 'holder_did'
 
 # resolve issuer pk
+Prepare 'iss_url': manipulate and get where object is 'did_and_iss', path is 'iss_path'
+Prepare 'iss_wk': connect to 'iss_url' and do get
+Prepare 'iss_did': manipulate and get where object is 'iss_wk', path is 'kid_path'
+Prepare 'issuer_did_document': resolve the did where did is 'did'
 
+# extract vp
+Prepare 'id': manipulate and get where object is 'credential', path is 'id_path'
+Prepare 'vp array': manipulate and get where object is 'vp_token', path is 'id'
+
+# slangroom
+Given I have a 'did document' named 'issuer did document'
+Given I have a 'did document' named 'holder did document'
 
 # data
-Given I have a 'string dictionary' named 'vp_token'
-Given I have a 'signed selective disclosure with key binding array' in path 'vp_token.example_dc+sd-jwt'
+Given I have a 'signed selective disclosure with key binding array' named 'vp_array'
+Given I rename 'vp array' to 'sd-jwt+kb array'
+Given I have a 'string dictionary' named 'vp_array'
 
 # keys
 Given I have a 'string dictionary' named 'dcql_query'
@@ -34,7 +48,6 @@ When I pickup from path 'dcql_query.credentials.1.meta.vct_values'
 When I pickup from path 'dcql_query.credentials.1.claims'
 
 # pickup dc+sd-jwt as string
-When I copy 'id' from 'vp_token' to 'vp_array'
 When I copy '1' from 'vp_array' to 'dc+sd-jwt_kb_as_string'
 When I set '~' to '~' as 'string'
 When I create the array by splitting 'dc+sd-jwt_kb_as_string' at '~'
@@ -43,16 +56,17 @@ When I write string '' in 'dc+sd-jwt_as_string'
 When I set 'i' to '1' as 'number'
 When I set '1' to '1' as 'number'
 Foreach 'a' in 'array'
+    If I verify 'i' is equal to 'size'
+        When I remove 'i'
+        When I remove 'size'
+        When I copy 'a' to 'kb_as_string'
+        When I exit the foreach
+    EndIf
     When I append 'a' to 'dc+sd-jwt_as_string'
     When I append the string '~' to 'dc+sd-jwt_as_string'
     When I create the result of 'i' + '1'
     When I remove 'i'
     When I rename 'result' to 'i'
-    If I verify 'i' is equal to 'size'
-        When I remove 'i'
-        When I remove 'size'
-        When I exit the foreach
-    EndIf
 Endforeach
 
 # support only dc+sd-jwt verification
@@ -60,8 +74,6 @@ When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
 When I verify 'dc+sd-jwt' is equal to 'format'
 
 # pickup from presentation (vp_token[id][1])
-When I verify 'id' is found in 'vp_token'
-When I rename object named by 'id' to 'sd-jwt+kb array'
 When I copy '1' from 'sd-jwt+kb array' to 'sd-jwt+kb'
 When I pickup a 'string dictionary' from path 'sd-jwt+kb.jwt.header'
 When I rename 'header' to 'sd-jwt_header'
@@ -146,14 +158,18 @@ When I pickup from path 'kb_payload.sd_hash'
 When I create the hash of 'dc+sd-jwt_as_string'
 When I move 'hash' as 'hex' to 'hex_hash'
 When I verify 'hex_hash' is equal to 'sd_hash'
+# signature
+When I create the 'es256' public key from did document 'holder_did_document'
+When I verify jws signature in 'kb_as_string'
+When I remove 'es256 public key'
 
 # 6. verify sd-jwt
-
+When I create the 'es256' public key from did document 'issuer_did_document'
+When I verify the signed selective disclosure 'sd-jwt+kb' issued by 'es256 public key' is valid
 
 # transaction_id
 When I prepend string 'public/verifier/' to 'transaction_id'
 When I rename 'transaction_id' to 'complete_transaction_id'
-
 
 Then print the string 'OK'
 Then print the 'transaction_result'

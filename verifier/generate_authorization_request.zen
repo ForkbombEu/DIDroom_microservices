@@ -16,7 +16,22 @@ Given I have a 'string' named 'response_type'
 Given I have a 'string' named 'url'
 
 # keys
-Given I have a 'string dictionary' named 'response_keys'
+Given I have a 'string dictionary' named 'response_keys_ldp_vc'
+Given I have a 'string dictionary' named 'response_keys_dc+sd-jwt'
+Given I have a 'string' named 'response_slang_ldp_vc'
+Given I have a 'string' named 'response_slang_dc+sd-jwt'
+
+When I pickup from path 'dcql_query.credentials.1.format'
+When I set 'dc+sd-jwt_string' to 'dc+sd-jwt' as 'string'
+When I set 'ldp_vc_string' to 'ldp_vc' as 'string'
+If I verify 'format' is equal to 'dc+sd-jwt_string'
+    When I rename 'response_slang_dc+sd-jwt' to 'response_slang'
+    When I rename 'response_keys_dc+sd-jwt' to 'response_keys'
+EndIf
+If I verify 'format' is equal to 'ldp_vc_string'
+    When I rename 'response_slang_ldp_vc' to 'response_slang'
+    When I rename 'response_keys_ldp_vc' to 'response_keys'
+EndIf
 
 When I write string 'openid4vp://' in 'intent_url'
 
@@ -123,6 +138,7 @@ Then print the 'params_json'
 Then print the 'response_uri_zen_path'
 Then print the 'response_uri_keys_path'
 Then print the 'response_keys'
+Then print the 'response_slang'
 Then print the 'response_uri_schema_path'
 Then print the 'response_uri_metadata_path'
 Then print the 'response_uri_precondition_slang_path'
