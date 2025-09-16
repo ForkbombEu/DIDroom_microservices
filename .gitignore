@@ -10,3 +10,15 @@ credential_issuer/secrets.keys
 authz_server/secrets.keys
 relying_party/secrets.keys
 verifier/secrets.keys
+
+*/custom_code
+*.pid
+
+# credential issuer nonces
+credential_issuer/nonces
+credential_issuer/credential.chain.yaml
+
+# verifier api produced on the fly
+verifier/response
+public/verifier/request/
+public/verifier/transaction/
