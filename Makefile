@@ -68,7 +68,6 @@ tests/mobile_zencode:
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
-	./ncr -p 3004 -z ./tests/mobile_zencode/verifier & echo $$! > .test.verifier.pid
 
 test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
@@ -83,7 +82,7 @@ test: tests-deps test_custom_code test_wk up mobile_zencode_up # 🧪 Run e2e te
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
 	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
 # start tests
-	@for port in 3000 3001 3002 3003 3004; do \
+	@for port in 3000 3001 3002 3003; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \
 			echo "Port $$port is not yet reachable, waiting..."; \
 			sleep 1; \
@@ -97,7 +96,6 @@ test: tests-deps test_custom_code test_wk up mobile_zencode_up # 🧪 Run e2e te
 	@kill `cat .authz_server.pid` && rm .authz_server.pid
 	@kill `cat .verifier.pid` && rm .verifier.pid
 	@kill `cat .test.mobile_zencode.pid` && rm .test.mobile_zencode.pid
-	@kill `cat .test.verifier.pid` && rm .test.verifier.pid
 	@rm -fr tests/mobile_zencode
 	@rm -f authz_server/custom_code/*
 	@rm -f credential_issuer/custom_code/*
