@@ -147,20 +147,7 @@
         );
 
       /* --------------- Default DCQL ---------------- */
-      const defaultQuery = `{
-  "credentials": [
-    {
-      "id": "university_credential_presentation",
-      "format": "ldp_vc",
-      "meta": { "type_values": [["IDCredential"]] },
-      "claims": [
-        { "path": ["credentialSubject", "family_name"] },
-        { "path": ["credentialSubject", "given_name"] },
-        { "path": ["credentialSubject", "participation"] }
-      ]
-    }
-  ]
-}`;
+      const defaultQuery = '{"credentials":[{"id":"university_credential_presentation","format":"ldp_vc","meta":{"type_values":[["IDCredential"]]},"claims":[{"path":["credentialSubject","family_name"]},{"path":["credentialSubject","given_name"]},{"path":["credentialSubject","participation"]}]}]}';
       document.getElementById("dcql_query").value = defaultQuery;
 
       /* --------------- Helper vars --------------- */
