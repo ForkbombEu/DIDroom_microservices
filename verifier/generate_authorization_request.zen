@@ -1,10 +1,10 @@
 Scenario 'w3c': jws
 Scenario 'http': url
 
-Given I send path 'secrets_path' and read file content and output secret into 'secrets'
-Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
-Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
+Prepare 'did': manipulate and get where object is 'secrets', path is 'did_path'
 
 Given I have a 'keyring' in 'personal_keyring'
 Given I have a 'string' named 'did'
@@ -156,17 +156,40 @@ Then print the 'request_precondition_metadata'
 Then print the 'transaction_id'
 
 # request_uri
-Then I send path 'request_uri_path' and send content 'jws_signature' and store in file
-Then I send path 'request_uri_precondition_keys_path' and send content 'request_precondition_keys' and store in file
-Then I send path 'request_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
-Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_metadata' and store in file
+Compute: store in file where content is 'jws_signature', path is 'request_uri_path'
+Compute: store in file where content is 'request_precondition_keys', path is 'request_uri_precondition_keys_path'
+Compute: store in file where content is 'precondition_slang', path is 'request_uri_precondition_slang_path'
+Compute: store in file where content is 'request_precondition_metadata', path is 'request_uri_precondition_metadata_path'
+
+# clean-up
+Compute 'jws_signature': manipulate and delete
+Compute 'request_uri_path': manipulate and delete
+Compute 'request_precondition_keys': manipulate and delete
+Compute 'request_uri_precondition_keys_path': manipulate and delete
+Compute 'request_uri_precondition_slang_path': manipulate and delete
+Compute 'request_precondition_metadata': manipulate and delete
+Compute 'request_uri_precondition_metadata_path': manipulate and delete
 
 # response_uri
-Then I send path 'response_uri_zen_path' and send content 'response_slang' and store in file
-Then I send path 'response_uri_keys_path' and send content 'response_keys' and store in file
-Then I send path 'response_uri_schema_path' and send content 'response_schema' and store in file
-Then I send path 'response_uri_metadata_path' and send content 'response_precondition_metadata' and store in file
-Then I send path 'response_uri_precondition_keys_path' and send content 'response_precondition_keys' and store in file
-Then I send path 'response_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
+Compute: store in file where content is 'response_slang', path is 'response_uri_zen_path'
+Compute: store in file where content is 'response_keys', path is 'response_uri_keys_path'
+Compute: store in file where content is 'response_schema', path is 'response_uri_schema_path'
+Compute: store in file where content is 'response_precondition_metadata', path is 'response_uri_metadata_path'
+Compute: store in file where content is 'response_precondition_keys', path is 'response_uri_precondition_keys_path'
+Compute: store in file where content is 'precondition_slang', path is 'response_uri_precondition_slang_path'
 
-Then I send text 'intent_url' and create qr code and output into 'qr_code'
+# clean-up
+Compute 'response_slang': manipulate and delete
+Compute 'response_uri_zen_path': manipulate and delete
+Compute 'response_keys': manipulate and delete
+Compute 'response_uri_keys_path': manipulate and delete
+Compute 'response_schema': manipulate and delete
+Compute 'response_uri_schema_path': manipulate and delete
+Compute 'response_precondition_metadata': manipulate and delete
+Compute 'response_uri_metadata_path': manipulate and delete
+Compute 'response_precondition_keys': manipulate and delete
+Compute 'response_uri_precondition_keys_path': manipulate and delete
+Compute 'precondition_slang': manipulate and delete
+Compute 'response_uri_precondition_slang_path': manipulate and delete
+
+Compute 'qr_code': create qr code where text is 'intent_url'
