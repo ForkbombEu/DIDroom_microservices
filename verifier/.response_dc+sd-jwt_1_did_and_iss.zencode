@@ -1,0 +1,16 @@
+Scenario 'sd_jwt': dc+sd-jwt_kb
+
+Given I have a 'string' named 'id'
+Given I have a 'signed selective disclosure with key binding array' named by 'id'
+
+When I rename object named by 'id' to 'dc+sd-jwt_kb_array'
+When I copy '1' from 'dc+sd-jwt_kb_array' to 'dc+sd-jwt_kb'
+
+When I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.sub'
+When I rename 'sub' to 'did'
+
+When I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.iss'
+When I append the string '/.well-known/openid-credential-issuer' to 'iss'
+
+Then print the 'did'
+Then print the 'iss'

@@ -1,0 +1,172 @@
+Scenario 'w3c': jws
+Scenario 'http': url
+
+Given I send path 'secrets_path' and read file content and output secret into 'secrets'
+Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
+Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
+Given I send object 'secrets' and send path 'did_path' and manipulate and get and output secret into 'did'
+
+Given I have a 'keyring' in 'personal_keyring'
+Given I have a 'string' named 'did'
+
+# data
+Given I have a 'string dictionary' named 'dcql_query'
+Given I have a 'string' named 'response_mode'
+Given I have a 'string' named 'response_type'
+Given I have a 'string' named 'url'
+
+# keys
+Given I have a 'string dictionary' named 'response_keys_ldp_vc'
+Given I have a 'string dictionary' named 'response_keys_dc+sd-jwt'
+Given I have a 'string' named 'response_slang_ldp_vc'
+Given I have a 'string' named 'response_slang_dc+sd-jwt'
+
+When I pickup from path 'dcql_query.credentials.1.format'
+When I set 'dc+sd-jwt_string' to 'dc+sd-jwt' as 'string'
+When I set 'ldp_vc_string' to 'ldp_vc' as 'string'
+If I verify 'format' is equal to 'dc+sd-jwt_string'
+    When I rename 'response_slang_dc+sd-jwt' to 'response_slang'
+    When I rename 'response_keys_dc+sd-jwt' to 'response_keys'
+EndIf
+If I verify 'format' is equal to 'ldp_vc_string'
+    When I rename 'response_slang_ldp_vc' to 'response_slang'
+    When I rename 'response_keys_ldp_vc' to 'response_keys'
+EndIf
+
+When I write string 'openid4vp://' in 'intent_url'
+
+When I create the 'string dictionary' named 'params json'
+When I write string 'decentralized_identifier:' in 'client_id'
+When I append 'did' to 'client_id'
+When I copy 'client_id' in 'params_json'
+
+When I write string 'get' in 'request_uri_method'
+When I move 'request_uri_method' in 'params_json'
+
+When I copy 'url' to 'request_uri'
+When I append the string 'request/' to 'request_uri'
+
+# request
+When I create the 'string dictionary' named 'body'
+When I copy 'dcql_query' in 'body'
+When I move 'client_id' in 'body'
+When I move 'response_mode' in 'body'
+When I move 'response_type' in 'body'
+When I create the random 'nonce'
+When I copy 'nonce' as 'hex' in 'body'
+When I create the timestamp
+When I move 'timestamp' to 'iat' in 'body'
+When I create the hash of 'body'
+When I append the string 'response/' to 'url'
+When I append the 'hex' of 'hash' to 'url'
+When I move 'url' to 'response_uri' in 'body'
+
+When I create jws header for 'p256' signature with public key
+When I write the string 'oauth-authz-req+jwt' in 'typ'
+When I move 'typ' in 'jws_header'
+
+When I create the jws signature of header 'jws_header' and payload 'body'
+
+# back to response
+When I append the 'hex' of 'hash' to 'request_uri'
+When I move 'request_uri' in 'params_json'
+
+When I create http get parameters from 'params_json' using percent encoding
+and I append 'http get parameters' to 'intent_url'
+
+# request paths
+When I write string 'public/verifier/request/' in 'request_uri_path'
+When I append the 'hex' of 'hash' to 'request_uri_path'
+When I copy 'request_uri_path' to 'request_uri_precondition_slang_path'
+When I append the string '.slang' to 'request_uri_precondition_slang_path'
+When I copy 'request_uri_path' to 'request_uri_precondition_keys_path'
+When I append the string '.keys.json' to 'request_uri_precondition_keys_path'
+When I copy 'request_uri_path' to 'request_uri_precondition_metadata_path'
+When I append the string '.metadata.json' to 'request_uri_precondition_metadata_path'
+# response paths
+When I write string 'verifier/response/' in 'response_uri_path'
+When I append the 'hex' of 'hash' to 'response_uri_path'
+When I copy 'response_uri_path' to 'response_uri_zen_path'
+When I append the string '.zen' to 'response_uri_zen_path'
+When I copy 'response_uri_path' to 'response_uri_keys_path'
+When I append the string '.keys.json' to 'response_uri_keys_path'
+When I copy 'response_uri_path' to 'response_uri_schema_path'
+When I append the string '.schema.json' to 'response_uri_schema_path'
+When I copy 'response_uri_path' to 'response_uri_metadata_path'
+When I append the string '.metadata.json' to 'response_uri_metadata_path'
+When I copy 'response_uri_path' to 'response_uri_precondition_path'
+When I append the string '_pre' to 'response_uri_precondition_path'
+When I copy 'response_uri_precondition_path' to 'response_uri_precondition_slang_path'
+When I append the string '.slang' to 'response_uri_precondition_slang_path'
+When I copy 'response_uri_precondition_path' to 'response_uri_precondition_keys_path'
+When I append the string '.keys.json' to 'response_uri_precondition_keys_path'
+
+# request precondition
+When I create the 'string dictionary' named 'request_precondition_keys'
+When I create the timestamp
+When I move 'timestamp' in 'request_precondition_keys'
+When I set 'executed' to 'false' as 'string'
+When I move 'executed' in 'request_precondition_keys'
+When I copy 'request_precondition_keys' to 'response_precondition_keys'
+When I copy 'request_uri_precondition_keys_path' to 'precondition_keys_path' in 'request_precondition_keys'
+When I create the 'string dictionary' named 'request_precondition_metadata'
+When I set 'precondition' to 'request/' as 'string'
+When I append the 'hex' of 'hash' to 'precondition'
+When I move 'precondition' in 'request_precondition_metadata'
+
+# response precondition/keys
+When I copy 'response_uri_precondition_keys_path' to 'precondition_keys_path' in 'response_precondition_keys'
+When I create the 'string dictionary' named 'response_precondition_metadata'
+When I set 'precondition' to 'verifier/response/' as 'string'
+When I append the 'hex' of 'hash' to 'precondition'
+When I append the string '_pre' to 'precondition'
+When I move 'precondition' in 'response_precondition_metadata'
+When I copy 'dcql_query' in 'response_keys'
+When I copy 'nonce' as 'hex' in 'response_keys'
+
+# transaction_id
+When I write string 'transaction/' in 'transaction_id'
+When I create the random 'rand'
+When I append the 'hex' of 'rand' to 'transaction_id'
+
+When I copy the 'transaction_id' in 'response_keys'
+
+Then print the 'jws_signature'
+Then print the 'intent_url'
+Then print the 'params_json'
+# response
+Then print the 'response_uri_zen_path'
+Then print the 'response_uri_keys_path'
+Then print the 'response_keys'
+Then print the 'response_slang'
+Then print the 'response_uri_schema_path'
+Then print the 'response_uri_metadata_path'
+Then print the 'response_uri_precondition_slang_path'
+Then print the 'response_uri_precondition_keys_path'
+Then print the 'response_precondition_keys'
+Then print the 'response_precondition_metadata'
+# request
+Then print the 'request_uri_path'
+Then print the 'request_uri_precondition_slang_path'
+Then print the 'request_uri_precondition_keys_path'
+Then print the 'request_uri_precondition_metadata_path'
+Then print the 'request_precondition_keys'
+Then print the 'request_precondition_metadata'
+# transaction_id
+Then print the 'transaction_id'
+
+# request_uri
+Then I send path 'request_uri_path' and send content 'jws_signature' and store in file
+Then I send path 'request_uri_precondition_keys_path' and send content 'request_precondition_keys' and store in file
+Then I send path 'request_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
+Then I send path 'request_uri_precondition_metadata_path' and send content 'request_precondition_metadata' and store in file
+
+# response_uri
+Then I send path 'response_uri_zen_path' and send content 'response_slang' and store in file
+Then I send path 'response_uri_keys_path' and send content 'response_keys' and store in file
+Then I send path 'response_uri_schema_path' and send content 'response_schema' and store in file
+Then I send path 'response_uri_metadata_path' and send content 'response_precondition_metadata' and store in file
+Then I send path 'response_uri_precondition_keys_path' and send content 'response_precondition_keys' and store in file
+Then I send path 'response_uri_precondition_slang_path' and send content 'precondition_slang' and store in file
+
+Then I send text 'intent_url' and create qr code and output into 'qr_code'

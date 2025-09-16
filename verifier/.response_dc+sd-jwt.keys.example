@@ -1,0 +1,25 @@
+{
+	"credential_path": "credentials.0",
+	"iss_path": "iss",
+	"kid_path": "result.jwks.keys.0.kid",
+	"did_path": "did",
+	"id_path": "id",
+	"did_and_iss_script": "Scenario 'sd_jwt': dc+sd-jwt_kb\nGiven I have a 'string' named 'id'\nGiven I have a 'signed selective disclosure with key binding array' named by 'id'\nWhen I rename object named by 'id' to 'dc+sd-jwt_kb_array'\nWhen I copy '1' from 'dc+sd-jwt_kb_array' to 'dc+sd-jwt_kb'\nWhen I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.sub'\nWhen I rename 'sub' to 'did'\nWhen I pickup a 'string' from path 'dc+sd-jwt_kb.jwt.payload.iss'\nWhen I append the string '/.well-known/openid-credential-issuer' to 'iss'\nThen print the 'did'\nThen print the 'iss'",
+	"dcql_query": {
+		"credentials": [
+			{
+				"id": "example_dc+sd-jwt",
+				"format": "dc+sd-jwt",
+				"meta": {
+					"vct_values": [
+						"test_credential"
+					]
+				},
+				"claims": [
+					{"path": ["tested"]}
+				]
+			}
+		]
+	},
+	"nonce": "ebfba795b9cf970df0ea8bd17e384986b66981f4b4cb92a18b9eabfd5427a9a5"
+}

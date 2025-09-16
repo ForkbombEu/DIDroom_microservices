@@ -1,0 +1,180 @@
+Scenario 'sd_jwt': sd-jwt_kb
+Scenario 'did': did document
+Scenario 'w3c': verification of kb
+
+# Validate:
+# 1. form
+# 2. match the nonce
+# 3. match the type_values
+# 4. requested claims are present
+# 5. holder binding
+# 6. integrity and authenticity of the Credential
+
+# resolve holder pk
+Prepare 'credential': manipulate and get where object is 'dcql_query', path is 'credential_path'
+Prepare 'did_and_iss': execute zencode where script is 'did_and_iss_script', keys is 'credential', data is 'vp_token'
+Prepare 'holder_did': manipulate and get where object is 'did_and_iss', path is 'did_path'
+Prepare 'holder_did_document': resolve the did where did is 'holder_did'
+
+# resolve issuer pk
+Prepare 'iss_url': manipulate and get where object is 'did_and_iss', path is 'iss_path'
+Prepare 'iss_wk': connect to 'iss_url' and do get
+Prepare 'iss_did': manipulate and get where object is 'iss_wk', path is 'kid_path'
+Prepare 'issuer_did_document': resolve the did where did is 'iss_did'
+
+# extract vp
+Prepare 'id': manipulate and get where object is 'credential', path is 'id_path'
+Prepare 'vp array': manipulate and get where object is 'vp_token', path is 'id'
+
+# slangroom
+Given I have a 'did document' in path 'issuer_did_document.didDocument'
+Given I rename 'didDocument' to 'issuer_did_document'
+Given I have a 'did document' in path 'holder_did_document.didDocument'
+Given I rename 'didDocument' to 'holder_did_document'
+
+# data
+Given I have a 'signed selective disclosure with key binding array' named 'vp_array'
+Given I rename 'vp array' to 'sd-jwt+kb array'
+Given I have a 'string array' named 'vp_array'
+
+# keys
+Given I have a 'string dictionary' named 'dcql_query'
+Given I have a 'string' named 'nonce'
+Given I rename 'nonce' to 'verify nonce'
+Given I have a 'string' named 'transaction_id'
+
+# pickup requested information
+When I pickup from path 'dcql_query.credentials.1.format'
+When I pickup from path 'dcql_query.credentials.1.id'
+When I pickup from path 'dcql_query.credentials.1.meta.vct_values'
+When I pickup from path 'dcql_query.credentials.1.claims'
+
+# pickup dc+sd-jwt as string
+When I copy '1' from 'vp_array' to 'dc+sd-jwt_kb_as_string'
+When I set '~' to '~' as 'string'
+When I create the array by splitting 'dc+sd-jwt_kb_as_string' at '~'
+When I create the size of 'array'
+When I write string '' in 'dc+sd-jwt_as_string'
+When I set 'i' to '1' as 'number'
+When I set '1' to '1' as 'number'
+Foreach 'a' in 'array'
+    If I verify 'i' is equal to 'size'
+        When I remove 'i'
+        When I remove 'size'
+        When I copy 'a' to 'kb_as_string'
+        When I exit the foreach
+    EndIf
+    When I append 'a' to 'dc+sd-jwt_as_string'
+    When I append the string '~' to 'dc+sd-jwt_as_string'
+    When I create the result of 'i' + '1'
+    When I remove 'i'
+    When I rename 'result' to 'i'
+Endforeach
+
+# support only dc+sd-jwt verification
+When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
+When I verify 'dc+sd-jwt' is equal to 'format'
+
+# pickup from presentation (vp_token[id][1])
+When I copy '1' from 'sd-jwt+kb array' to 'sd-jwt+kb'
+When I pickup a 'string dictionary' from path 'sd-jwt+kb.jwt.header'
+When I rename 'header' to 'sd-jwt_header'
+When I pickup a 'string dictionary' from path 'sd-jwt+kb.jwt.payload'
+When I rename 'payload' to 'sd-jwt_payload'
+When I pickup a 'string array' from path 'sd-jwt+kb.disclosures'
+When I rename 'disclosures' to 'sd-jwt_disclosures'
+
+When I pickup a 'string dictionary' from path 'sd-jwt+kb.key_binding.header'
+When I rename 'header' to 'kb_header'
+When I pickup a 'string dictionary' from path 'sd-jwt+kb.key_binding.payload'
+When I rename 'payload' to 'kb_payload'
+
+# 2. match the nonce used
+When I pickup from path 'kb_payload.nonce'
+When I verify 'nonce' is equal to 'verify nonce'
+
+# 3. match type/vct with vct_values
+If I verify 'vct' is found in 'sd-jwt_payload'
+    When I copy 'vct' from 'sd-jwt_payload' to 'cred_vct'
+EndIf
+# TODO: is this still supported??????
+If I verify 'type' is found in 'sd-jwt_payload'
+    When I copy 'type' from 'sd-jwt_payload' to 'cred_vct'
+EndIf
+When I copy '1' from 'vct_values' to 'verify vct'
+When I verify 'cred_vct' is equal to 'verify vct'
+
+# 4. verify all requested claims are found
+When I create the 'string array' named 'transaction_result'
+Foreach 'c' in 'claims'
+    When I copy 'path' from 'c' to 'path_array'
+    When I copy '1' from 'path_array' to 'claim_identifier'
+    Foreach 'd' in 'sd-jwt_disclosures'
+        When I copy '2' from 'd' to 'disclosure_identifier'
+        If I verify 'disclosure_identifier' is equal to 'claim_identifier'
+            When I copy 'd' to 'matching_disclosure'
+            When I remove 'disclosure_identifier'
+            When I exit the foreach
+        EndIf
+        When I remove 'disclosure_identifier'
+    EndForeach
+    When I verify 'matching_disclosure' is found
+    When I create the 'string dictionary' named 'tmp_transaction'
+    When I copy 'path_array' to 'path' in 'tmp_transaction'
+    If I verify size of 'path_array' is more than '1'
+        When I copy 'path_array' to 'tmp_path_array'
+        When I remove 'claim_identifier' from 'tmp_path_array'
+        When I copy '3' from 'matching_disclosure' to 'disclosure_value'
+        When I rename 'disclosure_value' to 'root'
+        Foreach 'p' in 'tmp_path_array'
+            When I copy 'p' from 'root' to 'tmp'
+            When I remove 'root'
+            When I rename 'tmp' to 'root'
+        EndForeach
+        When I copy 'root' to 'value' in 'tmp_transaction'
+        When I remove 'root'
+        When I remove 'tmp_path_array'
+    EndIf
+    If I verify size of 'path_array' is less or equal than '1'
+        When I copy '3' from 'matching_disclosure' to 'value'
+        When I move 'value' in 'tmp_transaction'
+    EndIf
+    When I move 'tmp_transaction' in 'transaction_result'
+    When I remove 'path_array'
+    When I remove 'claim_identifier'
+    When I remove 'matching_disclosure'
+EndForeach
+
+# some helpers for later
+When I set 'ecdsa-rdfc-2019' to 'ecdsa-rdfc-2019' as 'string'
+When I set 'eddsa-rdfc-2022' to 'eddsa-rdfc-2022' as 'string'
+When I set 'mldsa-rdfc-2025' to 'mldsa-rdfc-2025' as 'string'
+
+# 5. verify key binding (aka holder binding)
+# typ
+When I pickup from path 'kb_header.typ'
+When I set 'kb+jwt' to 'kb+jwt' as 'string'
+When I verify 'typ' is equal to 'kb+jwt'
+# hash
+When I pickup from path 'kb_payload.sd_hash'
+When I create the hash of 'dc+sd-jwt_as_string'
+When I move 'hash' as 'hex' to 'hex_hash'
+When I verify 'hex_hash' is equal to 'sd_hash'
+# signature
+When I create the 'es256' public key from did document 'holder_did_document'
+When I verify jws signature in 'kb_as_string'
+When I remove 'es256 public key'
+
+# 6. verify sd-jwt
+When I create the 'es256' public key from did document 'issuer_did_document'
+When I verify the signed selective disclosure 'sd-jwt+kb' issued by 'es256 public key' is valid
+
+# transaction_id
+When I prepend string 'public/verifier/' to 'transaction_id'
+When I rename 'transaction_id' to 'complete_transaction_id'
+
+Then print the string 'OK'
+Then print the 'transaction_result'
+Then print the 'complete_transaction_id'
+
+Compute: store in file with content 'transaction_result', path 'complete_transaction_id'
