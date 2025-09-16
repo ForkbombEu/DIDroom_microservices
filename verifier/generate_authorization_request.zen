@@ -193,4 +193,3 @@ Compute 'precondition_slang': manipulate and delete
 Compute 'response_uri_precondition_slang_path': manipulate and delete
 
 Compute 'qr_code': create qr code where text is 'intent_url'
-Compute 'intent_url': manipulate and delete
