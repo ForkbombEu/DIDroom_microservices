@@ -111,11 +111,11 @@ clean: ## 🧹 Clean
 	rm -f .env
 	rm -f .test.*.pid
 	rm -f .*.pid
-	rm -rf credential_issuer/nonces/ relying_party/temp-verify.keys.json
+	rm -rf credential_issuer/nonces/
 
 deepclean: clean # 🧹 Deep clean (stops all ncr, remove keys and restore well-knowns)
 	git restore */.autorun/identity.metadata.json public/*/.well-known
 	git clean -fd */custom_code public/*/.well-known
-	git restore credential_issuer/credential.chain.yaml public/authz_server/authorize relying_party/verify.keys.json
+	git restore credential_issuer/credential.chain.yaml public/authz_server/authorize
 	rm -f */secrets.keys
 	pkill ncr || true
