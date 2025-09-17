@@ -1,7 +1,0 @@
-Scenario 'w3c': get public key from did document
-
-Given I have a 'string dictionary' in path 'result.didDocument'
-
-When I create 'es256' public key from did document 'didDocument'
-
-Then print the 'es256_public_key' as 'base64' in 'credential_issuer'

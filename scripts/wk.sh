@@ -131,24 +131,11 @@ setup() {
     jq --indent 4 '.authorization_servers = [
             "http://localhost:3000/authz_server"
         ]' public/credential_issuer/.well-known/openid-credential-issuer > $tmp && mv $tmp public/credential_issuer/.well-known/openid-credential-issuer
-
-    ## rp
-    if [ ! -f public/relying_party/.well-known/openid-relying-party.tmp ]; then
-        cp public/relying_party/.well-known/openid-relying-party public/relying_party/.well-known/openid-relying-party.tmp
-    fi
-    sed -i \
-        -e "s|{{ rp_url }}|http://localhost:3002/relying_party|g" \
-        -e "s|{{ rp_name }}|DIDroom_Test_RP|g" \
-        public/relying_party/.well-known/openid-relying-party
-    jq --indent 4 '.trusted_credential_issuers = [
-            "http://localhost:3001/credential_issuer"
-        ]' public/relying_party/.well-known/openid-relying-party > $tmp && mv $tmp public/relying_party/.well-known/openid-relying-party
 }
 
 cleanup() {
     mv public/authz_server/.well-known/oauth-authorization-server.tmp public/authz_server/.well-known/oauth-authorization-server
     mv public/credential_issuer/.well-known/openid-credential-issuer.tmp public/credential_issuer/.well-known/openid-credential-issuer
-    mv public/relying_party/.well-known/openid-relying-party.tmp public/relying_party/.well-known/openid-relying-party
 }
 
 "$@"
