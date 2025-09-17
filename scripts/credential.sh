@@ -13,7 +13,7 @@ fi
 sd_jwts=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "dc+sd-jwt") | .value.vct' "${WELL_KNOWN}")
 ldp_vcs=$(jq -r '.credential_configurations_supported | to_entries[] | select(.value.format == "ldp_vc") | .key' "${WELL_KNOWN}")
 
-if [ -z "${sd_jwts}" ] || [ -z "${ldp_vcs}" ]; then
+if [ -z "${sd_jwts}" ] && [ -z "${ldp_vcs}" ]; then
   echo "No sd-jwts or ldp_vcs found in the well-known file."
   exit 1
 fi
