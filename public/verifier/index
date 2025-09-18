@@ -40,6 +40,10 @@
           class="w-48 h-48"
           alt="Scan to verify your credential with Didroom"
         />
+        <p
+          id="intent_url"
+          class="text-sm leading-relaxed max-w-md break-words text-center mx-auto"
+        ></p>
         <a
           id="open_wallet"
           href="#"
@@ -152,6 +156,7 @@
 
       /* --------------- Helper vars --------------- */
       const qrImg = document.getElementById("qr_image");
+      const intentUrl = document.getElementById("intent_url");
       const walletBtn = document.getElementById("open_wallet");
       const statusBox = document.getElementById("verification-status");
       const statusText = document.getElementById("status-text");
@@ -175,7 +180,7 @@
       let intervalId, timeoutId;
       async function checkTransaction(id) {
         try {
-          const res = await fetch(`${location.origin}/${id}`);
+          const res = await fetch(`${location.origin}/verifier/${id}`);
           if (!res.ok) return; // keep polling
           const data = await res.json();
           // Build claim array and table
@@ -221,6 +226,7 @@
           if (!res.ok) throw new Error(await res.text());
           const data = await res.json();
           qrImg.src = data.qr_code;
+          intentUrl.textContent = data.intent_url;
           walletBtn.href = data.intent_url;
           // Show status animation
           statusBox.classList.remove("hidden");
