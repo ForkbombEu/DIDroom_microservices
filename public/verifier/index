@@ -180,7 +180,7 @@
       let intervalId, timeoutId;
       async function checkTransaction(id) {
         try {
-          const res = await fetch(`${location.origin}/${id}`);
+          const res = await fetch(`${location.origin}/verifier/${id}`);
           if (!res.ok) return; // keep polling
           const data = await res.json();
           // Build claim array and table
