@@ -3,7 +3,7 @@
     "controller_path": "controller",
     "did_path": "did",
     "precondition_slang": "Given I have a 'time' named 'timestamp'\nGiven I have a 'string' named 'precondition_keys_path'\nGiven I have a 'string' named 'executed'\n# timestamp\nWhen I set '5 min' to '300' as 'time'\nWhen I create the result of 'timestamp' + '5 min'\nWhen I remove 'timestamp'\nWhen I create the timestamp\nWhen I verify number 'timestamp' is less than 'result'\n# executed\nWhen I set 'false' to 'false' as 'string'\nWhen I verify 'executed' is equal to 'false'\nWhen I remove 'executed'\nWhen I set 'executed' to 'true' as 'string'\nWhen I create the 'string dictionary' named 'precondition_data'\nWhen I move 'timestamp' in 'precondition_data'\nWhen I move 'precondition_keys_path' in 'precondition_data'\nWhen I move 'executed' in 'precondition_data'\nThen print the string 'OK'\nThen print the 'precondition_data'\nThen I send path 'precondition_keys_path' and send content 'precondition_data' and store in file",
-    "response_chain_path": "verifier/verify.yaml",
+    "response_chain_path": "verifier/verifier.yaml",
     "response_schema": {
         "type": "object",
         "properties": {
