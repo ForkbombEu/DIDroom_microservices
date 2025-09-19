@@ -44,14 +44,28 @@ EOF
 for file in "${files[@]}"; do
     basefile=$(basename "${file}" .zen)
 cat <<EOF >> "${CHAIN}"
-  - id: custom_code_$basefile
+  - id: custom_code_${basefile}_dc+sd-jwt
     zencodeFromFile: verifier/custom_code/$basefile.zen
     keysFromFile: verifier/custom_code/$basefile.keys.json
-    dataFromStep: transaction_id_path
+    dataFromStep: verify_dc+sd-jwt
     precondition:
       zencode: |
         Given I have a 'string' named 'precondition_type'
+        Given I have a 'string' named 'precondition_format'
         When I verify 'precondition_type' is equal to '$basefile'
+        When I verify 'precondition_format' is equal to 'dc+sd-jwt'
+        Then print the data
+      dataFromStep: transaction_id_path
+  - id: custom_code_${basefile}_ldp_vc
+    zencodeFromFile: verifier/custom_code/$basefile.zen
+    keysFromFile: verifier/custom_code/$basefile.keys.json
+    dataFromStep: verify_ldp_vc
+    precondition:
+      zencode: |
+        Given I have a 'string' named 'precondition_type'
+        Given I have a 'string' named 'precondition_format'
+        When I verify 'precondition_type' is equal to '$basefile'
+        When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
 EOF
