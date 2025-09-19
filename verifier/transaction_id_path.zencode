@@ -18,8 +18,8 @@ EndIf
 
 When I set 'ldp_vc' to 'ldp_vc' as 'string'
 If I verify 'precondition_format' is equal to 'ldp_vc'
-    When I pickup from path 'dcql_query.credentials.1.meta.type_values.2'
-    When I rename '2' to 'precondition_type'
+    When I pickup from path 'dcql_query.credentials.1.meta.type_values.1.1'
+    When I rename '1' to 'precondition_type'
 EndIf
 
 # transaction_id
