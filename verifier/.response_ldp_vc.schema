@@ -1,8 +1,0 @@
-{
-    "type": "object",
-    "properties": {
-        "vp_token": {
-            "type": "object"
-        }
-    }
-}

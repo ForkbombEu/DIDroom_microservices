@@ -1,0 +1,35 @@
+
+# data
+Given I have a 'string dictionary' named 'vp_token'
+
+# keys
+Given I have a 'string dictionary' named 'dcql_query'
+Given I have a 'string' named 'nonce'
+Given I have a 'string' named 'transaction_id'
+
+When I pickup from path 'dcql_query.credentials.1.format'
+When I rename 'format' to 'precondition_format'
+
+When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
+If I verify 'precondition_format' is equal to 'dc+sd-jwt'
+    When I pickup from path 'dcql_query.credentials.1.meta.vct_values.1'
+    When I rename '1' to 'precondition_type'
+EndIf
+
+When I set 'ldp_vc' to 'ldp_vc' as 'string'
+If I verify 'precondition_format' is equal to 'ldp_vc'
+    When I pickup from path 'dcql_query.credentials.1.meta.type_values.2'
+    When I rename '2' to 'precondition_type'
+EndIf
+
+# transaction_id
+When I prepend string 'public/verifier/' to 'transaction_id'
+When I rename 'transaction_id' to 'complete_transaction_id'
+
+Then print the 'vp_token'
+Then print the 'nonce'
+Then print the 'dcql_query'
+Then print the 'complete_transaction_id'
+
+Then print the 'precondition_format'
+Then print the 'precondition_type'

@@ -1,0 +1,6 @@
+
+Prepare: store in file with content 'transaction_result', path 'complete_transaction_id'
+
+Given I have a 'string array' named 'transaction_result'
+Then print the string 'OK'
+Then print the string 'transaction_result'

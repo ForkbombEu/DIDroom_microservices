@@ -42,6 +42,7 @@ Given I have a 'string dictionary' named 'dcql_query'
 Given I have a 'string' named 'nonce'
 Given I rename 'nonce' to 'verify nonce'
 Given I have a 'string' named 'transaction_id'
+Given I have a 'string' named 'complete_transaction_id'
 
 # pickup requested information
 When I pickup from path 'dcql_query.credentials.1.format'
@@ -169,12 +170,5 @@ When I remove 'es256 public key'
 When I create the 'es256' public key from did document 'issuer_did_document'
 When I verify the signed selective disclosure 'sd-jwt+kb' issued by 'es256 public key' is valid
 
-# transaction_id
-When I prepend string 'public/verifier/' to 'transaction_id'
-When I rename 'transaction_id' to 'complete_transaction_id'
-
-Then print the string 'OK'
 Then print the 'transaction_result'
 Then print the 'complete_transaction_id'
-
-Compute: store in file with content 'transaction_result', path 'complete_transaction_id'

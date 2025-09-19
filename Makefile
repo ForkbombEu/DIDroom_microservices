@@ -51,8 +51,12 @@ credential: deps ## 📦 Setup the credential issuer
 	@chmod +x scripts/credential.sh
 	@./scripts/credential.sh
 
+verifier: deps ## 📦 Setup the verifier
+	@chmod +x scripts/verifier.sh
+	@./scripts/verifier.sh
+
 up: UP_PORT?=3000
-up: ncr authorize credential ## 🚀 Up & run the project
+up: ncr authorize credential verifier ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
 	@chmod +x scripts/up.sh
 	@./scripts/up.sh ${UP_PORT} ${MS_NAME}
