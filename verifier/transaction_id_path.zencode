@@ -23,12 +23,13 @@ If I verify 'precondition_format' is equal to 'ldp_vc'
 EndIf
 
 # transaction_id
-When I prepend string 'public/verifier/' to 'transaction_id'
-When I rename 'transaction_id' to 'complete_transaction_id'
+When I copy 'transaction_id' to 'complete_transaction_id'
+When I prepend string 'public/verifier/' to 'complete_transaction_id'
 
 Then print the 'vp_token'
 Then print the 'nonce'
 Then print the 'dcql_query'
+Then print the 'transaction_id'
 Then print the 'complete_transaction_id'
 
 Then print the 'precondition_format'

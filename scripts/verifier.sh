@@ -26,6 +26,7 @@ steps:
     precondition:
       zencode: |
         Given I have a 'string' named 'precondition_format'
+        When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
         When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
@@ -36,6 +37,7 @@ steps:
     precondition:
       zencode: |
         Given I have a 'string' named 'precondition_format'
+        When I set 'ldp_vc' to 'ldp_vc' as 'string'
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
@@ -52,7 +54,9 @@ cat <<EOF >> "${CHAIN}"
       zencode: |
         Given I have a 'string' named 'precondition_type'
         Given I have a 'string' named 'precondition_format'
+        When I set '$basefile' to '$basefile' as 'string'
         When I verify 'precondition_type' is equal to '$basefile'
+        When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
         When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
@@ -64,7 +68,9 @@ cat <<EOF >> "${CHAIN}"
       zencode: |
         Given I have a 'string' named 'precondition_type'
         Given I have a 'string' named 'precondition_format'
+        When I set '$basefile' to '$basefile' as 'string'
         When I verify 'precondition_type' is equal to '$basefile'
+        When I set 'ldp_vc' to 'ldp_vc' as 'string'
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
@@ -77,8 +83,9 @@ cat <<EOF >> "${CHAIN}"
     keysFromStep: verify_dc+sd-jwt
     precondition:
       zencode: |
-        Given I have a 'string' named 'precondition_type'
-        When I verify 'precondition_type' is equal to 'dc+sd-jwt'
+        Given I have a 'string' named 'precondition_format'
+        When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
+        When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
   - id: save_result_to_file_ldp_vc
@@ -86,8 +93,9 @@ cat <<EOF >> "${CHAIN}"
     keysFromStep: verify_ldp_vc
     precondition:
       zencode: |
-        Given I have a 'string' named 'precondition_type'
-        When I verify 'precondition_type' is equal to 'ldp_vc'
+        Given I have a 'string' named 'precondition_format'
+        When I set 'ldp_vc' to 'ldp_vc' as 'string'
+        When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
 EOF
