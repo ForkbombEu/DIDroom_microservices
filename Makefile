@@ -75,6 +75,7 @@ mobile_zencode_up: ncr tests/mobile_zencode
 test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
+	@cp tests/custom_code/v/* verifier/custom_code/
 
 test_wk:
 	@./scripts/wk.sh setup
