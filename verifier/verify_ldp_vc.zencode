@@ -68,6 +68,7 @@ Given I have a 'string dictionary' named 'vp_token'
 Given I have a 'string dictionary' named 'dcql_query'
 Given I have a 'string' named 'nonce'
 Given I have a 'string' named 'transaction_id'
+Given I have a 'string' named 'complete_transaction_id'
 
 # pickup requested information
 When I pickup from path 'dcql_query.credentials.1.format'
@@ -173,11 +174,6 @@ When I verify 'vc_serialization' has a mldsa44 signature in 'vc_proofValue' by '
 When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 When I verify 'vc_verified' is found
-
-# transaction_id
-When I prepend string 'public/verifier/' to 'transaction_id'
-When I rename 'transaction_id' to 'complete_transaction_id'
-
 
 Then print the string 'OK'
 Then print the 'transaction_result'
