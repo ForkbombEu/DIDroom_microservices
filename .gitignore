@@ -22,3 +22,4 @@ credential_issuer/credential.chain.yaml
 verifier/response
 public/verifier/request/
 public/verifier/transaction/
+verifier/verifier.yaml

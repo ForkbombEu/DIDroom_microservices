@@ -6,6 +6,8 @@ Prepare 'controller': manipulate and get where object is 'secrets', path is 'con
 Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
 Prepare 'did': manipulate and get where object is 'secrets', path is 'did_path'
 
+Prepare 'response_chain': read verbatim file content where path is 'response_chain_path'
+
 Given I have a 'keyring' in 'personal_keyring'
 Given I have a 'string' named 'did'
 
@@ -16,22 +18,9 @@ Given I have a 'string' named 'response_type'
 Given I have a 'string' named 'url'
 
 # keys
-Given I have a 'string dictionary' named 'response_keys_ldp_vc'
-Given I have a 'string dictionary' named 'response_keys_dc+sd-jwt'
-Given I have a 'string' named 'response_slang_ldp_vc'
-Given I have a 'string' named 'response_slang_dc+sd-jwt'
+Given I have a 'string' named 'response_chain'
 
-When I pickup from path 'dcql_query.credentials.1.format'
-When I set 'dc+sd-jwt_string' to 'dc+sd-jwt' as 'string'
-When I set 'ldp_vc_string' to 'ldp_vc' as 'string'
-If I verify 'format' is equal to 'dc+sd-jwt_string'
-    When I rename 'response_slang_dc+sd-jwt' to 'response_slang'
-    When I rename 'response_keys_dc+sd-jwt' to 'response_keys'
-EndIf
-If I verify 'format' is equal to 'ldp_vc_string'
-    When I rename 'response_slang_ldp_vc' to 'response_slang'
-    When I rename 'response_keys_ldp_vc' to 'response_keys'
-EndIf
+When I create the 'string dictionary' named 'response_keys'
 
 When I write string 'openid4vp://' in 'intent_url'
 
@@ -86,8 +75,8 @@ When I append the string '.metadata.json' to 'request_uri_precondition_metadata_
 # response paths
 When I write string 'verifier/response/' in 'response_uri_path'
 When I append the 'hex' of 'hash' to 'response_uri_path'
-When I copy 'response_uri_path' to 'response_uri_zen_path'
-When I append the string '.zen' to 'response_uri_zen_path'
+When I copy 'response_uri_path' to 'response_uri_chain_path'
+When I append the string '.chain.yaml' to 'response_uri_chain_path'
 When I copy 'response_uri_path' to 'response_uri_keys_path'
 When I append the string '.keys.json' to 'response_uri_keys_path'
 When I copy 'response_uri_path' to 'response_uri_schema_path'
@@ -135,10 +124,10 @@ Then print the 'jws_signature'
 Then print the 'intent_url'
 Then print the 'params_json'
 # response
-Then print the 'response_uri_zen_path'
+Then print the 'response_uri_chain_path'
 Then print the 'response_uri_keys_path'
 Then print the 'response_keys'
-Then print the 'response_slang'
+Then print the 'response_chain'
 Then print the 'response_uri_schema_path'
 Then print the 'response_uri_metadata_path'
 Then print the 'response_uri_precondition_slang_path'
@@ -171,7 +160,7 @@ Compute 'request_precondition_metadata': manipulate and delete
 Compute 'request_uri_precondition_metadata_path': manipulate and delete
 
 # response_uri
-Compute: store in file where content is 'response_slang', path is 'response_uri_zen_path'
+Compute: store in file where content is 'response_chain', path is 'response_uri_chain_path'
 Compute: store in file where content is 'response_keys', path is 'response_uri_keys_path'
 Compute: store in file where content is 'response_schema', path is 'response_uri_schema_path'
 Compute: store in file where content is 'response_precondition_metadata', path is 'response_uri_metadata_path'
@@ -179,8 +168,8 @@ Compute: store in file where content is 'response_precondition_keys', path is 'r
 Compute: store in file where content is 'precondition_slang', path is 'response_uri_precondition_slang_path'
 
 # clean-up
-Compute 'response_slang': manipulate and delete
-Compute 'response_uri_zen_path': manipulate and delete
+Compute 'response_chain': manipulate and delete
+Compute 'response_uri_chain_path': manipulate and delete
 Compute 'response_keys': manipulate and delete
 Compute 'response_uri_keys_path': manipulate and delete
 Compute 'response_schema': manipulate and delete

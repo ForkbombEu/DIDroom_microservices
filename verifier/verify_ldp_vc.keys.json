@@ -1,0 +1,21 @@
+{
+    "serialize_api": "https://rdfcanon.forkbomb.eu/serialize",
+    "vp_id_path": "credentials[0].id",
+    "vp_path": "[0]",
+    "proof_path": "proof",
+    "context_path": "@context",
+    "proofValue_path": "proofValue",
+    "is_dict_path": "is_dict",
+    "vp_serialize_body": {
+        "is_dict": "true"
+    },
+    "document_path": "document",
+    "proof_config_path": "proof_config",
+    "verifiableCredential_path": "verifiableCredential[0]",
+    "vc_serialize_body": {
+        "is_dict": "true"
+    },
+    "did_zen": "Given I have a 'string' named 'verificationMethod'\nWhen I prepend string 'https://dev.uniresolver.io/1.0/identifiers/' to 'verificationMethod'\nThen print the 'verificationMethod'",
+    "empty_keys": {},
+    "verificationMethod_path": "verificationMethod"
+}

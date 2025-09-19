@@ -13,7 +13,7 @@ endif
 .PHONY: help
 TEST_DEPS := git jq npx
 DEPLOY_DEPS := wget jq awk wc
-NCR_VERSION := 1.43.1
+NCR_VERSION := 1.44.0
 NCR_URL := https://github.com/ForkbombEu/ncr/releases/download/v$(NCR_VERSION)/ncr
 
 hn=$(shell hostname)
@@ -51,8 +51,12 @@ credential: deps ## 📦 Setup the credential issuer
 	@chmod +x scripts/credential.sh
 	@./scripts/credential.sh
 
+verifier: deps ## 📦 Setup the verifier
+	@chmod +x scripts/verifier.sh
+	@./scripts/verifier.sh
+
 up: UP_PORT?=3000
-up: ncr authorize credential ## 🚀 Up & run the project
+up: ncr authorize credential verifier ## 🚀 Up & run the project
 	$(if ${MS_URL},,$(error "Set MS_URL in .env with the url of the service"),)
 	@chmod +x scripts/up.sh
 	@./scripts/up.sh ${UP_PORT} ${MS_NAME}
@@ -71,6 +75,7 @@ mobile_zencode_up: ncr tests/mobile_zencode
 test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
 	@cp tests/custom_code/ci/* credential_issuer/custom_code/
+	@cp tests/custom_code/v/* verifier/custom_code/
 
 test_wk:
 	@./scripts/wk.sh setup
