@@ -160,7 +160,7 @@ Compute 'request_precondition_metadata': manipulate and delete
 Compute 'request_uri_precondition_metadata_path': manipulate and delete
 
 # response_uri
-Compute: store in file where content is 'response_slang', path is 'response_uri_chain_path'
+Compute: store in file where content is 'response_chain', path is 'response_uri_chain_path'
 Compute: store in file where content is 'response_keys', path is 'response_uri_keys_path'
 Compute: store in file where content is 'response_schema', path is 'response_uri_schema_path'
 Compute: store in file where content is 'response_precondition_metadata', path is 'response_uri_metadata_path'
@@ -168,7 +168,7 @@ Compute: store in file where content is 'response_precondition_keys', path is 'r
 Compute: store in file where content is 'precondition_slang', path is 'response_uri_precondition_slang_path'
 
 # clean-up
-Compute 'response_slang': manipulate and delete
+Compute 'response_chain': manipulate and delete
 Compute 'response_uri_chain_path': manipulate and delete
 Compute 'response_keys': manipulate and delete
 Compute 'response_uri_keys_path': manipulate and delete
