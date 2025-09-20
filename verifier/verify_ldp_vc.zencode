@@ -175,8 +175,5 @@ When I set 'vc_verified' to 'true'  as 'string'
 EndIf
 When I verify 'vc_verified' is found
 
-Then print the string 'OK'
 Then print the 'transaction_result'
 Then print the 'complete_transaction_id'
-
-Compute: store in file with content 'transaction_result', path 'complete_transaction_id'
