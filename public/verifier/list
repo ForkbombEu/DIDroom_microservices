@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Didroom Credential Verification</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen flex flex-col bg-white text-black font-mono antialiased">
+    <!-- Header with Didroom logo -->
+    <header class="py-6 flex items-center justify-center">
+        <img src="didroom-logo.svg" alt="Didroom logo" class="h-10" />
+    </header>
+
+    <!-- Main content -->
+    <main class="flex-grow flex flex-col items-center px-4 text-center space-y-6">
+        <h1 class="text-2xl font-bold tracking-wide">Your DIDRoom verifiers</h1>
+        <p class="text-base leading-relaxed max-w-md">
+            Click on a card below to see its details and verify your credentials.
+        </p>
+
+        <div id="cardContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl mt-6">
+            <!-- Cards will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 border-t border-black text-xs">
+        <div class="flex items-center justify-center gap-2">
+            <span>© 2025 Didroom</span>
+            <span aria-hidden="true">·</span>
+            <a href="https://github.com/forkbombeu/wallet" class="underline hover:no-underline" target="_blank"
+                rel="noopener">Source code</a>
+            <span aria-hidden="true">·</span>
+            <span>made&nbsp;with&nbsp;💓 by
+                <a href="https://forkbomb.eu" class="underline font-bold">Forkbomb</a>
+                hackers</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+
+        /* --------------- Default DCQL ---------------- */
+        const flows = '';
+        const jsonFlows = JSON.parse(flows);
+        const container = document.getElementById('cardContainer');
+
+        flows.forEach(flow => {
+            // Create a card div
+            const card = document.createElement('a');
+            card.href = flow.url; // Link to the verifier
+            card.target = "_blank";
+            card.rel = "noopener";
+            card.className = `
+                block p-6 border border-gray-300 rounded-lg shadow hover:shadow-lg transition
+                hover:bg-gray-50 text-left
+            `;
+
+            // Add content
+            card.innerHTML = `
+                <h3 class="text-lg font-bold mb-2">${flow.name}</h3>
+                <p class="text-gray-700">${flow.description}</p>
+            `;
+
+            container.appendChild(card);
+        });
+
+        /* ---------- Backend polling functions -------- */
+    </script>
+
+    <!-- Typography: Gantari variable font -->
+    <style>
+        @font-face {
+            font-family: "Gantari Variable";
+            font-style: normal;
+            font-display: swap;
+            font-weight: 100 900;
+            src: url(https://cdn.jsdelivr.net/fontsource/fonts/gantari:vf@latest/latin-wght-normal.woff2) format("woff2-variations");
+            unicode-range:
+                U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+                U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        body {
+            font-family: "Gantari Variable", monospace;
+        }
+    </style>
+</body>
+
+</html>
