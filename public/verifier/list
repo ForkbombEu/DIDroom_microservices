@@ -46,7 +46,6 @@
 
         /* --------------- Default DCQL ---------------- */
         const flows = '';
-        const jsonFlows = JSON.parse(flows);
         const container = document.getElementById('cardContainer');
 
         flows.forEach(flow => {
