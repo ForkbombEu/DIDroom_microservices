@@ -44,7 +44,7 @@
     <!-- Scripts -->
     <script>
 
-        /* --------------- Default DCQL ---------------- */
+        /* --------------- verification flows ---------------- */
         const flows = '';
         const container = document.getElementById('cardContainer');
 
@@ -69,7 +69,6 @@
             container.appendChild(card);
         });
 
-        /* ---------- Backend polling functions -------- */
     </script>
 
     <!-- Typography: Gantari variable font -->
