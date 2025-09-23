@@ -68,6 +68,7 @@ tests-deps: # 🧪 Check test dependencies
 
 tests/mobile_zencode:
 	git clone https://github.com/forkbombeu/mobile_zencode tests/mobile_zencode
+	cd tests/mobile_zencode && git checkout chore/openid4vp
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
@@ -81,10 +82,6 @@ test_wk:
 	@./scripts/wk.sh setup
 
 test: tests-deps test_custom_code test_wk up mobile_zencode_up # 🧪 Run e2e tests on the APIs
-# modify wallet contract to not use capacitor
-	@cat tests/mobile_zencode/wallet/ver_qr_to_info.zen | sed "s/.*Given I connect to 'pb_url' and start capacitor pb client.*/Given I connect to 'pb_url' and start pb client\nGiven I send my_credentials 'my_credentials' and login/" > tests/mobile_zencode/wallet/temp_ver_qr_to_info.zen
-	@cp tests/mobile_zencode/wallet/ver_qr_to_info.keys.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.keys.json
-	@cp tests/mobile_zencode/wallet/ver_qr_to_info.schema.json tests/mobile_zencode/wallet/temp_ver_qr_to_info.schema.json
 # start tests
 	@for port in 3000 3001 3002 3003; do \
 		timeout 30s bash -c 'port=$$1; until nc -z localhost $$port; do \

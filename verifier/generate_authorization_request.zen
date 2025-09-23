@@ -110,6 +110,8 @@ When I set 'precondition' to 'verifier/response/' as 'string'
 When I append the 'hex' of 'hash' to 'precondition'
 When I append the string '_pre' to 'precondition'
 When I move 'precondition' in 'response_precondition_metadata'
+When I set 'content_type' to 'application/x-www-form-urlencoded' as 'string'
+When I move 'content_type' in 'response_precondition_metadata'
 When I copy 'dcql_query' in 'response_keys'
 When I copy 'nonce' as 'hex' in 'response_keys'
 

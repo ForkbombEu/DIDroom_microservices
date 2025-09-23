@@ -1,6 +1,6 @@
 
 # data
-Given I have a 'string dictionary' named 'vp_token'
+Given I have a 'string' named 'vp_token'
 
 # keys
 Given I have a 'string dictionary' named 'dcql_query'
@@ -25,6 +25,11 @@ EndIf
 # transaction_id
 When I copy 'transaction_id' to 'complete_transaction_id'
 When I prepend string 'public/verifier/' to 'complete_transaction_id'
+
+# vp_token
+When I create the json unescaped object of 'vp_token'
+and I remove 'vp_token'
+and I rename the 'json unescaped object' to 'vp_token'
 
 Then print the 'vp_token'
 Then print the 'nonce'
