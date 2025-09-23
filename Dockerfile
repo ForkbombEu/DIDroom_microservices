@@ -8,6 +8,7 @@ COPY --chmod=777 scripts/autorun_search.sh scripts/autorun_search.sh
 COPY --chmod=777 scripts/autorun_store.sh scripts/autorun_store.sh
 COPY --chmod=777 scripts/authorize.sh scripts/authorize.sh
 COPY --chmod=777 scripts/credential.sh scripts/credential.sh
+COPY --chmod=777 scripts/verifier.sh scripts/verifier.sh
 COPY --chmod=777 scripts/up.sh scripts/up.sh
 
 COPY Makefile Makefile
