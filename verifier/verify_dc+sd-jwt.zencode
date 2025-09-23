@@ -170,8 +170,8 @@ When I verify 'typ' is equal to 'kb+jwt'
 # hash
 When I pickup from path 'kb_payload.sd_hash'
 When I create the hash of 'dc+sd-jwt_as_string'
-When I move 'hash' as 'hex' to 'hex_hash'
-When I verify 'hex_hash' is equal to 'sd_hash'
+When I move 'hash' as 'url64' to 'url64_hash'
+When I verify 'url64_hash' is equal to 'sd_hash'
 # signature
 When I create the 'es256' public key from did document 'holder_did_document'
 When I verify jws signature in 'kb_as_string'
