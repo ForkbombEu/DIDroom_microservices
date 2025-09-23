@@ -149,6 +149,7 @@ Foreach 'c' in 'claims'
     If I verify 'values' is found in 'c'
         When I copy 'values' from 'c' to 'values_array'
         When I verify 'value' is found in 'values_array'
+        When I remove 'values_array'
     EndIf
     When I remove 'value'
     When I remove 'path_array'
