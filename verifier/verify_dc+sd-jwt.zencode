@@ -105,10 +105,13 @@ EndIf
 When I copy '1' from 'vct_values' to 'verify vct'
 When I verify 'cred_vct' is equal to 'verify vct'
 
-# 4. verify all requested claims are found
+# 4. verify all requested claims are found and match the values
 When I create the 'string array' named 'transaction_result'
 Foreach 'c' in 'claims'
+    # extract needed fields
     When I copy 'path' from 'c' to 'path_array'
+    # search if needed claims are present in the sd-jwt
+    # first element of path is the disclosure key
     When I copy '1' from 'path_array' to 'claim_identifier'
     Foreach 'd' in 'sd-jwt_disclosures'
         When I copy '2' from 'd' to 'disclosure_identifier'
@@ -122,6 +125,7 @@ Foreach 'c' in 'claims'
     When I verify 'matching_disclosure' is found
     When I create the 'string dictionary' named 'tmp_transaction'
     When I copy 'path_array' to 'path' in 'tmp_transaction'
+    # other element in the path are the path in disclosure value
     If I verify size of 'path_array' is more than '1'
         When I copy 'path_array' to 'tmp_path_array'
         When I remove 'claim_identifier' from 'tmp_path_array'
@@ -132,15 +136,21 @@ Foreach 'c' in 'claims'
             When I remove 'root'
             When I rename 'tmp' to 'root'
         EndForeach
-        When I copy 'root' to 'value' in 'tmp_transaction'
-        When I remove 'root'
+        When I rename 'root' to 'value'
+        When I copy 'value' in 'tmp_transaction'
         When I remove 'tmp_path_array'
     EndIf
     If I verify size of 'path_array' is less or equal than '1'
         When I copy '3' from 'matching_disclosure' to 'value'
-        When I move 'value' in 'tmp_transaction'
+        When I copy 'value' in 'tmp_transaction'
     EndIf
     When I move 'tmp_transaction' in 'transaction_result'
+    # check the value of the claim if values field is present
+    If I verify 'values' is found in 'c'
+        When I copy 'values' from 'c' to 'values_array'
+        When I verify 'value' is found in 'values_array'
+    EndIf
+    When I remove 'value'
     When I remove 'path_array'
     When I remove 'claim_identifier'
     When I remove 'matching_disclosure'

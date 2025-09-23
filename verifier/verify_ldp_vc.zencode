@@ -113,19 +113,23 @@ When I verify 'type_matched' is equal to 'true'
 # 4. verify all requested claims are found
 When I create the 'string array' named 'transaction_result'
 Foreach 'c' in 'claims'
-When I copy 'path' from 'c' to 'path_array'
-When I copy 'VC' to 'root'
-Foreach 'p' in 'path_array'
-When I copy 'p' from 'root' to 'tmp'
-When I remove 'root'
-When I rename 'tmp' to 'root'
-EndForeach
-When I create the 'string dictionary' named 'tmp_transaction'
-When I copy 'path_array' to 'path' in 'tmp_transaction'
-When I copy 'root' to 'value' in 'tmp_transaction'
-When I move 'tmp_transaction' in 'transaction_result'
-When I remove 'root'
-When I remove 'path_array'
+    When I copy 'path' from 'c' to 'path_array'
+    When I copy 'VC' to 'root'
+    Foreach 'p' in 'path_array'
+        When I copy 'p' from 'root' to 'tmp'
+        When I remove 'root'
+        When I rename 'tmp' to 'root'
+    EndForeach
+    When I move 'root' to 'value'
+    If I verify 'values' is found in 'c'
+        When I copy 'values' from 'c' to 'values_array'
+        When I verify 'value' is found in 'values_array'
+        When I remove 'values_array'
+    EndIf
+    When I create the 'string dictionary' named 'tmp_transaction'
+    When I move 'path_array' to 'path' in 'tmp_transaction'
+    When I move 'value' in 'tmp_transaction'
+    When I move 'tmp_transaction' in 'transaction_result'
 EndForeach
 
 # some helpers for later
