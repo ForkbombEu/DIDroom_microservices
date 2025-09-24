@@ -10,6 +10,8 @@ Scenario 'w3c': verification of kb
 # 5. holder binding
 # 6. integrity and authenticity of the Credential
 
+# TODO: check if holder_did_document can be removed (used prev to verify key-binding that now is done with cnf)
+
 # resolve holder pk
 Prepare 'credential': manipulate and get where object is 'dcql_query', path is 'credential_path'
 Prepare 'did_and_iss': execute zencode where script is 'did_and_iss_script', keys is 'credential', data is 'vp_token'
@@ -31,6 +33,8 @@ Given I have a 'did document' in path 'issuer_did_document.didDocument'
 Given I rename 'didDocument' to 'issuer_did_document'
 Given I have a 'did document' in path 'holder_did_document.didDocument'
 Given I rename 'didDocument' to 'holder_did_document'
+Given I have a 'url64' in path 'did_and_iss.x'
+Given I have a 'url64' in path 'did_and_iss.y'
 
 # data
 Given I have a 'signed selective disclosure with key binding array' named 'vp_array'
@@ -173,7 +177,9 @@ When I create the hash of 'dc+sd-jwt_as_string'
 When I move 'hash' as 'url64' to 'url64_hash'
 When I verify 'url64_hash' is equal to 'sd_hash'
 # signature
-When I create the 'es256' public key from did document 'holder_did_document'
+# When I create the 'es256' public key from did document 'holder_did_document'
+When I append 'y' to 'x'
+When I rename 'x' to 'es256 public key'
 When I verify jws signature in 'kb_as_string'
 When I remove 'es256 public key'
 
