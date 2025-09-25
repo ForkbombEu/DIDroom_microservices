@@ -60,6 +60,24 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
+  - id: save_result_to_file_${basefile}_dc+sd-jwt
+    zencodeFromFile: verifier/save_result_to_file.zencode
+    keysFromStep: verify_dc+sd-jwt
+    dataFromStep: custom_code_${basefile}_dc+sd-jwt
+    dataTransform: |
+      const d = JSON.parse(data);
+      const r = {custom_result: d};
+      return JSON.stringify(r);
+    precondition:
+      zencode: |
+        Given I have a 'string' named 'precondition_type'
+        Given I have a 'string' named 'precondition_format'
+        When I set '$basefile' to '$basefile' as 'string'
+        When I verify 'precondition_type' is equal to '$basefile'
+        When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
+        When I verify 'precondition_format' is equal to 'dc+sd-jwt'
+        Then print the data
+      dataFromStep: transaction_id_path
   - id: custom_code_${basefile}_ldp_vc
     zencodeFromFile: verifier/custom_code/$basefile.zen
     keysFromFile: verifier/custom_code/$basefile.keys.json
@@ -74,28 +92,23 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
-EOF
-done
-
-cat <<EOF >> "${CHAIN}"
-  - id: save_result_to_file_dc+sd-jwt
-    zencodeFromFile: verifier/save_result_to_file.zencode
-    keysFromStep: verify_dc+sd-jwt
-    precondition:
-      zencode: |
-        Given I have a 'string' named 'precondition_format'
-        When I set 'dc+sd-jwt' to 'dc+sd-jwt' as 'string'
-        When I verify 'precondition_format' is equal to 'dc+sd-jwt'
-        Then print the data
-      dataFromStep: transaction_id_path
-  - id: save_result_to_file_ldp_vc
+  - id: save_result_to_file_${basefile}_ldp_vc
     zencodeFromFile: verifier/save_result_to_file.zencode
     keysFromStep: verify_ldp_vc
+    dataFromStep: custom_code_${basefile}_ldp_vc
+    dataTransform: |
+      const d = JSON.parse(data);
+      const r = {custom_result: d};
+      return JSON.stringify(r);
     precondition:
       zencode: |
+        Given I have a 'string' named 'precondition_type'
         Given I have a 'string' named 'precondition_format'
+        When I set '$basefile' to '$basefile' as 'string'
+        When I verify 'precondition_type' is equal to '$basefile'
         When I set 'ldp_vc' to 'ldp_vc' as 'string'
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
 EOF
+done
