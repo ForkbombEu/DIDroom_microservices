@@ -2,6 +2,11 @@
 Prepare: store in file with content 'transaction_result', path 'complete_transaction_id'
 
 Given I have a 'string array' named 'transaction_result'
+Given I have a 'string dictionary' named 'custom_result'
 
-Then print the string 'OK'
+If I verify 'redirect_uri' is found in 'custom_result'
+    When I pickup from path 'custom_result.redirect_uri'
+    Then print the 'redirect_uri'
+EndIf
+
 Then print the 'transaction_result'
