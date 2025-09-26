@@ -152,7 +152,9 @@ Foreach 'c' in 'claims'
     # check the value of the claim if values field is present
     If I verify 'values' is found in 'c'
         When I copy 'values' from 'c' to 'values_array'
-        When I verify 'value' is found in 'values_array'
+        If I verify size of 'values_array' is more or equal than '1'
+            When I verify 'value' is found in 'values_array'
+        EndIf
         When I remove 'values_array'
     EndIf
     When I remove 'value'
