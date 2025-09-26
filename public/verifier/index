@@ -182,22 +182,31 @@
         try {
           const res = await fetch(`${location.origin}/verifier/${id}`);
           if (!res.ok) return; // keep polling
-          const data = await res.json();
+          const text = await res.text();
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = text;
+          }
           // Build claim array and table
-          const claims = data.map((r) => ({
-            name: r.path.join("."),
-            value: r.value,
-          }));
-          populateClaimsTable(claims);
-          statusBox.classList.add("hidden");
-          claimsBox.classList.remove("hidden");
+          if (Array.isArray(data)) {
+            const claims = data.map((r) => ({
+              name: r.path.join("."),
+              value: r.value,
+            }));
+            populateClaimsTable(claims);
+            statusBox.classList.add("hidden");
+            claimsBox.classList.remove("hidden");
+          } else {
+            statusText.textContent = "Verification failed";
+            errorBox.textContent = data;
+            statusBox.classList.add("hidden");
+            errorBox.classList.remove("hidden");
+          }
           clearInterval(intervalId);
           clearTimeout(timeoutId);
-          document.getElementById("debug_output").textContent = JSON.stringify(
-            data,
-            null,
-            2,
-          );
+          document.getElementById("debug_output").textContent = text;
         } catch (err) {
           console.error(err);
         }
