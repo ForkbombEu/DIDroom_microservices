@@ -30,6 +30,11 @@ steps:
         When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
+    onError:
+      zencodeFromFile: verifier/error.zencode
+      dataFromStep: transaction_id_path
+      keys:
+        error: Cryptographic verification of dc+sd-jwt failed
   - id: verify_ldp_vc
     zencodeFromFile: verifier/verify_ldp_vc.zencode
     keysFromFile: verifier/verify_ldp_vc.keys.json
@@ -41,6 +46,11 @@ steps:
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
+    onError:
+      zencodeFromFile: verifier/error.zencode
+      dataFromStep: transaction_id_path
+      keys:
+        error: Cryptographic verification of ldp_vc failed
 EOF
 
 for file in "${files[@]}"; do
@@ -60,6 +70,11 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'precondition_format' is equal to 'dc+sd-jwt'
         Then print the data
       dataFromStep: transaction_id_path
+    onError:
+      zencodeFromFile: verifier/error.zencode
+      dataFromStep: transaction_id_path
+      keys:
+        error: Custom code verification $basefile dc+sd-jwt failed
   - id: save_result_to_file_${basefile}_dc+sd-jwt
     zencodeFromFile: verifier/save_result_to_file.zencode
     keysFromStep: verify_dc+sd-jwt
@@ -92,6 +107,11 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'precondition_format' is equal to 'ldp_vc'
         Then print the data
       dataFromStep: transaction_id_path
+    onError:
+      zencodeFromFile: verifier/error.zencode
+      dataFromStep: transaction_id_path
+      keys:
+        error: Custom code verification $basefile ldp_vc failed
   - id: save_result_to_file_${basefile}_ldp_vc
     zencodeFromFile: verifier/save_result_to_file.zencode
     keysFromStep: verify_ldp_vc

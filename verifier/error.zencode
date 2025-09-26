@@ -1,0 +1,5 @@
+
+Prepare: store in file with content 'error', path 'complete_transaction_id'
+
+Given I have a 'string' named 'error'
+Then print the data
