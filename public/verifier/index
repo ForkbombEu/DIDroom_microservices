@@ -201,6 +201,8 @@
           } else {
             statusText.textContent = "Verification failed";
             errorBox.textContent = data;
+            statusBox.classList.add("hidden");
+            errorBox.classList.remove("hidden");
           }
           clearInterval(intervalId);
           clearTimeout(timeoutId);
