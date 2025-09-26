@@ -111,6 +111,7 @@ When I set 'true' to 'true' as 'string'
 When I verify 'type_matched' is equal to 'true'
 
 # 4. verify all requested claims are found
+When I set '1' to '1' as 'number'
 When I create the 'string array' named 'transaction_result'
 Foreach 'c' in 'claims'
     When I copy 'path' from 'c' to 'path_array'
@@ -123,7 +124,9 @@ Foreach 'c' in 'claims'
     When I move 'root' to 'value'
     If I verify 'values' is found in 'c'
         When I copy 'values' from 'c' to 'values_array'
-        When I verify 'value' is found in 'values_array'
+        If I verify size of 'values_array' is more or equal than '1'
+            When I verify 'value' is found in 'values_array'
+        EndIf
         When I remove 'values_array'
     EndIf
     When I create the 'string dictionary' named 'tmp_transaction'
