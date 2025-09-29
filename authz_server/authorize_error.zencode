@@ -1,0 +1,52 @@
+Rule unknown ignore
+Scenario 'http'
+Scenario 'w3c': create jwk
+
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
+
+Prepare 'well-known': read file content where path is 'well-known_path'
+
+Given I have a 'string dictionary' named 'well-known'
+
+# Loading the private keys
+Given my name is in a 'string' named 'controller'
+Given I have the 'keyring' in 'personal_keyring'
+
+Given I have a 'string dictionary' named 'server'
+Given I have a 'string dictionary' named 'request'
+
+Given I have a 'string' named 'request_uri'
+Given I have a 'string' named 'client_id'
+Given I have a 'string' named 'slangroomChainError'
+Given I have a 'string' named 'error'
+
+# errors
+When I create the 'string dictionary' named 'errors'
+When I move 'error' in 'errors'
+When I move 'slangroomChainError' to 'error_description' in 'errors'
+
+# server data
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
+When I create jwk of es256 public key with private key
+When I move 'jwk' in 'server'
+
+Then print the 'server'
+Then print the 'request_uri'
+Then print the 'errors'
+
+Compute secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
+Compute 'server': manipulate and delete
+
+Compute 'redirect_uri': get redirect_uri from request_uri where request_uri is 'request_uri', server_data is 'secret_server'
+Compute: manipulate and set where object is 'redirect_uri_dict', path is 'redirect_uri_path', value is 'redirect_uri'
+Compute 'redirect_uri': manipulate and delete
+Compute 'request_uri': manipulate and delete
+
+Compute 'response': execute zencode where keys is 'errors', data is 'redirect_uri_dict', script is 'zen_location'
+Compute 'http_headers': manipulate and set where object is 'http_headers_temp', path is 'response_path', value is 'response'
+
+Compute 'response': manipulate and delete
+Compute 'redirect_uri_dict': manipulate and delete

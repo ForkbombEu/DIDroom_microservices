@@ -57,6 +57,12 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'custom_code' is equal to '$basefile'
         Then print the data
       dataFromStep: authorize_1_choose_cc
+    onError:
+      zencodeFromFile: authz_server/authorize_error.zencode
+      keysFromStep: authorize_1_choose_cc
+      data:
+        error: server_error
+      fail: false
   - id: merge_output_${basefile}_3
     zencode: |
       Given I have a 'string dictionary' named 'data'
@@ -74,6 +80,12 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'custom_code' is equal to '$basefile'
         Then print the data
       dataFromStep: authorize_1_choose_cc
+    onError:
+      zencodeFromFile: authz_server/authorize_error.zencode
+      keysFromStep: authorize_1_choose_cc
+      data:
+        error: server_error
+      fail: false
   - id: authorize_${basefile}_4_get_access_code
     zencodeFromFile: authz_server/ru_to_ac.zen
     dataFromStep: merge_output_${basefile}_3
@@ -85,5 +97,11 @@ cat <<EOF >> "${CHAIN}"
         When I verify 'custom_code' is equal to '$basefile'
         Then print the data
       dataFromStep: authorize_1_choose_cc
+    onError:
+      zencodeFromFile: authz_server/authorize_error.zencode
+      keysFromStep: authorize_1_choose_cc
+      data:
+        error: server_error
+      fail: false
 EOF
 done
