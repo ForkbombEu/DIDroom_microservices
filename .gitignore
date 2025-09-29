@@ -5,21 +5,25 @@ terraform.tfstate
 terraform.tfstate.backup
 *~
 
+# process
 .env
-credential_issuer/secrets.keys
-authz_server/secrets.keys
-relying_party/secrets.keys
-verifier/secrets.keys
-
 */custom_code
 *.pid
 
-# credential issuer nonces
-credential_issuer/nonces
+# secrets
+credential_issuer/secrets.keys
+authz_server/secrets.keys
+verifier/secrets.keys
+
+# authorization server chain
+authz_server/authorize_backend.chain.yaml
+
+# credential issuer nonces and chain
+credential_issuer/nonces/
 credential_issuer/credential.chain.yaml
 
 # verifier api produced on the fly
-verifier/response
+verifier/response/
 public/verifier/request/
 public/verifier/transaction/
-verifier/verifier.yaml
+verifier/verifier.chain.yaml
