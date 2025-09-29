@@ -1,6 +1,7 @@
 Scenario 'w3c': verify jws
 
-Given I send path 'well-known_path' and read file content and output into 'well-known'
+Prepare 'well-known': read file content where path is 'well-known_path'
+
 Given I have a 'string dictionary' named 'well-known'
 
 Given I have a 'string' named 'token'
@@ -26,9 +27,9 @@ When I move 'issuer' to 'url' in 'server'
 Then print the 'bearer_authorization_string'
 Then print the 'server'
 
-Then I send token 'bearer_authorization_string' and send server_data 'server' and get authorization details from token and output into 'output_claims'
-Then I send object 'output_claims' and send path 'holder_claims_path' and manipulate and get and output into 'holder_claims'
+Compute 'output_claims': get authorization details from token where token is 'bearer_authorization_string', server_data is 'server'
+Compute 'holder_claims': manipulate and get where object is 'output_claims', path is 'holder_claims_path'
 
-Then I manipulate and delete and output into 'server'
-Then I manipulate and delete and output into 'bearer_authorization_string'
-Then I manipulate and delete and output into 'output_claims'
+Compute 'server': manipulate and delete
+Compute 'bearer_authorization_string': manipulate and delete
+Compute 'output_claims': manipulate and delete

@@ -1,11 +1,12 @@
 Scenario 'http'
 Scenario 'w3c': Create jwk
 
-Given I send path 'secrets_path' and read file content and output secret into 'secrets'
-Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
 
-Given I send path 'well-known_path' and read file content and output into 'well-known'
+Prepare 'well-known': read file content where path is 'well-known_path'
+
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
@@ -72,13 +73,14 @@ Then print the 'client'
 Then print the 'request'
 Then print the 'server'
 
-Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
-Then I manipulate and delete and output into 'server'
+Compute secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
+Compute 'server': manipulate and delete
 
-Then I send request 'request' and send client 'client' and send server_data 'secret_server' and send expires_in 'expires_in' and generate request uri and output into 'parresult'
-Then I manipulate and delete and output into 'client'
-Then I manipulate and delete and output into 'request'
-Then I manipulate and delete and output into 'secret_server'
-Then I send object 'parresult' and send path 'request_path' and manipulate and get and output into 'request_uri'
-Then I send object 'parresult' and send path 'expires_path' and manipulate and get and output into 'expires_in'
-Then I manipulate and delete and output into 'parresult' 
+Compute 'parresult': generate request uri where request is 'request', client is 'client', server_data is 'secret_server', expires_in is 'expires_in'
+Compute 'client': manipulate and delete
+Compute 'request': manipulate and delete
+Compute 'secret_server': manipulate and delete
+
+Compute 'request_uri': manipulate and get where object is 'parresult', path is 'request_path'
+Compute 'expires_in': manipulate and get where object is 'parresult', path is 'expires_path'
+Compute 'parresult': manipulate and delete

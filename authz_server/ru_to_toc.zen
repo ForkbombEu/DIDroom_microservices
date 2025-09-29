@@ -3,11 +3,12 @@ Scenario 'http'
 Scenario 'w3c': create jwk
 Rule unknown ignore
 
-Given I send path 'secrets_path' and read file content and output secret into 'secrets'
-Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
 
-Given I send path 'well-known_path' and read file content and output into 'well-known'
+Prepare 'well-known': read file content where path is 'well-known_path'
+
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
@@ -28,11 +29,11 @@ Then print the 'server'
 Then print the 'data'
 Then print the 'request_uri'
 
-Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
-Then I manipulate and delete and output into 'server'
+Compute secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
+Compute 'server': manipulate and delete
 
-Then I send request_uri 'request_uri' and send data 'data' and send server_data 'secret_server' and add data to authorization details and output into 'auth_details'
-Then I manipulate and delete and output into 'secret_server' 
-Then I manipulate and delete and output into 'data' 
-Then I manipulate and delete and output into 'request_uri' 
-Then I send object 'auth_details' and send path 'credential_configuration_id_path' and manipulate and get and output into 'credential_configuration_id'
+Compute 'auth_details': add data to authorization details where request_uri is 'request_uri', data is 'data', server_data is 'secret_server'
+Compute 'secret_server': manipulate and delete
+Compute 'data': manipulate and delete
+Compute 'request_uri': manipulate and delete
+Compute 'credential_configuration_id': manipulate and get where object is 'auth_details', path is 'credential_configuration_id_path'
