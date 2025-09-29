@@ -1,0 +1,23 @@
+{
+    "server": {
+        "authentication_url": "https://did.dyne.org/dids/"
+    },
+    "request": {
+        "headers": {}
+    },
+    "code_path": "code",
+    "secrets_path": "authz_server/secrets.keys",
+    "controller_path": "controller",
+    "well-known_path": "public/authz_server/.well-known/oauth-authorization-server",
+    "properties": [
+        "authentication_url",
+        "jwk",
+        "url"
+    ],
+    "http_headers_temp": {},
+    "response_path": "response",
+    "zen_location": "Scenario 'http': url\nGiven I have a 'string dictionary' named 'errors'\nAnd I have a 'string' named 'redirect_uri'\nWhen I create http get parameters from 'errors' using percent encoding\nWhen I create the url from 'redirect_uri'\nAnd I append the string '?' to 'url'\nAnd I append 'http get parameters' to 'url'\nAnd I rename the 'url' to 'Location'\nThen print the 'Location'",
+    "redirect_uri_path": "redirect_uri",
+    "redirect_uri_dict": {},
+    "error": "server_error"
+}
