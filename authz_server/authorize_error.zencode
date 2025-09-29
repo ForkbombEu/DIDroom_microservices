@@ -17,15 +17,16 @@ Given I have the 'keyring' in 'personal_keyring'
 Given I have a 'string dictionary' named 'server'
 Given I have a 'string dictionary' named 'request'
 
-Given I have a 'string' named 'request_uri'
-Given I have a 'string' named 'client_id'
+Given I have a 'string' in path 'params.request_uri'
 Given I have a 'string' named 'slangroomChainError'
 Given I have a 'string' named 'error'
 
 # errors
+When I create the 'string dictionary' named 'zen_location_keys'
 When I create the 'string dictionary' named 'errors'
 When I move 'error' in 'errors'
 When I move 'slangroomChainError' to 'error_description' in 'errors'
+When I move 'errors' in 'zen_location_keys'
 
 # server data
 When I pickup from path 'well-known.issuer'
@@ -35,7 +36,7 @@ When I move 'jwk' in 'server'
 
 Then print the 'server'
 Then print the 'request_uri'
-Then print the 'errors'
+Then print the 'zen_location_keys'
 
 Compute secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
 Compute 'server': manipulate and delete
@@ -45,7 +46,7 @@ Compute: manipulate and set where object is 'redirect_uri_dict', path is 'redire
 Compute 'redirect_uri': manipulate and delete
 Compute 'request_uri': manipulate and delete
 
-Compute 'response': execute zencode where keys is 'errors', data is 'redirect_uri_dict', script is 'zen_location'
+Compute 'response': execute zencode where keys is 'zen_location_keys', data is 'redirect_uri_dict', script is 'zen_location'
 Compute 'http_headers': manipulate and set where object is 'http_headers_temp', path is 'response_path', value is 'response'
 
 Compute 'response': manipulate and delete

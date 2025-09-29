@@ -59,9 +59,8 @@ cat <<EOF >> "${CHAIN}"
       dataFromStep: authorize_1_choose_cc
     onError:
       zencodeFromFile: authz_server/authorize_error.zencode
-      keysFromStep: authorize_1_choose_cc
-      data:
-        error: server_error
+      keysFromFile: authz_server/authorize_error.keys.json
+      dataFromStep: authorize_1_choose_cc
       fail: false
   - id: merge_output_${basefile}_3
     zencode: |
@@ -82,9 +81,8 @@ cat <<EOF >> "${CHAIN}"
       dataFromStep: authorize_1_choose_cc
     onError:
       zencodeFromFile: authz_server/authorize_error.zencode
-      keysFromStep: authorize_1_choose_cc
-      data:
-        error: server_error
+      keysFromFile: authz_server/authorize_error.keys.json
+      dataFromStep: authorize_1_choose_cc
       fail: false
   - id: authorize_${basefile}_4_get_access_code
     zencodeFromFile: authz_server/ru_to_ac.zen
@@ -99,9 +97,8 @@ cat <<EOF >> "${CHAIN}"
       dataFromStep: authorize_1_choose_cc
     onError:
       zencodeFromFile: authz_server/authorize_error.zencode
-      keysFromStep: authorize_1_choose_cc
-      data:
-        error: server_error
+      keysFromFile: authz_server/authorize_error.keys.json
+      dataFromStep: authorize_1_choose_cc
       fail: false
 EOF
 done

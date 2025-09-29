@@ -16,7 +16,8 @@
     ],
     "http_headers_temp": {},
     "response_path": "response",
-    "zen_location": "Scenario 'http': url\nGiven I have a 'string dictionary' named 'errors'\nAnd I have a 'string' named 'redirect_uri'\nWhen I create http get parameters from 'errors' using percent encoding\nWhen I create the url from 'redirect_uri'\nAnd I append 'http get parameters' to 'url'\nAnd I rename the 'url' to 'Location'\nThen print the 'Location'",
+    "zen_location": "Scenario 'http': url\nGiven I have a 'string dictionary' named 'errors'\nAnd I have a 'string' named 'redirect_uri'\nWhen I create http get parameters from 'errors' using percent encoding\nWhen I create the url from 'redirect_uri'\nAnd I append the string '?' to 'url'\nAnd I append 'http get parameters' to 'url'\nAnd I rename the 'url' to 'Location'\nThen print the 'Location'",
     "redirect_uri_path": "redirect_uri",
-    "redirect_uri_dict": {}
+    "redirect_uri_dict": {},
+    "error": "server_error"
 }
