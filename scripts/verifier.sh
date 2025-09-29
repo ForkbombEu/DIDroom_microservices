@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CHAIN=verifier/verifier.yaml
+CHAIN=verifier/verifier.chain.yaml
 CUSTOM_CODE=verifier/custom_code
 
 if [ ! -d "${CUSTOM_CODE}" ]; then
