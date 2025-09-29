@@ -2,11 +2,12 @@
 Scenario 'http'
 Scenario 'w3c': Create the JWK
 
-Given I send path 'secrets_path' and read file content and output secret into 'secrets'
-Given I send object 'secrets' and send path 'controller_path' and manipulate and get and output into 'controller'
-Given I send object 'secrets' and send path 'controller' and manipulate and get and output secret into 'personal_keyring'
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
 
-Given I send path 'well-known_path' and read file content and output into 'well-known'
+Prepare 'well-known': read file content where path is 'well-known_path'
+
 Given I have a 'string dictionary' named 'well-known'
 
 # Loading the private keys
@@ -55,21 +56,14 @@ Then print the 'server'
 Then print the 'request'
 Then print the 'token_type'
 
-Then I send object 'server' and send properties 'properties' and manipulate and pick and output secret into 'secret_server'
-Then I manipulate and delete and output into 'server'
+Compute secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
+Compute 'server': manipulate and delete
 
-Then I send request 'request' and send server_data 'secret_server' and generate access token and output into 'accessToken_jwt'
-Then I manipulate and delete and output into 'request'
-Then I manipulate and delete and output into 'secret_server'
+Compute 'accessToken_jwt': generate access token where request is 'request', server_data is 'secret_server'
+Compute 'request': manipulate and delete
+Compute 'secret_server': manipulate and delete
 
-Then I send object 'accessToken_jwt' and send path 'accessToken_path' and manipulate and get and output into 'access_token'
-# Remove c_nonce and c_nonce_expires_in
-# Then I send object 'accessToken_jwt' and send path 'c_nonce_path' and manipulate and get and output into 'c_nonce'
-# Then I send object 'accessToken_jwt' and send path 'c_nonce_exp_path' and manipulate and get and output into 'c_nonce_expires_in'
-# Not clear if credential_configuration_id is required or not
-# Then I send object 'accessToken_jwt' and send path 'credential_configuration_id_path' and manipulate and get and output into 'credential_configuration_id'
-# Then I send object 'accessToken_jwt' and send path 'credential_identifiers_path' and send value 'credential_configuration_id' and manipulate and set
-# Then I manipulate and delete and output into 'credential_configuration_id'
-Then I send object 'accessToken_jwt' and send path 'exp_in_path' and manipulate and get and output into 'expires_in'
-Then I send object 'accessToken_jwt' and send path 'authorization_details_path' and manipulate and get and output into 'authorization_details'
-Then I manipulate and delete and output into 'accessToken_jwt'
+Compute 'access_token': manipulate and get where object is 'accessToken_jwt', path is 'accessToken_path'
+Compute 'expires_in': manipulate and get where object is 'accessToken_jwt', path is 'exp_in_path'
+Compute 'authorization_details': manipulate and get where object is 'accessToken_jwt', path is 'authorization_details_path'
+Compute 'accessToken_jwt': manipulate and delete
