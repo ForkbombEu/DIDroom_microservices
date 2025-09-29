@@ -11,19 +11,21 @@ env:
   as_host: localhost:3000/authz_server
   verifier_host: localhost:3002/verifier
 #  verifier_host: localhost:3004
+config:
+  concurrency: 1
 tests:
   happy_flow_dc+sd-jwt:
     name: Happy flow with dc+sd-jwt credential (issuance and verification)
-    $ref: test/happy_flow_dc+sd-jwt.yml
+    $ref: tests/mobile_zencode/test/happy_flow_dc+sd-jwt.yml
   happy_flow_ldp_vc:
     name: Happy flow with ldp_vc credential (issuance and verification)
-    $ref: test/happy_flow_ldp_vc.yml
+    $ref: tests/mobile_zencode/test/happy_flow_ldp_vc.yml
   failing_presentation:
     name: Failing flow by presenting a wrong ldp_vc (type does not match dcql_query)
-    $ref: test/failing_presentation.yml
+    $ref: tests/mobile_zencode/test/failing_presentation.yml
   failing_authorize:
     name: Failing flow not authorized by custom code (wrong email)
-    $ref: test/failing_authorize.yml
+    $ref: tests/mobile_zencode/test/failing_authorize.yml
 
   creation:
     name: PAR endpoint
