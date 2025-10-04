@@ -34,5 +34,3 @@ steps:
     zencodeFromFile: authz_server/.autorun/store_secrets.zen
     keysFromStep: Generates the keyring
     dataFromStep: Set the kid in the well-known
-
-  
