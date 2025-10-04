@@ -8,6 +8,7 @@ Scenario bbs
 Scenario qp
 
 Given I my name is in a 'string' named 'controller'
+Given I have a 'string' named 'command_store_keyring'
 
 When I create the ecdh key
 and I create the eddsa key
@@ -21,3 +22,4 @@ and I create the dilithium key
 
 Then print my 'keyring'
 and print my name in 'controller'
+and print the 'command_store_keyring'

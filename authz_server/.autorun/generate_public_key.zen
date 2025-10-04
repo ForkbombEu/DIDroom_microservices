@@ -1,0 +1,49 @@
+Rule output encoding base58
+Scenario ecdh
+Scenario eddsa
+Scenario ethereum
+Scenario reflow
+Scenario es256
+Scenario credential
+Scenario bbs
+Scenario qp
+
+Prepare 'well-known': read file content where path is 'well-known_path'
+
+Given my name is in a 'string' named 'controller'
+Given I have my 'keyring'
+Given I have a 'string' named 'controller'
+Given I have a 'string dictionary' named 'well-known'
+Given I have a 'string' named 'well-known_path'
+
+If I verify 'display' is found in 'well-known'
+    When I pickup from path 'well-known.display.1.name'
+    and I rename 'name' to 'description'
+EndIf
+If I verify 'display' is not found in 'well-known'
+    When I copy 'controller' to 'description'
+EndIf
+
+When I create the ecdh public key
+and I create the eddsa public key
+and I create the ethereum address
+and I create the bitcoin public key
+and I create the reflow public key
+and I create the es256 public key
+and I create the issuer public key
+and I create the bbs public key
+and I create the dilithium public key
+
+Then I print the 'ecdh public key'
+and I print the 'eddsa public key'
+and I print the 'ethereum address'
+and I print the 'bitcoin public key'
+and I print the 'reflow public key'
+and I print the 'es256 public key'
+and I print the 'issuer public key' as 'compressed issuer public key'
+and I print the 'bbs public key'
+and I print the 'dilithium public key'
+and I print the 'controller'
+and I print the 'description'
+and I print the 'well-known'
+and I print the 'well-known_path'
