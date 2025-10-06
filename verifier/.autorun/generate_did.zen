@@ -196,6 +196,12 @@ When I create the 'string dictionary' named 'request'
 and I move 'did document' in 'request'
 When I create the 'string dictionary' named 'data'
 and I move 'request' in 'data'
+When I create the 'string dictionary' named 'body'
+and I move 'data' in 'body'
 
 # print did document
-Then print the 'data'
+Then print the 'body'
+
+Compute 'post_response': connect to 'did_admin_endpoint' and do post with object 'body'
+compute 'result': manipulate and get with object 'post_response', path 'result_path'
+Compute 'did_response': connect to 'did_server_endpoint' and do post with object 'result'

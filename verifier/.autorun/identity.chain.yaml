@@ -1,0 +1,30 @@
+steps:
+  - id: Search for keyring and stop if found
+    zencode: |
+      Prepare 'result': execute in shell with command 'command_search_keyring'
+      Given I have a 'string' named 'result'
+      Then print the data
+    keys:
+      command_search_keyring: ./scripts/autorun_search.sh verifier
+    onError:
+      jsFunction: |
+        const found = error.match(/^keys found:.*$/m);
+        const res = JSON.stringify({ result: `${found[0] ?? error}` })
+        return res
+      fail: false
+  - id: Generates the keyring
+    zencodeFromFile: verifier/.autorun/generate_key.zen
+    keys:
+      controller: verifier
+      command_store_keyring: ./scripts/autorun_store.sh verifier
+  - id: Generates the public keys
+    zencodeFromFile: verifier/.autorun/generate_public_key.zen
+    dataFromStep: Generates the keyring
+  - id: Generates the did
+    zencodeFromFile: verifier/.autorun/generate_did.zen
+    dataFromStep: Generates the public keys
+    keysFromFile: verifier/.autorun/generate_did.keys.json
+  - id: Save secrets in file
+    zencodeFromFile: verifier/.autorun/store_secrets.zen
+    keysFromStep: Generates the keyring
+    dataFromStep: Generates the did

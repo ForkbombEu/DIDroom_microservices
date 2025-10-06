@@ -1,0 +1,36 @@
+steps:
+  - id: Search for keyring and stop if found
+    zencode: |
+      Prepare 'result': execute in shell with command 'command_search_keyring'
+      Given I have a 'string' named 'result'
+      Then print the data
+    keys:
+      command_search_keyring: ./scripts/autorun_search.sh credential_issuer
+    onError:
+      jsFunction: |
+        const found = error.match(/^keys found:.*$/m);
+        const res = JSON.stringify({ result: `${found[0] ?? error}` })
+        return res
+      fail: false
+  - id: Generates the keyring
+    zencodeFromFile: credential_issuer/.autorun/generate_key.zen
+    keys:
+      controller: credential_issuer
+      command_store_keyring: ./scripts/autorun_store.sh credential_issuer
+  - id: Generates the public keys
+    zencodeFromFile: credential_issuer/.autorun/generate_public_key.zen
+    dataFromStep: Generates the keyring
+    keys:
+      well-known_path: public/credential_issuer/.well-known/openid-credential-issuer
+  - id: Generates the did
+    zencodeFromFile: credential_issuer/.autorun/generate_did.zen
+    dataFromStep: Generates the public keys
+    keysFromFile: credential_issuer/.autorun/generate_did.keys.json
+  - id: Set the kid in the well-known
+    zencodeFromFile: credential_issuer/.autorun/generate_kid.zen
+    dataFromStep: Generates the did
+    keysFromStep: Generates the public keys
+  - id: Save secrets in file
+    zencodeFromFile: credential_issuer/.autorun/store_secrets.zen
+    keysFromStep: Generates the keyring
+    dataFromStep: Set the kid in the well-known
