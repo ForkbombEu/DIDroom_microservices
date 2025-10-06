@@ -120,47 +120,48 @@ Foreach 'c' in 'claims'
     Foreach 'd' in 'sd-jwt_disclosures'
         When I copy '2' from 'd' to 'disclosure_identifier'
         If I verify 'disclosure_identifier' is equal to 'claim_identifier'
-            When I copy 'd' to 'matching_disclosure'
+            When I copy '3' from 'd' to 'matching_claim_value'
             When I remove 'disclosure_identifier'
             When I exit the foreach
         EndIf
         When I remove 'disclosure_identifier'
     EndForeach
-    When I verify 'matching_disclosure' is found
+    # add corner case in which the dcql-query can metch a credential outside of the disclousers
+    If I verify 'matching_claim_value' is not found
+        When I copy 'claim_identifier' from 'sd-jwt_payload' to 'matching_claim_value'
+    EndIf
+    When I verify 'matching_claim_value' is found
     When I create the 'string dictionary' named 'tmp_transaction'
     When I copy 'path_array' to 'path' in 'tmp_transaction'
     # other element in the path are the path in disclosure value
     If I verify size of 'path_array' is more than '1'
         When I copy 'path_array' to 'tmp_path_array'
         When I remove 'claim_identifier' from 'tmp_path_array'
-        When I copy '3' from 'matching_disclosure' to 'disclosure_value'
-        When I rename 'disclosure_value' to 'root'
+        When I rename 'matching_claim_value' to 'root'
         Foreach 'p' in 'tmp_path_array'
             When I copy 'p' from 'root' to 'tmp'
             When I remove 'root'
             When I rename 'tmp' to 'root'
         EndForeach
-        When I rename 'root' to 'value'
-        When I copy 'value' in 'tmp_transaction'
+        When I rename 'root' to 'matching_claim_value'
+        When I copy 'matching_claim_value' to 'value' in 'tmp_transaction'
         When I remove 'tmp_path_array'
     EndIf
     If I verify size of 'path_array' is less or equal than '1'
-        When I copy '3' from 'matching_disclosure' to 'value'
-        When I copy 'value' in 'tmp_transaction'
+        When I copy 'matching_claim_value' to 'value' in 'tmp_transaction'
     EndIf
     When I move 'tmp_transaction' in 'transaction_result'
     # check the value of the claim if values field is present
     If I verify 'values' is found in 'c'
         When I copy 'values' from 'c' to 'values_array'
         If I verify size of 'values_array' is more or equal than '1'
-            When I verify 'value' is found in 'values_array'
+            When I verify 'matching_claim_value' is found in 'values_array'
         EndIf
         When I remove 'values_array'
     EndIf
-    When I remove 'value'
     When I remove 'path_array'
     When I remove 'claim_identifier'
-    When I remove 'matching_disclosure'
+    When I remove 'matching_claim_value'
 EndForeach
 
 # some helpers for later
