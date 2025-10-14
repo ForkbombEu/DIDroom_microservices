@@ -226,6 +226,10 @@
       line-height: 1.2;
     }
 
+    .errmsg {
+      margin-left: 20px;
+    }
+
     label {
       font-size: 1.5rem;
     }
