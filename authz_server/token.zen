@@ -25,7 +25,7 @@ Given I have a 'string' named 'code_verifier'
 Given I have a 'string' named 'code'
 Given I have a 'string' named 'redirect_uri'
 #data from request.headers
-Given I have a 'string' in path 'http_headers.request.DPoP'
+Given I have a 'string' in path 'http_headers.request.dpop'
 
 # - server
 When I pickup from path 'well-known.issuer'
@@ -49,7 +49,7 @@ When I move 'body' in 'request'
 # request.headers
 When I pickup from path 'request.headers'
 When I remove the 'headers' from 'request'
-When I move 'DPoP' in 'headers'
+When I move 'dpop' to 'DPoP' in 'headers'
 When I move 'headers' in 'request'
 
 Then print the 'server'
