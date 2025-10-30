@@ -2,5 +2,6 @@
   "tags": [
     "🚦 Authorization Server"
   ],
-  "content_type": "application/x-www-form-urlencoded"
+  "content_type": "application/x-www-form-urlencoded",
+  "http_headers": true
 }

@@ -16,9 +16,25 @@
     "code": {
       "type": "string"
     },
-    "DPoP": {
-      "type": "string"
-    }
+    "http_headers": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "dpop": {
+              "type": "string"
+              }
+          },
+          "required": [
+            "dpop"
+          ]
+        }
+      },
+      "required": [
+        "request"
+      ]
+	  }
   },
   "required": [
     "grant_type",
@@ -26,6 +42,6 @@
     "code_verifier",
     "redirect_uri",
     "code",
-    "DPoP"
+    "http_headers"
   ]
 }
