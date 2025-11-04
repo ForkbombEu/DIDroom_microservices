@@ -7,10 +7,10 @@ steps:
     keys:
       command_search_keyring: ./scripts/autorun_search.sh authz_server
     onError:
-      jsFunction: |
-        const found = error.match(/^keys found:.*$/m);
-        const res = JSON.stringify({ result: `${found[0] ?? error}` })
-        return res
+      zencodeFromFile: authz_server/.autorun/jwks.zen
+      keysFromFile: authz_server/.autorun/jwks.keys.json
+      data:
+        result: "Keys found: "
       fail: false
   - id: Generates the keyring
     zencodeFromFile: authz_server/.autorun/generate_key.zen
@@ -26,11 +26,12 @@ steps:
     zencodeFromFile: authz_server/.autorun/generate_did.zen
     dataFromStep: Generates the public keys
     keysFromFile: authz_server/.autorun/generate_did.keys.json
-  - id: Set the kid in the well-known
-    zencodeFromFile: authz_server/.autorun/generate_kid.zen
-    dataFromStep: Generates the did
-    keysFromStep: Generates the public keys
   - id: Save secrets in file
     zencodeFromFile: authz_server/.autorun/store_secrets.zen
     keysFromStep: Generates the keyring
-    dataFromStep: Set the kid in the well-known
+    dataFromStep: Generates the did
+  - id: Generates the jwks
+    zencodeFromFile: authz_server/.autorun/jwks.zen
+    keysFromFile: authz_server/.autorun/jwks.keys.json
+    data:
+      result: "Keys created: "

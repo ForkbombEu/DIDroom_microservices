@@ -4,6 +4,11 @@ if [ "${MS_URL}" = "" ] || [ "${MS_NAME}" = "" ]; then
     source .env
 fi
 
+if [ "$1" != "authz_server" ] && [ "$1" != "credential_issuer" ] && [ "$1" != "verifier" ]; then
+    echo "Unknown value for '$1'. Must be one of: authz_server, credential_issuer, verifier." >&2
+    exit 1
+fi
+
 baseUrl=$(awk -F/ '{print $3}' <<<"${MS_URL}")
 
 if [ "${XDG_CONFIG_HOME}" = "" ]; then
@@ -14,21 +19,6 @@ fi
 METADATA_FILE="${CONFIG_DIR}/metadata.yaml"
 MS_KEYS_FILE="${CONFIG_DIR}/${baseUrl}-${MS_NAME}.keys.json"
 DEST_KEYS_FILE="${PWD}/${1}/secrets.keys"
-case ${1} in
-    "authz_server")
-        WK_FILE="${PWD}/public/${1}/.well-known/oauth-authorization-server"
-        ;;
-    "credential_issuer")
-        WK_FILE="${PWD}/public/${1}/.well-known/openid-credential-issuer"
-        ;;
-    "verifier")
-        ;;
-    *)
-        echo "Unknown value for ${1}. Nothing to do." >&2
-        exit 1
-        ;;
-esac
-
 
 mkdir -p ${CONFIG_DIR}
 
@@ -67,8 +57,6 @@ if [ -f "${MS_KEYS_FILE}" ]; then
     cp ${MS_KEYS_FILE} ${DEST_KEYS_FILE}
     if [ ${1} != "verifier" ]; then
         kid=$(jq -r '.kid' ${DEST_KEYS_FILE})
-        tmp=$(mktemp)
-        jq --arg kid "${kid}" '.jwks.keys[0].kid = $kid' ${WK_FILE} >$tmp && mv $tmp ${WK_FILE}
     else
         kid=$(jq -r '.did' ${MS_KEYS_FILE})
     fi

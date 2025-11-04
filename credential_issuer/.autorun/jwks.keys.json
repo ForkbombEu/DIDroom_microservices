@@ -1,0 +1,5 @@
+{
+    "secrets_path": "credential_issuer/secrets.keys",
+    "controller_path": "controller",
+    "well-known_path": "public/credential_issuer/.well-known/openid-credential-issuer"
+}
