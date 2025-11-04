@@ -11,6 +11,8 @@ Given I have the 'keyring' in 'personal_keyring'
 Given I have a 'string' in path 'secrets.kid'
 Given I have a 'string dictionary' named 'well-known'
 
+Given I have a 'string' named 'result'
+
 When I remove 'jwks' from 'well-known'
 
 When I create jwk of es256 public key
@@ -29,7 +31,6 @@ When I create the 'string dictionary' named 'jwks'
 When I move 'keys' in 'jwks'
 When I move 'jwks' in 'well-known'
 
-When I write the string 'keys found: ' in 'result'
 When I append the 'kid' to 'result'
 
 Then print the 'result'

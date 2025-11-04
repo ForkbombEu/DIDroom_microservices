@@ -9,6 +9,8 @@ steps:
     onError:
       zencodeFromFile: credential_issuer/.autorun/jwks.zen
       keysFromFile: credential_issuer/.autorun/jwks.keys.json
+      data:
+        result: "Keys found: "
       fail: false
   - id: Generates the keyring
     zencodeFromFile: credential_issuer/.autorun/generate_key.zen
@@ -31,3 +33,5 @@ steps:
   - id: Generates the jwks
     zencodeFromFile: credential_issuer/.autorun/jwks.zen
     keysFromFile: credential_issuer/.autorun/jwks.keys.json
+    data:
+      result: "Keys created: "
