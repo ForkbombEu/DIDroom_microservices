@@ -67,8 +67,6 @@ if [ -f "${MS_KEYS_FILE}" ]; then
     cp ${MS_KEYS_FILE} ${DEST_KEYS_FILE}
     if [ ${1} != "verifier" ]; then
         kid=$(jq -r '.kid' ${DEST_KEYS_FILE})
-        tmp=$(mktemp)
-        jq --arg kid "${kid}" '.jwks.keys[0].kid = $kid' ${WK_FILE} >$tmp && mv $tmp ${WK_FILE}
     else
         kid=$(jq -r '.did' ${MS_KEYS_FILE})
     fi

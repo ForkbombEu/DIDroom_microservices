@@ -1,0 +1,39 @@
+Scenario 'w3c': jwk
+
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
+
+Prepare 'well-known': read file content where path is 'well-known_path'
+
+Given my name is in a 'string' named 'controller'
+Given I have the 'keyring' in 'personal_keyring'
+Given I have a 'string' in path 'secrets.kid'
+Given I have a 'string dictionary' named 'well-known'
+
+When I remove 'jwks' from 'well-known'
+
+When I create jwk of es256 public key
+
+When I create the 'string dictionary' named 'k'
+When I set 'alg' to 'ES256' as 'string'
+When I move 'alg' in 'k'
+When I copy 'kid' in 'k'
+When I copy 'crv' from 'jwk' in 'k'
+When I copy 'kty' from 'jwk' in 'k'
+When I copy 'x' from 'jwk' in 'k'
+When I copy 'y' from 'jwk' in 'k'
+When I create the 'string array' named 'keys'
+When I move 'k' in 'keys'
+When I create the 'string dictionary' named 'jwks'
+When I move 'keys' in 'jwks'
+When I move 'jwks' in 'well-known'
+
+When I write the string 'keys found: ' in 'result'
+When I append the 'kid' to 'result'
+
+Then print the 'result'
+Then print the 'well-known'
+
+Compute: store in file where path is 'well-known_path', content is 'well-known'
+Compute 'well-known': manipulate and delete
