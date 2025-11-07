@@ -49,10 +49,12 @@ authorize: deps ## 📦 Setup the authorize page
 
 credential: deps ## 📦 Setup the credential issuer
 	@chmod +x scripts/credential.sh
+	@chmod +x scripts/qrcode.sh
 	@./scripts/credential.sh
 
 verifier: deps ## 📦 Setup the verifier
 	@chmod +x scripts/verifier.sh
+	@chmod +x scripts/qrcode.sh
 	@./scripts/verifier.sh
 
 up: UP_PORT?=3000
