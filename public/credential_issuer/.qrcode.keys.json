@@ -1,0 +1,15 @@
+{
+  "offer": {
+    "credential_configuration_ids": [
+      "voucher"
+    ],
+    "credential_issuer": "http://localhost:3001/credential_issuer",
+    "grants": {
+      "authorization_code": {
+        "authorization_server": "http://localhost:3000/authz_server"
+      }
+    }
+  },
+  "qrcode_path": "public/credential_issuer/qrcode",
+  "command": "./scripts/qrcode.sh public/credential_issuer/qrcode"
+}

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 tmp=$(mktemp)
-cat public/verifier/qrcode | base64 -d > $tmp && mv $tmp public/verifier/qrcode
+sed 's/^data:image\/png;base64,//' ${1} | base64 -d > ${tmp} && mv ${tmp} ${1}
