@@ -10,6 +10,7 @@ COPY --chmod=777 scripts/authorize.sh scripts/authorize.sh
 COPY --chmod=777 scripts/credential.sh scripts/credential.sh
 COPY --chmod=777 scripts/verifier.sh scripts/verifier.sh
 COPY --chmod=777 scripts/up.sh scripts/up.sh
+COPY --chmod=777 scripts/qrcode.sh scripts/qrcode.sh
 
 COPY Makefile Makefile
 
