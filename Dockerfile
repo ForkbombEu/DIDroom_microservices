@@ -1,4 +1,4 @@
-FROM ghcr.io/forkbombeu/ncr@sha256:3c4be8b30e56b9cc6871c1f458e2f0802d9de12bc61c9de8b5d7cb5c96c603ba
+FROM ghcr.io/forkbombeu/ncr@sha256:ee4aef9e75c73e16cf18be0cc81cbb58a577508ec3847dea17a1fcb86b6c7e55
 
 RUN apt update && apt install -y jq make wget && rm -rf /var/lib/apt/lists/*
 
