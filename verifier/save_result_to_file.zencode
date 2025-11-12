@@ -1,7 +1,7 @@
 
 Prepare: store in file with content 'transaction_result', path 'complete_transaction_id'
 
-Given I have a 'string array' named 'transaction_result'
+Given I have a 'string dictionary' named 'transaction_result'
 Given I have a 'string dictionary' named 'custom_result'
 
 If I verify 'redirect_uri' is found in 'custom_result'
