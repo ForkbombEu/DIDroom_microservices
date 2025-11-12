@@ -1,0 +1,9 @@
+
+Prepare 'transaction_result': validate the vp_token against dcql_query where vp_token is 'vp_token', dcql_query is 'dcql_query'
+
+
+Given I have a 'string dictionary' named 'transaction_result'
+Given I have a 'string' named 'complete_transaction_id'
+
+Then print the 'transaction_result'
+Then print the 'complete_transaction_id'
