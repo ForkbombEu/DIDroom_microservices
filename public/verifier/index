@@ -172,7 +172,7 @@
         let result = {};
 
         Object.entries(obj).forEach(([key, value]) => {
-        const path = prefix ? `${prefix}.${key}` : key;
+          const path = prefix ? `${prefix}.${key}` : key;
           if (
             value !== null &&
             typeof value === "object" &&
@@ -202,7 +202,7 @@
       }
       function populateClaimsTable(claims) {
         claimsTable.innerHTML = "";
-        Object.entries(claims).foreach(([groupNames, entries]) => {
+        Object.entries(claims).forEach(([groupName, entries]) => {
           // Group Title
           const title = document.createElement("h4");
           title.className = "font-semibold text-green-700 mt-4 mb-2 uppercase";
