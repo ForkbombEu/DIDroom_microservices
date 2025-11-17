@@ -12,7 +12,7 @@
   >
     <!-- Header with Didroom logo -->
     <header class="py-6 flex items-center justify-center">
-      <img src="didroom-logo.svg" alt="Didroom logo" class="h-10" />
+      <img src="../didroom-logo.svg" alt="Didroom logo" class="h-10" />
     </header>
 
     <!-- Debug toggle button -->
@@ -75,9 +75,11 @@
         <h3 class="font-semibold flex items-center mb-3 text-sm">
           <span class="mr-1 text-green-600">✓</span> Verified Claims
         </h3>
-        <table class="w-full border-collapse text-[0.8rem]">
+        <div id="claims-table"></div>
+       <!--  <table class="w-full border-collapse text-[0.8rem]">
           <tbody id="claims-table"></tbody>
         </table>
+        -->
       </div>
 
       <noscript class="text-sm max-w-md">
@@ -166,15 +168,65 @@
       const claimsTable = document.getElementById("claims-table");
 
       /* ------- Populate claims table helper ------- */
+      function flattenObject(obj, prefix = "") {
+        let result = {};
+
+        Object.entries(obj).forEach(([key, value]) => {
+        const path = prefix ? `${prefix}.${key}` : key;
+          if (
+            value !== null &&
+            typeof value === "object" &&
+            !Array.isArray(value)
+          ) {
+            // Nested object → recurse
+            Object.assign(result, flattenObject(value, path));
+          } else if (Array.isArray(value)) {
+            // Array → each index becomes part of path
+            value.forEach((item, i) => {
+              const arrPath = `${path}.${i}`;
+
+              if (item !== null && typeof item === "object") {
+                Object.assign(result, flattenObject(item, arrPath));
+              } else {
+                // Primitive inside array
+                result[arrPath] = item;
+              }
+            });
+          } else {
+            // Primitive value
+            result[path] = value;
+          }
+        });
+
+        return result;
+      }
       function populateClaimsTable(claims) {
         claimsTable.innerHTML = "";
-        claims.forEach((c, i) => {
-          const row = document.createElement("tr");
-          row.className = i % 2 ? "bg-green-100" : "";
-          row.innerHTML = `<td class='border px-2 py-1 whitespace-nowrap uppercase'>${c.name}</td><td class='border px-2 py-1 font-semibold'>${c.value}</td>`;
-          claimsTable.appendChild(row);
+        Object.entries(claims).foreach(([groupNames, entries]) => {
+          // Group Title
+          const title = document.createElement("h4");
+          title.className = "font-semibold text-green-700 mt-4 mb-2 uppercase";
+          title.textContent = groupName;
+          claimsTable.appendChild(title);
+          entries.forEach(entry => {
+            const flat = flattenObject(entry);
+            const table = document.createElement("table");
+            table.className = "w-full border-collapse text-[0.8rem] mb-3";
+            const tbody = document.createElement("tbody");
+            Object.entries(flat).forEach(([key, value], i) => {
+              const row = document.createElement("tr");
+              row.className = i % 2 ? "bg-green-100" : "";
+              row.innerHTML = `
+                <td class="border px-2 py-1 whitespace-nowrap font-medium uppercase">${key}</td>
+                <td class="border px-2 py-1">${value}</td>
+              `;
+              tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            claimsTable.appendChild(table);
+          });
         });
-      }
+      };
 
       /* ---------- Backend polling functions -------- */
       let intervalId, timeoutId;
@@ -190,12 +242,8 @@
             data = text;
           }
           // Build claim array and table
-          if (Array.isArray(data)) {
-            const claims = data.map((r) => ({
-              name: r.path.join("."),
-              value: r.value,
-            }));
-            populateClaimsTable(claims);
+          if (typeof data === "object") {
+            populateClaimsTable(data);
             statusBox.classList.add("hidden");
             claimsBox.classList.remove("hidden");
           } else {
