@@ -73,6 +73,7 @@ tests/mobile_zencode:
 
 mobile_zencode_up: ncr tests/mobile_zencode
 	./ncr -p 3003 -z ./tests/mobile_zencode/wallet & echo $$! > .test.mobile_zencode.pid
+	cd tests/mobile_zencode && git checkout fix/openid4vci
 
 test_custom_code:
 	@cp tests/custom_code/as/* authz_server/custom_code/
