@@ -1,4 +1,5 @@
 {
     "tags": ["🎫 Credential issuer"],
-    "http_headers": true
+    "http_headers": true,
+    "disable_get": true
 }
