@@ -21,9 +21,6 @@
     },
     "redirect_uri": {
       "type": "string"
-    },
-    "client_secret": {
-      "type": "string"
     }
   },
   "required": [
