@@ -21,6 +21,9 @@
     },
     "redirect_uri": {
       "type": "string"
+    },
+    "scope": {
+      "type": "string"
     }
   },
   "required": [
@@ -30,7 +33,6 @@
     "authorization_details",
     "code_challenge",
     "code_challenge_method",
-    "redirect_uri",
-    "client_secret"
+    "redirect_uri"
   ]
 }
