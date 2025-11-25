@@ -22,7 +22,7 @@
     "redirect_uri": {
       "type": "string"
     },
-    "client_secret": {
+    "scope": {
       "type": "string"
     }
   },
@@ -33,7 +33,6 @@
     "authorization_details",
     "code_challenge",
     "code_challenge_method",
-    "redirect_uri",
-    "client_secret"
+    "redirect_uri"
   ]
 }
