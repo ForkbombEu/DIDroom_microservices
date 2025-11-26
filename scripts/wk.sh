@@ -71,7 +71,7 @@ setup() {
                 "credential_signing_alg_values_supported": [
                     "Ed25519Signature2018"
                 ],
-                "credentials_definition": {
+                "credential_definition": {
                     "@context": [
                         "https://www.w3.org/ns/credentials/v2",
                         "https://www.w3.org/ns/credentials/examples/v2"
