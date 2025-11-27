@@ -1,0 +1,33 @@
+steps:
+  - id: par_data
+    zencodeFromFile: authz_server/par_1_data.zencode
+    dataTransform: |
+      const d = JSON.parse(data);
+      const r = {input: d};
+      return JSON.stringify(r);
+    onError:
+      zencode: |
+        Given I have a 'string' named 'slangroomChainError'
+        When I set 'error' to 'invalid_request' as 'string'
+        When I rename 'slangroomChainError' to 'error_description'
+        Then print the data
+  - id: par_process
+    zencodeFromFile: authz_server/par_2_process.zencode
+    keysFromFile: authz_server/par_2_process.keys.json
+    dataFromStep: par_data
+    onError:
+      zencode: |
+        Given I have a 'string' named 'slangroomChainError'
+        When I set 'error' to 'server_error' as 'string'
+        When I rename 'slangroomChainError' to 'error_description'
+        Then print the data
+  - id: par_response
+    zencodeFromFile: authz_server/par_3_response.zencode
+    dataFromStep: par_process
+    keysFromFile: authz_server/par_3_response.keys.json
+    onError:
+      zencode: |
+        Given I have a 'string' named 'slangroomChainError'
+        When I set 'error' to 'access_denied' as 'string'
+        When I rename 'slangroomChainError' to 'error_description'
+        Then print the data
