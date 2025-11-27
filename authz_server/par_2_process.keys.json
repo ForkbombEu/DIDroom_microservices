@@ -13,5 +13,7 @@
     "server": {
         "authentication_url": "https://did.dyne.org/dids/"
     },
-    "expires_in": 600
+    "secrets_path": "authz_server/secrets.keys",
+    "controller_path": "controller",
+    "well-known_path": "public/authz_server/.well-known/oauth-authorization-server"
 }

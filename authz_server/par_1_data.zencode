@@ -43,8 +43,8 @@ If I verify 'authorization_details' is found in 'input'
     EndIf
     # our issuer for the moment is always on another domain so locations is REQUIRED
     When I verify 'locations' is found in 'authorization_details_element'
-    When I copy '1' from 'locations' to 'ad_location'
-    When I move 'ad_location' in 'input'
+    When I pickup from path 'authorization_details_element.locations.1'
+    When I move '1' to 'ad_location' in 'input'
 EndIf
 
 # scope 

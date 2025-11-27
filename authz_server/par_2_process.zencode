@@ -15,7 +15,6 @@ Given I have the 'keyring' in 'personal_keyring'
 Given I have a 'string dictionary' named 'server'
 Given I have a 'string dictionary' named 'request'
 Given I have a 'string dictionary' named 'client'
-Given I have a 'number' named 'expires_in'
 
 # from data
 Given I have a 'string dictionary' named 'input'
@@ -36,11 +35,12 @@ When I append the percent encoding of 'code_challenge' as http request to 'url'
 When I append the percent encoding of 'code_challenge_method' as http request to 'url'
 When I append the percent encoding of 'redirect_uri' as http request to 'url'
 If I verify 'authorization_details' is found in 'input'
+    When I pickup from path 'input.authorization_details'
     When I append the percent encoding of 'authorization_details' as http request to 'url'
     When I copy 'ad_location' from 'input' to 'resource'
 EndIf
 If I verify 'scope' is found in 'input'
-    If I verify 'authorization_details' is not found in 'input'
+    If I verify 'authorization_details' is not found
         When I append the percent encoding of 'scope' as http request to 'url'
         When I copy 'resource' from 'input' to 'resource'
     EndIf

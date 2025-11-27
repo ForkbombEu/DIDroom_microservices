@@ -2,7 +2,7 @@
 Prepare secret 'secret_server': manipulate and pick where object is 'server', properties is 'properties'
 Prepare 'server': manipulate and delete
 
-Prepare 'parresult': generate request uri where request is 'request', client is 'client', server_data is 'secret_server', expires_in is 'expires_in'
+Prepare 'parresult': generate request uri where request is 'request', client is 'client', server_data is 'secret_server', expires_in is 'expires_in_seconds'
 Prepare 'client': manipulate and delete
 Prepare 'request': manipulate and delete
 Prepare 'secret_server': manipulate and delete
