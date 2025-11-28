@@ -24,13 +24,15 @@
     },
     "scope": {
       "type": "string"
+    },
+    "resource": {
+      "type": "string"
     }
   },
   "required": [
     "response_type",
     "client_id",
     "state",
-    "authorization_details",
     "code_challenge",
     "code_challenge_method",
     "redirect_uri"

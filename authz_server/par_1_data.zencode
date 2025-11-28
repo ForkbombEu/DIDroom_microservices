@@ -1,0 +1,59 @@
+
+Given I have a 'string dictionary' named 'input'
+
+# response_type (Authorization Code Grant RFC6749)
+When I set 'code_string' to 'code' as 'string'
+When I verify 'response_type' is found in 'input'
+When I pickup from path 'input.response_type'
+When I verify 'response_type' is equal to 'code_string'
+
+# client_id (Authorization Code Grant RFC6749)
+When I verify 'client_id' is found in 'input'
+
+# redirect_uri (Authorization Code Grant RFC6749)
+When I verify 'redirect_uri' is found in 'input'
+
+# state (Authorization Code Grant RFC6749)
+When I verify 'state' is found in 'input'
+
+# code_challenge (PKCE RFC7636)
+When I verify 'code_challenge' is found in 'input'
+
+# code_challenge_method (PKCE RFC7636)
+When I set 'S256_string' to 'S256' as 'string'
+When I verify 'code_challenge_method' is found in 'input'
+When I pickup from path 'input.code_challenge_method'
+When I verify 'code_challenge_method' is equal to 'S256_string'
+
+# authorization_details (RFC9396)
+When I set 'one' to '1' as 'number'
+If I verify 'authorization_details' is found in 'input'
+    When I pickup from path 'input.authorization_details'
+    When I create the json unescaped object of 'authorization_details'
+    When I verify size of 'json unescaped object' is less or equal than 'one'
+    When I pickup from path 'json_unescaped_object.1'
+    When I rename '1' to 'authorization_details_element'
+    When I set 'openid_credential_string' to 'openid_credential' as 'string'
+    When I verify 'openid_credential_string' is equal to 'type' in 'authorization_details_element'
+    If I verify 'credential_configuration_id' is not found in 'authorization_details_element'
+        When I verify 'format' is found in 'authorization_details_element'
+    EndIf
+    If I verify 'credential_configuration_id' is found in 'authorization_details_element'
+        When I verify 'format' is not found in 'authorization_details_element'
+    EndIf
+    # our issuer for the moment is always on another domain so locations is REQUIRED
+    When I verify 'locations' is found in 'authorization_details_element'
+    When I pickup from path 'authorization_details_element.locations.1'
+    When I move '1' to 'ad_location' in 'input'
+EndIf
+
+# scope 
+If I verify 'scope' is found in 'input'
+    # authorization_details
+    If I verify 'authorization_details' is not found in 'input'
+        # our issuer for the moment is always on another domain so resource is RECCOMENDED (required for us)
+        When I verify 'resource' is found in 'input'
+    EndIf
+EndIf
+
+Then print the 'input'

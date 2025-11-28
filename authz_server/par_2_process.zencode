@@ -1,0 +1,65 @@
+Scenario 'http': percent encoding
+Scenario 'w3c': Create jwk
+
+Prepare secret 'secrets': read file content where path is 'secrets_path'
+Prepare 'controller': manipulate and get where object is 'secrets', path is 'controller_path'
+Prepare secret 'personal_keyring': manipulate and get where object is 'secrets', path is 'controller'
+Prepare 'well-known': read file content where path is 'well-known_path'
+
+# from slangroom
+Given I have a 'string dictionary' named 'well-known'
+Given my name is in a 'string' named 'controller'
+Given I have the 'keyring' in 'personal_keyring'
+
+# from keys
+Given I have a 'string dictionary' named 'server'
+Given I have a 'string dictionary' named 'request'
+Given I have a 'string dictionary' named 'client'
+
+# from data
+Given I have a 'string dictionary' named 'input'
+Given I have a 'string' in path 'input.response_type'
+Given I have a 'string' in path 'input.client_id'
+Given I have a 'string' in path 'input.state'
+Given I have a 'string' in path 'input.code_challenge'
+Given I have a 'string' in path 'input.code_challenge_method'
+Given I have a 'string' in path 'input.redirect_uri'
+
+# - request { body }
+When I set 'base-url' to 'http://' as 'string'
+When I create the url from 'base-url'
+When I append the percent encoding of 'response_type' as http request to 'url'
+When I append the percent encoding of 'client_id' as http request to 'url'
+When I append the percent encoding of 'state' as http request to 'url'
+When I append the percent encoding of 'code_challenge' as http request to 'url'
+When I append the percent encoding of 'code_challenge_method' as http request to 'url'
+When I append the percent encoding of 'redirect_uri' as http request to 'url'
+If I verify 'authorization_details' is found in 'input'
+    When I pickup from path 'input.authorization_details'
+    When I append the percent encoding of 'authorization_details' as http request to 'url'
+    When I copy 'ad_location' from 'input' to 'resource'
+EndIf
+If I verify 'scope' is found in 'input'
+    If I verify 'authorization_details' is not found
+        When I append the percent encoding of 'scope' as http request to 'url'
+        When I copy 'resource' from 'input' to 'resource'
+    EndIf
+EndIf
+When I split the leftmost '8' bytes of 'url'
+When I rename the 'url' to 'body'
+When I move 'body' in 'request'
+
+# - client { id, redirectUris, resource }
+When I move 'client_id' to 'id' in 'client'
+When I move 'redirect_uri' to 'redirectUris' in 'client'
+When I move 'resource' in 'client'
+
+# - server { url, jwk }
+When I pickup from path 'well-known.issuer'
+When I move 'issuer' to 'url' in 'server'
+When I create jwk of es256 public key with private key
+When I move 'jwk' in 'server'
+
+Then print the 'client'
+Then print the 'request'
+Then print the 'server'

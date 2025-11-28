@@ -1,0 +1,10 @@
+{
+    "request_path": "request_uri",
+    "expires_path": "expires_in",
+    "properties": [
+        "authentication_url",
+        "jwk",
+        "url"
+    ],
+    "expires_in_seconds": 600
+}
