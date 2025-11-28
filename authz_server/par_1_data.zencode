@@ -27,7 +27,8 @@ When I verify 'code_challenge_method' is equal to 'S256_string'
 
 # authorization_details (RFC9396)
 When I set 'one' to '1' as 'number'
-If I verify 'authorization_details' is found in 'input'
+When I set 'authorization_details_string' to 'authorization_details' as 'string'
+If I verify 'authorization_details_string' is found in 'input'
     When I pickup from path 'input.authorization_details'
     When I create the json unescaped object of 'authorization_details'
     When I verify size of 'json unescaped object' is less or equal than 'one'
@@ -50,7 +51,7 @@ EndIf
 # scope 
 If I verify 'scope' is found in 'input'
     # authorization_details
-    If I verify 'authorization_details' is not found in 'input'
+    If I verify 'authorization_details_string' is not found in 'input'
         # our issuer for the moment is always on another domain so resource is RECCOMENDED (required for us)
         When I verify 'resource' is found in 'input'
     EndIf
