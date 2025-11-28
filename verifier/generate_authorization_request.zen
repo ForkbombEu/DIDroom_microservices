@@ -22,7 +22,7 @@ Given I have a 'string' named 'response_chain'
 
 When I create the 'string dictionary' named 'response_keys'
 
-When I write string 'openid4vp://' in 'intent_url'
+When I write string 'openid4vp://?' in 'intent_url'
 
 When I create the 'string dictionary' named 'params json'
 When I write string 'decentralized_identifier:' in 'client_id'
